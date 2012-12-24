@@ -1,4 +1,4 @@
-package entities;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -6,31 +6,31 @@ import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the help_requests database table.
+ * The persistent class for the friendship_requests database table.
  * 
  */
 @Entity
-@Table(name="help_requests")
-public class HelpRequest implements Serializable {
+@Table(name="friendship_requests")
+public class FriendshipRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String helpReqId;
+	private String friendReqId;
 	private Object acceptanceStatus;
 	private Timestamp date_time;
 	private User user1;
 	private User user2;
 
-	public HelpRequest() {
+	public FriendshipRequest() {
 	}
 
 
 	@Id
 	@Column(unique=true, nullable=false)
-	public String getHelpReqId() {
-		return this.helpReqId;
+	public String getFriendReqId() {
+		return this.friendReqId;
 	}
 
-	public void setHelpReqId(String helpReqId) {
-		this.helpReqId = helpReqId;
+	public void setFriendReqId(String friendReqId) {
+		this.friendReqId = friendReqId;
 	}
 
 
