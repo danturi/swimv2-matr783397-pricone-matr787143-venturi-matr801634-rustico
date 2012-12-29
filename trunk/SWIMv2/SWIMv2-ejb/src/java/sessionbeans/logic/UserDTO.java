@@ -1,4 +1,4 @@
-package swimauth.model.usermanagement.dto;
+package sessionbeans.logic;
  
 public class UserDTO {
  

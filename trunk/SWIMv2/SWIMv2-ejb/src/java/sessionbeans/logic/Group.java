@@ -1,4 +1,4 @@
-package swimauth.model.usermanagement;
+package sessionbeans.logic;
  
 public enum Group {
      
