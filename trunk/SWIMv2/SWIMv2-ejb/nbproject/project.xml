@@ -6,25 +6,6 @@
             <name>SWIMv2-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <included-library dirs="200">file.reference.commons-codec-1.6.jar</included-library>
-            <included-library dirs="200">file.reference.activation-1.1.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-core-asl-1.9.2.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-core-asl.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-jaxrs-1.9.2.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-jaxrs.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-mapper-asl-1.9.2.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-mapper-asl.jar</included-library>
-            <included-library dirs="200">file.reference.jackson-xc-1.9.2.jar</included-library>
-            <included-library dirs="200">file.reference.jaxb-api-2.2.2.jar</included-library>
-            <included-library dirs="200">file.reference.jaxb-impl-2.2.3-1.jar</included-library>
-            <included-library dirs="200">file.reference.jersey-core-1.11.jar</included-library>
-            <included-library dirs="200">file.reference.jersey-gf-server.jar</included-library>
-            <included-library dirs="200">file.reference.jersey-json-1.11.jar</included-library>
-            <included-library dirs="200">file.reference.jersey-multipart.jar</included-library>
-            <included-library dirs="200">file.reference.jettison-1.1.jar</included-library>
-            <included-library dirs="200">file.reference.jettison.jar</included-library>
-            <included-library dirs="200">file.reference.mimepull.jar</included-library>
-            <included-library dirs="200">file.reference.stax-api-1.0-2.jar</included-library>
-            <included-library dirs="200">file.reference.stax-api-1.0.1.jar</included-library>
             <source-roots>
                 <root id="src.dir" name="Source Packages"/>
             </source-roots>
