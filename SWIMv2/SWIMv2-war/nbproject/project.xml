@@ -16,55 +16,55 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.activation-1.1.jar}</file>
+                    <file>${file.reference.activation-1.1.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.commons-codec-1.6.jar}</file>
+                    <file>${file.reference.commons-codec-1.6.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jackson-core-asl-1.9.2.jar}</file>
+                    <file>${file.reference.jackson-core-asl-1.9.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jackson-jaxrs-1.9.2.jar}</file>
+                    <file>${file.reference.jackson-jaxrs-1.9.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jackson-mapper-asl-1.9.2.jar}</file>
+                    <file>${file.reference.jackson-mapper-asl-1.9.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jackson-xc-1.9.2.jar}</file>
+                    <file>${file.reference.jackson-xc-1.9.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jaxb-api-2.2.2.jar}</file>
+                    <file>${file.reference.jaxb-api-2.2.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jaxb-impl-2.2.3-1.jar}</file>
+                    <file>${file.reference.jaxb-impl-2.2.3-1.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jersey-core-1.11.jar}</file>
+                    <file>${file.reference.jersey-core-1.11.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jersey-json-1.11.jar}</file>
+                    <file>${file.reference.jersey-json-1.11.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jettison-1.1.jar}</file>
+                    <file>${file.reference.jettison-1.1.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.stax-api-1.0-2.jar}</file>
+                    <file>${file.reference.stax-api-1.0-2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.stax-api-1.0.1.jar}</file>
+                    <file>${file.reference.stax-api-1.0.1.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
