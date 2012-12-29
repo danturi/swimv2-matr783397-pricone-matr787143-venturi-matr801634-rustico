@@ -33,7 +33,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-//import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import sessionbeans.logic.Group;
 import sessionbeans.logic.UserDTO;
 
@@ -136,7 +136,7 @@ public class User implements Serializable {
         this.email        = user.getEmail();
         this.firstname    = user.getFName();
         this.lastname     = user.getLName();        
-        this.password     = user.getPassword1();//DigestUtils.sha512Hex(user.getPassword1() );
+        this.password     = DigestUtils.sha512Hex(user.getPassword1() );
         this.registeredOn = new Date();
     }
     public User(Long userId) {
