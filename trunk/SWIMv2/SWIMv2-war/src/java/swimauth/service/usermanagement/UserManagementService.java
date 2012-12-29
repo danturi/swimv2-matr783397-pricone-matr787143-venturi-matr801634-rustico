@@ -20,18 +20,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
 import swimauth.json.JsonResponse;
-import swimauth.model.usermanagement.Group;
-import swimauth.model.usermanagement.User;
-import swimauth.model.usermanagement.UserBean;
-import swimauth.model.usermanagement.dto.UserDTO;
+import sessionbeans.logic.Group;
+import entities.User;
+import sessionbeans.logic.UserBeanLocal;
+import sessionbeans.logic.UserDTO;
  
 @Path("/auth")
 @Produces(MediaType.TEXT_PLAIN)
 @Stateless
 public class UserManagementService {
- 
+    
     @EJB
-    private UserBean userBean;
+    private UserBeanLocal userBean;
+ 
+    
  
     @GET
     @Path("ping")
@@ -127,11 +129,10 @@ public class UserManagementService {
         req.getServletContext().log("successfully registered new user: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
  
         req.getServletContext().log("execute login now: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
-        try {
+       try {
             req.login(newUser.getEmail(), newUser.getPassword1());
             json.setStatus("SUCCESS");
         } catch (ServletException e) {
-            e.printStackTrace();
             json.setErrorMsg("User Account created, but login failed. Please try again later.");
             json.setStatus("FAILED"); //maybe some other status? you can choose...
         }
