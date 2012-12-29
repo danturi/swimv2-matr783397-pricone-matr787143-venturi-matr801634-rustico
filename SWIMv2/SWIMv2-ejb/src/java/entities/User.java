@@ -9,7 +9,12 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,12 +27,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+//import org.apache.commons.codec.digest.DigestUtils;
+import sessionbeans.logic.Group;
+import sessionbeans.logic.UserDTO;
 
 /**
  *
@@ -40,7 +48,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByRegTime", query = "SELECT u FROM User u WHERE u.regTime = :regTime"),
+    @NamedQuery(name = "User.findByRegisteredOn", query = "SELECT u FROM User u WHERE u.registeredOn = :registeredOn"),
     @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
     @NamedQuery(name = "User.findBySex", query = "SELECT u FROM User u WHERE u.sex = :sex"),
@@ -51,19 +59,22 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "User.findByRating", query = "SELECT u FROM User u WHERE u.rating = :rating")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    private Long userId;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
+    //@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Column(unique=true, nullable=false, length=128)
     @Size(min = 1, max = 128)
     private String email;
-    @Size(max = 128)
+    @Column(nullable=false, length=128)
     private String password;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date regTime;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    //@NotNull
+    @Column
+    private Long userId;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Column(nullable=false)
+    private Date registeredOn;
     @Size(max = 128)
     private String firstname;
     @Size(max = 128)
@@ -105,10 +116,29 @@ public class User implements Serializable {
     private List<HelpRequest> helpRequestList;
     @OneToMany(mappedBy = "fromUserId")
     private List<HelpRequest> helpRequestList1;
+    @ElementCollection(targetClass = Group.class)
+    @CollectionTable(name = "users_groups", 
+                    joinColumns       = @JoinColumn(name = "email", nullable=false), 
+                    uniqueConstraints = { @UniqueConstraint(columnNames={"email","groupname"}) } )
+    @Enumerated(EnumType.STRING)
+    @Column(name="groupname", length=64, nullable=false)
+    private List<Group> groups;
 
     public User() {
     }
 
+    public User(UserDTO user){
+         
+        if (user.getPassword1() == null || user.getPassword1().length() == 0
+                || !user.getPassword1().equals(user.getPassword2()) )
+            throw new RuntimeException("Password 1 and Password 2 have to be equal (typo?)");
+         
+        this.email        = user.getEmail();
+        this.firstname    = user.getFName();
+        this.lastname     = user.getLName();        
+        this.password     = user.getPassword1();//DigestUtils.sha512Hex(user.getPassword1() );
+        this.registeredOn = new Date();
+    }
     public User(Long userId) {
         this.userId = userId;
     }
@@ -142,12 +172,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getRegTime() {
-        return regTime;
+    public Date getRegisteredOn() {
+        return registeredOn;
     }
-
-    public void setRegTime(Date regTime) {
-        this.regTime = regTime;
+ 
+    public void setRegisteredOn(Date registeredOn) {
+        this.registeredOn = registeredOn;
+    }
+    public List<Group> getGroups() {
+        return groups;
+    }
+ 
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public String getFirstname() {
@@ -314,9 +351,11 @@ public class User implements Serializable {
         return true;
     }
 
-    @Override
+     @Override
     public String toString() {
-        return "entities.User[ userId=" + userId + " ]";
+        return "User [email=" + email + ", firstName=" + firstname
+                + ", lastName=" + lastname + ", password=" + password
+                + ", registeredOn=" + registeredOn + ", groups=" + groups + "]";
     }
     
 }

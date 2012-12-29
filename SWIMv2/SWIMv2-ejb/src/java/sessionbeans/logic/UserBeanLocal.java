@@ -18,11 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface UserBeanLocal {
     
-    public boolean createNewUser(User user);
+    public boolean createUser(User user);
     
     public boolean removeUser(User user);
     
     public boolean modifyUser(User user);
+    
+    public int countUsers();
     
     public User findUserByEmail(String email);
     
@@ -37,9 +39,28 @@ public interface UserBeanLocal {
     public boolean sendHelpReq(String ToUserEmail);
 
     public boolean sendAbilityReq(AbilityRequest abilityRequest);
+    
+    public boolean replyToFriendReq(FriendshipRequest friendshipReq);
 
     public List<FriendshipRequest> getFriendshipReqList();
 
     public List<HelpRequest> getHelpReqList();
+    
+    //metodi vecchi da auth demo
+    
+    public List<User> findAll();
+    
+    public void save(User user);
+    
+    public void update(User user);
+    
+    public void remove(String email);
+    
+    public void remove(User user);
+    
+    public User find(String email);
+    
+    public void detach(User user);
+    
     
 }
