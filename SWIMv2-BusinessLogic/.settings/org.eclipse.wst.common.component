@@ -2,5 +2,7 @@
     <wb-module deploy-name="SWIMv2-BusinessLogic">
         <wb-resource deploy-path="/" source-path="/ejbModule" tag="defaultRootSource"/>
         <property name="java-output-path" value="/SWIMv2-BusinessLogic/build/classes"/>
+        <property name="ClientProject" value="SWIMv2-BusinessLogicClient"/>
+        <property name="ClientJARURI" value="SWIMv2-BusinessLogicClient.jar"/>
     </wb-module>
 </project-modules>

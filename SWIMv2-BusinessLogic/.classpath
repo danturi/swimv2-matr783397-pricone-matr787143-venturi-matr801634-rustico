@@ -12,9 +12,29 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-core-asl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-core-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-jaxrs.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-jaxrs-1.9.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-mapper-asl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-mapper-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jackson-xc-1.9.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jaxb-api-2.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jaxb-impl-2.2.3-1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jersey-core-1.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jersey-gf-server.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jersey-json-1.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jersey-multipart.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jettison.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/jettison-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/mimepull.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MARCO/workspace/SWIMv2-BusinessLogic/ejbModule/META-INF/lib/stax-api-1.0-2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.4.1 - Juno">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
