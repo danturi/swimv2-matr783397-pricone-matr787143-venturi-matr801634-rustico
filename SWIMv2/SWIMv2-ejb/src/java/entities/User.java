@@ -130,8 +130,9 @@ public class User implements Serializable {
     public User(UserDTO user){
          
         if (user.getPassword1() == null || user.getPassword1().length() == 0
-                || !user.getPassword1().equals(user.getPassword2()) )
+                || !user.getPassword1().equals(user.getPassword2()) ){
             throw new RuntimeException("Password 1 and Password 2 have to be equal (typo?)");
+        }
          
         this.email        = user.getEmail();
         this.firstname    = user.getFName();
