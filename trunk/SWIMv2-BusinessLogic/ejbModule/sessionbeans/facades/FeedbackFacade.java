@@ -5,6 +5,8 @@
 package sessionbeans.facades;
 
 import entities.Feedback;
+
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,7 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author MARCO
  */
-
+@Stateless
 public class FeedbackFacade extends AbstractFacade<Feedback> implements FeedbackFacadeLocal {
     @PersistenceContext(unitName = "SWIMv2-ejbPU")
     private EntityManager em;

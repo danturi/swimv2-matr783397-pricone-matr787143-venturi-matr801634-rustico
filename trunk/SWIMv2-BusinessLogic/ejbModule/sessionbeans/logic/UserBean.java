@@ -14,8 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import sessionbeans.facades.UserFacade;
+import sessionbeans.facades.UserFacadeLocal;
 
 
 
@@ -26,7 +25,7 @@ import sessionbeans.facades.UserFacade;
 @Stateless
 public class UserBean implements UserBeanLocal {
     @EJB
-    private UserFacade userFacade;
+    private UserFacadeLocal userFacade;
     
     @PersistenceContext(unitName = "SWIMv2-ejbPU")
     private EntityManager em;

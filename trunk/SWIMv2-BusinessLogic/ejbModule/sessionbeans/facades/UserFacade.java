@@ -5,6 +5,8 @@
 package sessionbeans.facades;
 
 import entities.User;
+
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,7 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author MARCO
  */
-
+@Stateless
 public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal {
     @PersistenceContext(unitName = "SWIMv2-ejbPU")
     private EntityManager em;

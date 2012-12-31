@@ -5,6 +5,8 @@
 package sessionbeans.facades;
 
 import entities.AbilityRequest;
+
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,7 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author MARCO
  */
-
+@Stateless
 public class AbilityRequestFacade extends AbstractFacade<AbilityRequest> implements AbilityRequestFacadeLocal {
     @PersistenceContext(unitName = "SWIMv2-ejbPU")
     private EntityManager em;
