@@ -24,8 +24,8 @@ import sessionbeans.facades.UserFacadeLocal;
  */
 @Stateless
 public class UserBean implements UserBeanLocal {
-    @EJB
-    private UserFacadeLocal userFacade;
+    /*@EJB
+    private UserFacadeLocal userFacade;*/
     
     @PersistenceContext(unitName = "SWIMv2-ejbPU")
     private EntityManager em;
@@ -38,7 +38,7 @@ public class UserBean implements UserBeanLocal {
     //int count();
     
 
-    @Override
+    /*@Override
     public boolean createUser(User user) {
         //throw new UnsupportedOperationException("Not supported yet.");
         userFacade.create(user);
@@ -72,7 +72,7 @@ public class UserBean implements UserBeanLocal {
             if(currentUser.getEmail().equals(email)) return currentUser;
             list.remove((User)currentUser);
         }
-        return null;*/
+        return null;
        User usr = (User)em.createNamedQuery("User.findByEmail").setParameter("email",email).getSingleResult();
         return usr;
         
@@ -123,7 +123,7 @@ public class UserBean implements UserBeanLocal {
     @Override
     public List<HelpRequest> getHelpReqList() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
+    }*/
 
     
     /*DA QUI FUNZIONI DI USERBEAN AUTHDEMO
@@ -132,9 +132,11 @@ public class UserBean implements UserBeanLocal {
      */
     
     @Override
-    public List<User> findAll() {
-        TypedQuery<User> query = em.createQuery("SELECT usr FROM User ORDER BY usr.registeredOn ASC", User.class);
-        return query.getResultList();
+    public SwimResponse findAll() {
+    	
+        TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
+        SwimResponse reply = new SwimResponse(SwimResponse.SUCCESS,"Lista utenti ricevuta", query.getResultList());
+        return reply;
     }
   
     @Override
