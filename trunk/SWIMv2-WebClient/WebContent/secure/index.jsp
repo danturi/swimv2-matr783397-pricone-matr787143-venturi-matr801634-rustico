@@ -30,7 +30,7 @@
                         //alert("success");
                         if (data.status == "SUCCESS" ){
                             //redirect to welcome page
-                            window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>/index.jsp");
+                            window.location.replace("http://"+window.location.host+"<%=request.getContextPath() %>/index.jsp");
                         }else{
                             alert("failed");
                         }
@@ -71,7 +71,7 @@
                        if (textStatus == "parsererror"){
                            alert("You session has timed out");
                            //forward to welcomde page
-                           window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>index.jsp");
+                           window.location.replace("http://"+window.location.host+"<%=request.getContextPath() %>index.jsp");
                        }
                    },
                         

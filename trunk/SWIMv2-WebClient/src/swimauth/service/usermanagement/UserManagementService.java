@@ -118,7 +118,7 @@ public class UserManagementService {
         User user = new User(newUser);
  
         List<Group> groups = new ArrayList<Group>();
-        groups.add(Group.ADMINISTRATOR);
+        //groups.add(Group.ADMINISTRATOR);
         groups.add(Group.USER);
         groups.add(Group.DEFAULT);
         user.setGroups(groups);
