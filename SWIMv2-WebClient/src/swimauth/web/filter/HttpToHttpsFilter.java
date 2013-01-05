@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
 //instead of defining the filter in our web.xml we will use an annotation
-@WebFilter("/welcome.jsp")
+//@WebFilter("/welcome.jsp")
 public class HttpToHttpsFilter implements Filter {
  
     @Override

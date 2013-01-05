@@ -40,7 +40,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
-                                window.location.replace("https://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
+                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
                             }else{
                                 alert("Registrazione fallita.");
                             }
@@ -88,7 +88,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
-                                window.location.replace("https://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
+                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
                             }else{
                                 alert("Login fallito.");
                             }

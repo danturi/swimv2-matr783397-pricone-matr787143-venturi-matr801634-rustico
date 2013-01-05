@@ -47,7 +47,7 @@ public class test extends HttpServlet {
         User prova = new User();
         prova.setEmail("prova7@a.com");
         
-        userBean.createUser(prova);
+        userBean.save(prova);
 
         //request.setAttribute("lista", list);
 

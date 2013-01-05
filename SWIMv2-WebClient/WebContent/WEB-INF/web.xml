@@ -49,12 +49,21 @@
 			<role-name>ADMINISTRATOR</role-name>
 			<role-name>USER</role-name>
 		</auth-constraint>
-		<!-- we always want https! -->
+		<!-- we always want https! 
 		<user-data-constraint>
 			<description>highest supported transport security level</description>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
+		</user-data-constraint> -->
 	</security-constraint>
+	<security-constraint> <!-- DA QUI AGGIUNTO IO PER SEC CONSTR PER PROVARE ADMIN -->
+		<web-resource-collection>
+			<web-resource-name>Secured Content</web-resource-name>
+			<url-pattern>/secure/admin/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>ADMINISTRATOR</role-name>
+		</auth-constraint>
+	</security-constraint><!-- FINO A  QUI AGGIUNTO IO PER SEC CONSTR PER PROVARE ADMIN -->
 	<!-- declare the roles relevant for our webapp -->
 	<security-role>
 		<role-name>ADMINISTRATOR</role-name>
