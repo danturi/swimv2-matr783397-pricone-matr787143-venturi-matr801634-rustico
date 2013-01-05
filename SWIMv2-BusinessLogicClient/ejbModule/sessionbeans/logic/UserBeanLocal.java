@@ -20,7 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface UserBeanLocal {
     
-    public boolean createUser(User user);
+    /*public boolean createUser(User user);
     
     public boolean removeUser(User user);
     
@@ -46,11 +46,11 @@ public interface UserBeanLocal {
 
     public List<FriendshipRequest> getFriendshipReqList();
 
-    public List<HelpRequest> getHelpReqList();
+    public List<HelpRequest> getHelpReqList();*/
     
     //metodi vecchi da auth demo
     
-    public List<User> findAll();
+    public SwimResponse findAll();
     
     public void save(User user);
     

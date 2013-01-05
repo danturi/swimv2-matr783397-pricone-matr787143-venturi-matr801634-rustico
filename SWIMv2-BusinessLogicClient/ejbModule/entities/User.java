@@ -145,17 +145,13 @@ public class User implements Serializable {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < byteData.length; i++) {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-				this.password = sb.toString();
-			}
 
+			}
+			this.password = sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
-
 
 
 		this.email        = user.getEmail();
@@ -368,11 +364,11 @@ public class User implements Serializable {
 		if (!(object instanceof User)) {
 			return false;
 		}
-	User other = (User) object;
-	if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
-		return false;
-	}
-	return true;
+		User other = (User) object;
+		if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
