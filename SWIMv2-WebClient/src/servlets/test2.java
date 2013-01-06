@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import entities.FriendshipRequest;
 import entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,6 +53,17 @@ public class test2 extends HttpServlet {
 		// User usr1 = new User();
 		//usr1.setEmail("prova11@a.com");
 		//userBean.createUser(usr1);
+		userBean.sendFriendshipReq("aa","bb");
+		userBean.sendFriendshipReq("aa","cc");
+		userBean.sendFriendshipReq("cc","bb");
+		/*List<FriendshipRequest> aaList = (List<FriendshipRequest>) userBean.getFriendshipReqList("bb").getData();
+		System.out.println("LISTA: "+aaList);
+		/*while(aaList.iterator().hasNext()){
+			FriendshipRequest friendReq = aaList.iterator().next();
+			System.out.println("RICHIESTA TROVATA : "+friendReq.getToUser()+"\n");
+			aaList.remove(friendReq);
+		}*/
+		
 
 		SwimResponse swimResponse = userBean.findAll();
 
