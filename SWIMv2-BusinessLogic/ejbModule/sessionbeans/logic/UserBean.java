@@ -24,74 +24,18 @@ import sessionbeans.facades.UserFacadeLocal;
  */
 @Stateless
 public class UserBean implements UserBeanLocal {
-    /*@EJB
+	/*@EJB
     private UserFacadeLocal userFacade;*/
-    
-    @PersistenceContext(unitName = "SWIMv2-ejbPU")
-    private EntityManager em;
-    
-    
-    
- 
-    //List<User> findRange(int[] range);
 
-    //int count();
-    
+	@PersistenceContext(unitName = "SWIMv2-ejbPU")
+	private EntityManager em;
 
-    /*@Override
-    public boolean createUser(User user) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        userFacade.create(user);
-        return true;
-    }
-    
-    @Override
-    public boolean removeUser(User user){
-        userFacade.remove(user);
-        return true;
-    }
-    
-    @Override
-    public boolean modifyUser(User user){
-        userFacade.edit(user);
-        return true;
-    }
-    
-    @Override
-    public int countUsers(){
-        return userFacade.count();
-    }
-    
 
-    @Override
-    public User findUserByEmail(String email) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        /*List<User> list = userFacade.findAll();
-        while(list.iterator().hasNext()){
-            User currentUser = list.iterator().next();
-            if(currentUser.getEmail().equals(email)) return currentUser;
-            list.remove((User)currentUser);
-        }
-        return null;
-       User usr = (User)em.createNamedQuery("User.findByEmail").setParameter("email",email).getSingleResult();
-        return usr;
-        
-    }
-    
-    @Override
-    public List<User> findAllUsers(){
-        return userFacade.findAll();
-    }
 
-    @Override
-    public List<User> getOtherUserFriendList(String friendUserEmail) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    @Override
-    public List<User> getFriendsList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/*
+
+
 
     @Override
     public boolean sendFriendshipReq(String ToUserEmail) {
@@ -107,12 +51,12 @@ public class UserBean implements UserBeanLocal {
     public boolean sendAbilityReq(AbilityRequest abilityRequest) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
     public boolean replyToFriendReq(FriendshipRequest friendshipReq){
-        
+
         return true;
-        
+
     }
 
     @Override
@@ -125,53 +69,77 @@ public class UserBean implements UserBeanLocal {
         throw new UnsupportedOperationException("Not supported yet.");
     }*/
 
-    
-    /*DA QUI FUNZIONI DI USERBEAN AUTHDEMO
-     * 
-     * 
-     */
-    
-    @Override
-    public SwimResponse findAll() {
-    	
-        TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
-        SwimResponse reply = new SwimResponse(SwimResponse.SUCCESS,"Lista utenti ricevuta", query.getResultList());
-        return reply;
-    }
-  
-    @Override
-    public void save(User user) {
-        em.persist(user);
-    }
-  
-    @Override
-    public void update(User user) {
-        em.merge(user);
-    }
-  
-    @Override
-    public void remove(String email) {
-        User user = find(email);
-        if (user != null) {
-            em.remove(user);
-        }
-    }
-      
-    @Override
-    public void remove(User user) {
-        if (user != null && user.getEmail()!=null && em.contains(user)) {
-            em.remove(user);
-        }
-    }
-  
-    @Override
-    public User find(String email) {
-        return em.find(User.class, email);
-    }
-     
-    public void detach(User user) {
-        em.detach(user);
-    }
+
+	/*DA QUI FUNZIONI DI USERBEAN AUTHDEMO
+	 * 
+	 * 
+	 */
+
+	@Override
+	public SwimResponse findAll() {
+
+		TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
+		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Lista utenti ricevuta", query.getResultList());
+		return swimResponse;
+	}
+
+	@Override
+	public void createUser(User user) {
+		em.persist(user);
+	}
+
+	@Override
+	public void updateUser(User user) {
+		em.merge(user);
+	}
+
+	@Override
+	public void removeUser(String email) {
+		User user = (User) find(email).getData();
+		if (user != null) {
+			em.remove(user);
+		}
+	}
+
+	@Override
+	public void removeUser(User user) {
+		if (user != null && user.getEmail()!=null && em.contains(user)) {
+			em.remove(user);
+		}
+	}
+
+	@Override
+	public SwimResponse find(String email) {
+		User usr = em.find(User.class, email);
+		SwimResponse swimResponse;
+		if(usr!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Ricerca utente per email effettuata.", usr);
+		}
+		else{
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non trovato.");
+		}
+		return swimResponse;
+
+	}
+	@Override
+	public void detachUser(User user) {
+		em.detach(user);
+	}
+
+	@Override
+	public SwimResponse getFriendsList(User user) {
+		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista degli amici effettuato", user.getUserList());
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse getFriendshipReqList(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 
 
