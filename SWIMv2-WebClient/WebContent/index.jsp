@@ -41,8 +41,12 @@
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
                                 window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
-                            }else{
-                                alert("Registrazione fallita.");
+                            }else if (data.status == "CREATEUSER_FAILED"){
+                            	alert("Utente già esistente o errore nel server. Registrazione fallita.");
+                            }
+                            else
+                            {
+                                alert("Account utente creato ma si è verificatio in errore nel server. Registrazione fallita.");
                             }
                         },
                      

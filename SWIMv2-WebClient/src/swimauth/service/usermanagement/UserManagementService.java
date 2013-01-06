@@ -67,12 +67,12 @@ public class UserManagementService {
         //read the user data from db and return to caller
         json.setStatus("SUCCESS");
          
-        User user = userBean.find(email);
+        User user = (User) userBean.find(email).getData();
         req.getServletContext().log("Authentication Demo: successfully retrieved User Profile from DB for " + email);
         json.setData(user);
          
         //we don't want to send the hashed password out in the json response
-        userBean.detach(user);
+        userBean.detachUser(user);
         user.setPassword(null);
         user.setGroups(null);
         return Response.ok().entity(json).build();
@@ -125,7 +125,14 @@ public class UserManagementService {
  
         //this could cause a runtime exception, i.e. in case the user already exists
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
-        userBean.save(user); // this would use the clients transaction which is committed after save() has finished
+     // this would use the clients transaction which is committed after save() has finished
+        try{
+        userBean.createUser(user);
+        } catch (Exception e){
+        	 json.setErrorMsg("Utente già esistente o altro errore.");
+             json.setStatus("CREATEUSER_FAILED");
+             return Response.ok().entity(json).build();
+        }
         req.getServletContext().log("successfully registered new user: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
  
         req.getServletContext().log("execute login now: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
