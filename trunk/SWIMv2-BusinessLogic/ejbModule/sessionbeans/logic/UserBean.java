@@ -8,6 +8,8 @@ import entities.AbilityRequest;
 import entities.FriendshipRequest;
 import entities.HelpRequest;
 import entities.User;
+
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -31,50 +33,6 @@ public class UserBean implements UserBeanLocal {
 	private EntityManager em;
 
 
-
-
-	/*
-
-
-
-    @Override
-    public boolean sendFriendshipReq(String ToUserEmail) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean sendHelpReq(String ToUserEmail) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean sendAbilityReq(AbilityRequest abilityRequest) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean replyToFriendReq(FriendshipRequest friendshipReq){
-
-        return true;
-
-    }
-
-    @Override
-    public List<FriendshipRequest> getFriendshipReqList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<HelpRequest> getHelpReqList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }*/
-
-
-	/*DA QUI FUNZIONI DI USERBEAN AUTHDEMO
-	 * 
-	 * 
-	 */
-
 	@Override
 	public SwimResponse findAll() {
 
@@ -95,7 +53,7 @@ public class UserBean implements UserBeanLocal {
 
 	@Override
 	public void removeUser(String email) {
-		User user = (User) find(email).getData();
+		User user =  find(email);
 		if (user != null) {
 			em.remove(user);
 		}
@@ -109,17 +67,8 @@ public class UserBean implements UserBeanLocal {
 	}
 
 	@Override
-	public SwimResponse find(String email) {
-		User usr = em.find(User.class, email);
-		SwimResponse swimResponse;
-		if(usr!=null){
-			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Ricerca utente per email effettuata.", usr);
-		}
-		else{
-			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non trovato.");
-		}
-		return swimResponse;
-
+	public User find(String email) {
+		return em.find(User.class, email);
 	}
 	@Override
 	public void detachUser(User user) {
@@ -127,15 +76,84 @@ public class UserBean implements UserBeanLocal {
 	}
 
 	@Override
-	public SwimResponse getFriendsList(User user) {
-		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista degli amici effettuato", user.getUserList());
+	public SwimResponse getFriendsList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista degli amici effettuato", user.getUserList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
 		return swimResponse;
 	}
 
 	@Override
-	public SwimResponse getFriendshipReqList(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public SwimResponse getFriendshipReqList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getFriendshipRequestList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse getHelpReqList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getHelpRequestList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse sendFriendshipReq(String emailUserFrom, String emailUserTo) {
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		User userTo = find(emailUserTo);
+		if(userFrom!=null && userTo!=null){// se i due utenti esistono nel sistema...
+
+			if(!(userFrom.getUserList().contains(userTo)) && !(userTo.getUserList().contains(userFrom))){ // se gli utenti non sono già amici...
+
+				List<FriendshipRequest> listUserTo = userTo.getFriendshipRequestList();
+				
+				while(listUserTo.iterator().hasNext()){// e se non ci sono richieste d'amicizia già pendenti
+					FriendshipRequest friendReq = listUserTo.iterator().next();
+					if(friendReq.getFromUser().equals(userFrom)){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						System.out.println("\nUSERBEAN: Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						return swimResponse;
+					}
+					listUserTo.remove(friendReq);
+				}
+
+
+				FriendshipRequest friendshipReq = new FriendshipRequest();
+				friendshipReq.setFromUser(userFrom);
+				friendshipReq.setToUser(userTo);
+				friendshipReq.setAcceptanceStatus(false);
+				friendshipReq.setDatetime(new Date());
+				userTo.getFriendshipRequestList().add(friendshipReq);
+				updateUser(userTo);
+				updateUser(userFrom);
+				
+				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia inviata con SUCCESSO!.");
+				System.out.println("\nUSERBEAN: Richiesta d'amicizia inviata con SUCCESSO!\n");
+			} else {
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"L'utente risulta già nella lista degli amici.");
+				System.out.println("USERBEAN: L'utente risulta già nella lista degli amici.");
+			}
+
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+			System.out.println("USERBEAN: Utente non valido.\n");
+		}
+		return swimResponse;
 	}
 
 
