@@ -1,10 +1,8 @@
 package sessionbeans.logic;
 
-import java.util.List;
-
 public class SwimResponse{
 
-	private int status;
+	private int status = FAILED;
 	private String statusMsg;
 	private Object data;
 	public static final int FAILED = 0;

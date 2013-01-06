@@ -20,21 +20,8 @@ import javax.ejb.Local;
 @Local
 public interface UserBeanLocal {
     
-    /*public boolean createUser(User user);
-    
-    public boolean removeUser(User user);
-    
-    public boolean modifyUser(User user);
-    
-    public int countUsers();
-    
-    public User findUserByEmail(String email);
-    
-    public List<User> findAllUsers();
+    /*
 
-    public List<User> getOtherUserFriendList(String friendUserEmail);
-
-    public List<User> getFriendsList();
 
     public boolean sendFriendshipReq(String ToUserEmail);
 
@@ -43,6 +30,8 @@ public interface UserBeanLocal {
     public boolean sendAbilityReq(AbilityRequest abilityRequest);
     
     public boolean replyToFriendReq(FriendshipRequest friendshipReq);
+    
+    repleTo Help Req
 
     public List<FriendshipRequest> getFriendshipReqList();
 
@@ -52,17 +41,20 @@ public interface UserBeanLocal {
     
     public SwimResponse findAll();
     
-    public void save(User user);
+    public void createUser(User user);
     
-    public void update(User user);
+    public void updateUser(User user);
     
-    public void remove(String email);
+    public void removeUser(String email);
     
-    public void remove(User user);
+    public void removeUser(User user);
     
-    public User find(String email);
+    public SwimResponse find(String email);
     
-    public void detach(User user);
+    public void detachUser(User user);
     
+    public SwimResponse getFriendsList(User user);
+    
+    public SwimResponse getFriendshipReqList(User user);
     
 }
