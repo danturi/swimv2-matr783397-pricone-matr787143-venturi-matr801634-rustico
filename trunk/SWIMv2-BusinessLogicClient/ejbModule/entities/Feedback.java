@@ -30,9 +30,9 @@ public class Feedback implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Long feedbackId;
-    @JoinColumn(name = "AuthorUserId", referencedColumnName = "UserId")
+    @JoinColumn(name = "AuthorUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
-    private User authorUserId;
+    private User authorUser;
     @JoinColumn(name = "HelpReqId", referencedColumnName = "HelpReqId")
     @OneToOne(optional = false)
     private HelpRequest helpReqId;
@@ -52,12 +52,12 @@ public class Feedback implements Serializable {
         this.feedbackId = feedbackId;
     }
 
-    public User getAuthorUserId() {
-        return authorUserId;
+    public User getAuthorUser() {
+        return authorUser;
     }
 
-    public void setAuthorUserId(User authorUserId) {
-        this.authorUserId = authorUserId;
+    public void setAuthorUser(User authorUser) {
+        this.authorUser = authorUser;
     }
 
     public HelpRequest getHelpReqId() {

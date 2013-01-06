@@ -44,9 +44,9 @@ public class AbilityRequest implements Serializable {
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
-    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
+    @JoinColumn(name = "User", referencedColumnName = "Email")
     @ManyToOne(optional = false)
-    private User userId;
+    private User user;
     @JoinColumn(name = "AbilityId", referencedColumnName = "AbilityId")
     @ManyToOne(optional = false)
     private Ability abilityId;
@@ -87,12 +87,12 @@ public class AbilityRequest implements Serializable {
         this.datetime = datetime;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Ability getAbilityId() {
@@ -112,7 +112,6 @@ public class AbilityRequest implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof AbilityRequest)) {
             return false;
         }

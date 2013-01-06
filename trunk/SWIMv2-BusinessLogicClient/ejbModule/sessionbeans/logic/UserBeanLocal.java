@@ -31,13 +31,9 @@ public interface UserBeanLocal {
     
     public boolean replyToFriendReq(FriendshipRequest friendshipReq);
     
-    repleTo Help Req
+    repleTo Help Req*/
 
-    public List<FriendshipRequest> getFriendshipReqList();
-
-    public List<HelpRequest> getHelpReqList();*/
-    
-    //metodi vecchi da auth demo
+  
     
     public SwimResponse findAll();
     
@@ -45,16 +41,21 @@ public interface UserBeanLocal {
     
     public void updateUser(User user);
     
-    public void removeUser(String email);
-    
     public void removeUser(User user);
-    
-    public SwimResponse find(String email);
-    
+   
     public void detachUser(User user);
     
-    public SwimResponse getFriendsList(User user);
+    public User find(String email);
     
-    public SwimResponse getFriendshipReqList(User user);
+    public void removeUser(String email);
     
+    public SwimResponse getFriendsList(String email);
+    
+    public SwimResponse getFriendshipReqList(String email);
+    
+    public SwimResponse getHelpReqList(String email);
+    
+    
+    
+    public SwimResponse sendFriendshipReq(String emailUserFrom, String emailUserTo);
 }
