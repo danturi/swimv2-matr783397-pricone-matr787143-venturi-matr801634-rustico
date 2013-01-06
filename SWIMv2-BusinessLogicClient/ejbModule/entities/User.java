@@ -7,6 +7,7 @@ package entities;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -95,28 +96,28 @@ public class User implements Serializable {
 	@Lob
 	private byte[] profilePicture;
 	@JoinTable(name = "abilities_holded", joinColumns = {
-			@JoinColumn(name = "UserId", referencedColumnName = "UserId")}, inverseJoinColumns = {
+			@JoinColumn(name = "Email", referencedColumnName = "Email")}, inverseJoinColumns = {
 			@JoinColumn(name = "AbilityId", referencedColumnName = "AbilityId")})
 	@ManyToMany
 	private List<Ability> abilityList;
 	@JoinTable(name = "friendships", joinColumns = {
-			@JoinColumn(name = "UserId_1", referencedColumnName = "UserId")}, inverseJoinColumns = {
-			@JoinColumn(name = "UserId_2", referencedColumnName = "UserId")})
+			@JoinColumn(name = "User_1", referencedColumnName = "Email")}, inverseJoinColumns = {
+			@JoinColumn(name = "User_2", referencedColumnName = "Email")})
 	@ManyToMany
 	private List<User> userList;
 	@ManyToMany(mappedBy = "userList")
 	private List<User> userList1;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorUserId")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorUser")
 	private List<Feedback> feedbackList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<AbilityRequest> abilityRequestList;
-	@OneToMany(mappedBy = "toUserId")
+	@OneToMany(mappedBy = "toUser")
 	private List<FriendshipRequest> friendshipRequestList;
-	@OneToMany(mappedBy = "fromUserId")
+	@OneToMany(mappedBy = "fromUser")
 	private List<FriendshipRequest> friendshipRequestList1;
-	@OneToMany(mappedBy = "toUserId")
+	@OneToMany(mappedBy = "toUser")
 	private List<HelpRequest> helpRequestList;
-	@OneToMany(mappedBy = "fromUserId")
+	@OneToMany(mappedBy = "fromUser")
 	private List<HelpRequest> helpRequestList1;
 	@ElementCollection(targetClass = Group.class)
 	@CollectionTable(name = "users_groups", 
@@ -320,6 +321,11 @@ public class User implements Serializable {
 	}
 
 	public List<FriendshipRequest> getFriendshipRequestList() {
+		/*List<FriendshipRequest> list = new ArrayList<FriendshipRequest>();
+		while(this.friendshipRequestList.iterator().hasNext() && this.friendshipRequestList.size()!=list.size()){
+			list.add(this.friendshipRequestList.iterator().next());
+		}
+		System.out.println(list);*/
 		return friendshipRequestList;
 	}
 

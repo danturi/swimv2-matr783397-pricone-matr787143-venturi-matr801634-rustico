@@ -44,12 +44,12 @@ public class FriendshipRequest implements Serializable {
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
-    @JoinColumn(name = "ToUserId", referencedColumnName = "UserId")
+    @JoinColumn(name = "ToUser", referencedColumnName = "Email")
     @ManyToOne
-    private User toUserId;
-    @JoinColumn(name = "FromUserId", referencedColumnName = "UserId")
+    private User toUser;
+    @JoinColumn(name = "FromUser", referencedColumnName = "Email")
     @ManyToOne
-    private User fromUserId;
+    private User fromUser;
 
     public FriendshipRequest() {
     }
@@ -87,20 +87,20 @@ public class FriendshipRequest implements Serializable {
         this.datetime = datetime;
     }
 
-    public User getToUserId() {
-        return toUserId;
+    public User getToUser() {
+        return toUser;
     }
 
-    public void setToUserId(User toUserId) {
-        this.toUserId = toUserId;
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
     }
 
-    public User getFromUserId() {
-        return fromUserId;
+    public User getFromUser() {
+        return fromUser;
     }
 
-    public void setFromUserId(User fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
     }
 
     @Override
