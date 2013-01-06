@@ -67,7 +67,7 @@ public class UserManagementService {
         //read the user data from db and return to caller
         json.setStatus("SUCCESS");
          
-        User user = (User) userBean.find(email).getData();
+        User user = userBean.find(email);
         req.getServletContext().log("Authentication Demo: successfully retrieved User Profile from DB for " + email);
         json.setData(user);
          
