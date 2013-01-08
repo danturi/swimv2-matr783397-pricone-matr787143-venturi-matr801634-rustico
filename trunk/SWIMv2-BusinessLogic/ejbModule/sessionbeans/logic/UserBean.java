@@ -98,6 +98,16 @@ public class UserBean implements UserBeanLocal {
 		}
 		return swimResponse;
 	}
+	public SwimResponse getFriendshipReqList1(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getFriendshipRequestList1());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
 
 	@Override
 	public SwimResponse getHelpReqList(String email) {
@@ -121,17 +131,26 @@ public class UserBean implements UserBeanLocal {
 			if(!(userFrom.getUserList().contains(userTo)) && !(userTo.getUserList().contains(userFrom))){ // se gli utenti non sono già amici...
 
 				List<FriendshipRequest> listUserTo = userTo.getFriendshipRequestList();
-				
-				while(listUserTo.iterator().hasNext()){// e se non ci sono richieste d'amicizia già pendenti
-					FriendshipRequest friendReq = listUserTo.iterator().next();
+
+
+				for(FriendshipRequest friendReq : listUserTo){
 					if(friendReq.getFromUser().equals(userFrom)){
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
-						System.out.println("\nUSERBEAN: Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						System.out.println("\nUSERBEAN: richiesta da <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> Richiesta d'amicizia NON inviata perchè già presente una pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 						return swimResponse;
 					}
-					listUserTo.remove(friendReq);
 				}
 
+				/*TypedQuery<FriendshipRequest> query = em.createQuery("SELECT frq FROM FriendshipRequest frq", FriendshipRequest.class);
+				List<FriendshipRequest> list = query.getResultList();
+
+				for(FriendshipRequest friendReq : list){
+					if(friendReq.getFromUser().equals(userFrom) && friendReq.getToUser().equals(userTo)){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						System.out.println("\nUSERBEAN: richiesta da <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> Richiesta d'amicizia NON inviata perchè già presente una pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+						return swimResponse;
+					}
+				}*/
 
 				FriendshipRequest friendshipReq = new FriendshipRequest();
 				friendshipReq.setFromUser(userFrom);
@@ -141,7 +160,7 @@ public class UserBean implements UserBeanLocal {
 				userTo.getFriendshipRequestList().add(friendshipReq);
 				updateUser(userTo);
 				updateUser(userFrom);
-				
+
 				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia inviata con SUCCESSO!.");
 				System.out.println("\nUSERBEAN: Richiesta d'amicizia inviata con SUCCESSO!\n");
 			} else {
