@@ -23,7 +23,7 @@ public interface UserBeanLocal {
     /*
 
 
-    public boolean sendFriendshipReq(String ToUserEmail);
+   
 
     public boolean sendHelpReq(String ToUserEmail);
 
@@ -53,11 +53,13 @@ public interface UserBeanLocal {
     
     public SwimResponse getFriendshipReqList(String email);
     
-    public SwimResponse getFriendshipReqList1(String email);
+    public SwimResponse getSentFriendshipReqList(String email);
     
     public SwimResponse getHelpReqList(String email);
     
-    
+    public SwimResponse getSentHelpReqList(String email);
     
     public SwimResponse sendFriendshipReq(String emailUserFrom, String emailUserTo);
+    
+    public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description);
 }

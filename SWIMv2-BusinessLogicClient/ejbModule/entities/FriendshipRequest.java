@@ -54,14 +54,6 @@ public class FriendshipRequest implements Serializable {
     public FriendshipRequest() {
     }
 
-    public FriendshipRequest(Long friendReqId) {
-        this.friendReqId = friendReqId;
-    }
-
-    public FriendshipRequest(Long friendReqId, Date datetime) {
-        this.friendReqId = friendReqId;
-        this.datetime = datetime;
-    }
 
     public Long getFriendReqId() {
         return friendReqId;

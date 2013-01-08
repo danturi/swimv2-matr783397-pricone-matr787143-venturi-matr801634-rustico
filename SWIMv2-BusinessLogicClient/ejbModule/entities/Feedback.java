@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -30,12 +33,17 @@ public class Feedback implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Long feedbackId;
+    @Size(max = 1000)
+	private String comment;
+    @Max(value=5)  @Min(value=0)
+	private Float rating;
     @JoinColumn(name = "AuthorUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
     private User authorUser;
     @JoinColumn(name = "HelpReqId", referencedColumnName = "HelpReqId")
     @OneToOne(optional = false)
     private HelpRequest helpReqId;
+    
 
     public Feedback() {
     }
@@ -52,6 +60,21 @@ public class Feedback implements Serializable {
         this.feedbackId = feedbackId;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
     public User getAuthorUser() {
         return authorUser;
     }

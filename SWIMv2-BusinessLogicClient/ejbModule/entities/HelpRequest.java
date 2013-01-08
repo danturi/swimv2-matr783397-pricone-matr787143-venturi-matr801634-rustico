@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -46,6 +47,8 @@ public class HelpRequest implements Serializable {
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
+    @Size(max = 10000)
+	private String description;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "helpReqId")
     private Feedback feedback;
     @JoinColumn(name = "ToUser", referencedColumnName = "Email")
@@ -58,14 +61,6 @@ public class HelpRequest implements Serializable {
     public HelpRequest() {
     }
 
-    public HelpRequest(Long helpReqId) {
-        this.helpReqId = helpReqId;
-    }
-
-    public HelpRequest(Long helpReqId, Date datetime) {
-        this.helpReqId = helpReqId;
-        this.datetime = datetime;
-    }
 
     public Long getHelpReqId() {
         return helpReqId;
@@ -90,7 +85,13 @@ public class HelpRequest implements Serializable {
     public void setDatetime(Date datetime) {
         this.datetime = datetime;
     }
-
+    
+    public String getDescription(){
+    	return description;
+    }
+    public void setDescription(String description){
+    	this.description = description;
+    }
     public Feedback getFeedback() {
         return feedback;
     }
