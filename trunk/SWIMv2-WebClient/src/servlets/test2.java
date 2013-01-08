@@ -56,14 +56,37 @@ public class test2 extends HttpServlet {
 		userBean.sendFriendshipReq("aa","bb");
 		userBean.sendFriendshipReq("aa","cc");
 		userBean.sendFriendshipReq("cc","bb");
-		/*List<FriendshipRequest> aaList = (List<FriendshipRequest>) userBean.getFriendshipReqList("bb").getData();
-		System.out.println("LISTA: "+aaList);
+		userBean.sendFriendshipReq("bb","aa");
+		List<FriendshipRequest> aaList = (List<FriendshipRequest>) userBean.getFriendshipReqList("aa").getData();
+		List<FriendshipRequest> aa1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("aa").getData();
+		List<FriendshipRequest> bbList = (List<FriendshipRequest>) userBean.getFriendshipReqList("bb").getData();
+		List<FriendshipRequest> bb1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("bb").getData();
+		List<FriendshipRequest> ccList = (List<FriendshipRequest>) userBean.getFriendshipReqList("cc").getData();
+		List<FriendshipRequest> cc1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("cc").getData();
+		//System.out.println("LISTA: "+aaList);
 		/*while(aaList.iterator().hasNext()){
 			FriendshipRequest friendReq = aaList.iterator().next();
 			System.out.println("RICHIESTA TROVATA : "+friendReq.getToUser()+"\n");
 			aaList.remove(friendReq);
 		}*/
-		
+		for(FriendshipRequest friendReq : aaList){
+			System.out.println("RICHIESTA TROVATA in aa: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
+		for(FriendshipRequest friendReq : aa1List){
+			System.out.println("RICHIESTA TROVATA in aa1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
+		for(FriendshipRequest friendReq : bbList){
+			System.out.println("RICHIESTA TROVATA in bb: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
+		for(FriendshipRequest friendReq : bb1List){
+			System.out.println("RICHIESTA TROVATA in bb1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
+		for(FriendshipRequest friendReq :ccList){
+			System.out.println("RICHIESTA TROVATA in cc: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
+		for(FriendshipRequest friendReq :cc1List){
+			System.out.println("RICHIESTA TROVATA in cc1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		}
 
 		SwimResponse swimResponse = userBean.findAll();
 
