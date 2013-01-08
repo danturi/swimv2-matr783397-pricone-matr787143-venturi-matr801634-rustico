@@ -1,10 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servlets;
 
 import entities.FriendshipRequest;
+import entities.HelpRequest;
 import entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,46 +48,82 @@ public class test2 extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
-		// User usr1 = new User();
-		//usr1.setEmail("prova11@a.com");
-		//userBean.createUser(usr1);
+		/**
+		 * 
+		 * PROVA RICHIESTE DI AMICIZIA
+		 */
 		userBean.sendFriendshipReq("aa","bb");
 		userBean.sendFriendshipReq("aa","cc");
 		userBean.sendFriendshipReq("cc","bb");
 		userBean.sendFriendshipReq("bb","aa");
-		List<FriendshipRequest> aaList = (List<FriendshipRequest>) userBean.getFriendshipReqList("aa").getData();
-		List<FriendshipRequest> aa1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("aa").getData();
-		List<FriendshipRequest> bbList = (List<FriendshipRequest>) userBean.getFriendshipReqList("bb").getData();
-		List<FriendshipRequest> bb1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("bb").getData();
-		List<FriendshipRequest> ccList = (List<FriendshipRequest>) userBean.getFriendshipReqList("cc").getData();
-		List<FriendshipRequest> cc1List = (List<FriendshipRequest>) userBean.getFriendshipReqList1("cc").getData();
-		//System.out.println("LISTA: "+aaList);
-		/*while(aaList.iterator().hasNext()){
-			FriendshipRequest friendReq = aaList.iterator().next();
-			System.out.println("RICHIESTA TROVATA : "+friendReq.getToUser()+"\n");
-			aaList.remove(friendReq);
-		}*/
-		for(FriendshipRequest friendReq : aaList){
-			System.out.println("RICHIESTA TROVATA in aa: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		userBean.sendFriendshipReq("aa","aa");
+		List<FriendshipRequest> aaFList = (List<FriendshipRequest>) userBean.getFriendshipReqList("aa").getData();
+		List<FriendshipRequest> aa1FList = (List<FriendshipRequest>) userBean.getSentFriendshipReqList("aa").getData();
+		List<FriendshipRequest> bbFList = (List<FriendshipRequest>) userBean.getFriendshipReqList("bb").getData();
+		List<FriendshipRequest> bb1FList = (List<FriendshipRequest>) userBean.getSentFriendshipReqList("bb").getData();
+		List<FriendshipRequest> ccFList = (List<FriendshipRequest>) userBean.getFriendshipReqList("cc").getData();
+		List<FriendshipRequest> cc1FList = (List<FriendshipRequest>) userBean.getSentFriendshipReqList("cc").getData();
+	
+		for(FriendshipRequest friendReq : aaFList){
+			System.out.println("Richiesta DI AMICIZIA trovata in aa: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
-		for(FriendshipRequest friendReq : aa1List){
-			System.out.println("RICHIESTA TROVATA in aa1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		for(FriendshipRequest friendReq : aa1FList){
+			System.out.println("Richiesta DI AMICIZIA trovata in aa1: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
-		for(FriendshipRequest friendReq : bbList){
-			System.out.println("RICHIESTA TROVATA in bb: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		for(FriendshipRequest friendReq : bbFList){
+			System.out.println("Richiesta DI AMICIZIA trovata in bb: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
-		for(FriendshipRequest friendReq : bb1List){
-			System.out.println("RICHIESTA TROVATA in bb1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		for(FriendshipRequest friendReq : bb1FList){
+			System.out.println("Richiesta DI AMICIZIA trovata in bb1: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
-		for(FriendshipRequest friendReq :ccList){
-			System.out.println("RICHIESTA TROVATA in cc: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		for(FriendshipRequest friendReq :ccFList){
+			System.out.println("Richiesta DI AMICIZIA trovata in cc: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
-		for(FriendshipRequest friendReq :cc1List){
-			System.out.println("RICHIESTA TROVATA in cc1: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+		for(FriendshipRequest friendReq :cc1FList){
+			System.out.println("Richiesta DI AMICIZIA trovata in cc1: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
 
+		/**
+		 * 
+		 * PROVA RICHIESTE DI AIUTO
+		 */
+		
+		userBean.sendHelpReq("aa","bb","qui va descrizione");
+		userBean.sendHelpReq("aa","cc","qui va descrizione");
+		userBean.sendHelpReq("cc","bb","qui va descrizione");
+		userBean.sendHelpReq("bb","aa","qui va descrizione");
+		userBean.sendHelpReq("aa","aa","qui va descrizione");
+		List<HelpRequest> aaHList = (List<HelpRequest>) userBean.getHelpReqList("aa").getData();
+		List<HelpRequest> aa1HList = (List<HelpRequest>) userBean.getSentHelpReqList("aa").getData();
+		List<HelpRequest> bbHList = (List<HelpRequest>) userBean.getHelpReqList("bb").getData();
+		List<HelpRequest> bb1HList = (List<HelpRequest>) userBean.getSentHelpReqList("bb").getData();
+		List<HelpRequest> ccHList = (List<HelpRequest>) userBean.getHelpReqList("cc").getData();
+		List<HelpRequest> cc1HList = (List<HelpRequest>) userBean.getSentHelpReqList("cc").getData();
+	
+		for(HelpRequest helpReq : aaHList){
+			System.out.println("Richiesta DI AIUTO trovata in aa: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		for(HelpRequest helpReq : aa1HList){
+			System.out.println("Richiesta DI AIUTO trovata in aa1: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		for(HelpRequest helpReq : bbHList){
+			System.out.println("Richiesta DI AIUTO trovata in bb: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		for(HelpRequest helpReq : bb1HList){
+			System.out.println("Richiesta DI AIUTO trovata in bb1: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		for(HelpRequest helpReq :ccHList){
+			System.out.println("Richiesta DI AIUTO trovata in cc: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		for(HelpRequest helpReq :cc1HList){
+			System.out.println("Richiesta DI AIUTO trovata in cc1: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
+		}
+		
+		
+		
 		SwimResponse swimResponse = userBean.findAll();
 
+		
 
 		try {
 			/* TODO output your page here. You may use following sample code. */
