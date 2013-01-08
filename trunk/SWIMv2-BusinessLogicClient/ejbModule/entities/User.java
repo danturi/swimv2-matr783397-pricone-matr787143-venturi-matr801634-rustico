@@ -360,7 +360,7 @@ public class User implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		hash += (userId != null ? userId.hashCode() : 0);
+		hash += (email != null ? email.hashCode() : 0);
 		return hash;
 	}
 
@@ -371,17 +371,20 @@ public class User implements Serializable {
 			return false;
 		}
 		User other = (User) object;
-		if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+		if ((this.email == null && other.email != null) || (this.email != null && !this.email.equals(other.email))) {
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public String toString() {
+	/*public String toString() {
 		return "User [email=" + email + ", firstName=" + firstname
 				+ ", lastName=" + lastname + ", password=" + password
 				+ ", registeredOn=" + registeredOn + ", groups=" + groups + "]";
+	}*/
+	public String toString() {
+		return "User [email=" + email + "]";
 	}
 
 }

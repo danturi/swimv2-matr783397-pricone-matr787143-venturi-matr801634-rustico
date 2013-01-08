@@ -53,6 +53,8 @@ public interface UserBeanLocal {
     
     public SwimResponse getFriendshipReqList(String email);
     
+    public SwimResponse getFriendshipReqList1(String email);
+    
     public SwimResponse getHelpReqList(String email);
     
     
