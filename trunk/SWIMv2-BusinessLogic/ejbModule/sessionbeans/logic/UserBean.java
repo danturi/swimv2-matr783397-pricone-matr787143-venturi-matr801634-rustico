@@ -98,11 +98,13 @@ public class UserBean implements UserBeanLocal {
 		}
 		return swimResponse;
 	}
-	public SwimResponse getFriendshipReqList1(String email) {
+
+	@Override
+	public SwimResponse getSentFriendshipReqList(String email) {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
-			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getFriendshipRequestList1());
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getSentFriendshipRequestList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
 		}
@@ -114,7 +116,19 @@ public class UserBean implements UserBeanLocal {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
-			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getHelpRequestList());
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getHelpReqList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse getSentHelpReqList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getSentHelpReqList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
 		}
@@ -126,21 +140,39 @@ public class UserBean implements UserBeanLocal {
 		SwimResponse swimResponse = null;
 		User userFrom = find(emailUserFrom);
 		User userTo = find(emailUserTo);
-		if(userFrom!=null && userTo!=null){// se i due utenti esistono nel sistema...
+		if(userFrom!=null && userTo!=null && userFrom!=userTo){// se i due utenti esistono nel sistema (e non sono lo stesso utente)...
 
 			if(!(userFrom.getUserList().contains(userTo)) && !(userTo.getUserList().contains(userFrom))){ // se gli utenti non sono già amici...
 
 				List<FriendshipRequest> listUserTo = userTo.getFriendshipRequestList();
-
-
+				//List<FriendshipRequest> listSentByUserTo = userTo.getSentFriendshipRequestList();
+				List<FriendshipRequest> listUserFrom = userFrom.getFriendshipRequestList();
+				
 				for(FriendshipRequest friendReq : listUserTo){
 					if(friendReq.getFromUser().equals(userFrom)){
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
-						System.out.println("\nUSERBEAN: richiesta da <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> Richiesta d'amicizia NON inviata perchè già presente una pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+						System.out.println("\nUSERBEAN: richiesta d'amicizia <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> NON inviata perchè già presente una UGUALE pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+						return swimResponse;
+					}
+				}
+				
+				for(FriendshipRequest friendReq : listUserFrom){
+					if(friendReq.getFromUser().equals(userTo)){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						System.out.println("\nUSERBEAN: richiesta d'amicizia <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> NON inviata perchè già presente una OPPOSTA pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 						return swimResponse;
 					}
 				}
 
+				/*for(FriendshipRequest friendReq : listSentByUserTo){
+					if(friendReq.getToUser().equals(userFrom)){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
+						System.out.println("\nUSERBEAN: richiesta d'amicizia <"+userFrom.getEmail()+"> a <"+userTo.getEmail()+"> NON inviata perchè già presente una OPPOSTA pendente: MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
+						return swimResponse;
+					}
+				}*/
+
+				//METODO ALTERNATIVO AL CICLO FOR SOPRA
 				/*TypedQuery<FriendshipRequest> query = em.createQuery("SELECT frq FROM FriendshipRequest frq", FriendshipRequest.class);
 				List<FriendshipRequest> list = query.getResultList();
 
@@ -157,10 +189,11 @@ public class UserBean implements UserBeanLocal {
 				friendshipReq.setToUser(userTo);
 				friendshipReq.setAcceptanceStatus(false);
 				friendshipReq.setDatetime(new Date());
-				userTo.getFriendshipRequestList().add(friendshipReq);
-				updateUser(userTo);
-				updateUser(userFrom);
-
+				userFrom.getSentFriendshipRequestList().add(friendshipReq);
+				userTo.getFriendshipRequestList().add(friendshipReq);		
+				em.persist(userTo);
+				em.persist(userFrom);
+				
 				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia inviata con SUCCESSO!.");
 				System.out.println("\nUSERBEAN: Richiesta d'amicizia inviata con SUCCESSO!\n");
 			} else {
@@ -170,7 +203,36 @@ public class UserBean implements UserBeanLocal {
 
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
-			System.out.println("USERBEAN: Utente non valido.\n");
+			System.out.println("USERBEAN (sendFriendshipReq): Utente non valido.\n");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description) {
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		User userTo = find(emailUserTo);
+		if(userFrom!=null && userTo!=null && userFrom!=userTo){// se i due utenti esistono nel sistema (e non sono lo stesso utente)...
+
+			HelpRequest helpReq = new HelpRequest();
+			helpReq.setFromUser(userFrom);
+			helpReq.setToUser(userTo);
+			helpReq.setAcceptanceStatus(false);
+			helpReq.setDatetime(new Date());
+			helpReq.setDescription(description);
+			userFrom.getSentHelpReqList().add(helpReq);
+			userTo.getHelpReqList().add(helpReq);
+			em.persist(userTo);
+			em.persist(userFrom);
+
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'aiuto inviata con SUCCESSO!.");
+			System.out.println("\nUSERBEAN: Richiesta d'aiuto inviata con SUCCESSO!\n");
+
+
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+			System.out.println("USERBEAN (sendHelpReq): Utente non valido.\n");
 		}
 		return swimResponse;
 	}
