@@ -111,13 +111,13 @@ public class User implements Serializable {
 	private List<Feedback> feedbackList;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<AbilityRequest> abilityRequestList;
-	@OneToMany(mappedBy = "toUser")
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "toUser")
 	private List<FriendshipRequest> friendshipRequestList;
-	@OneToMany(mappedBy = "fromUser")
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "fromUser")
 	private List<FriendshipRequest> friendshipRequestList1;
-	@OneToMany(mappedBy = "toUser")
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "toUser")
 	private List<HelpRequest> helpRequestList;
-	@OneToMany(mappedBy = "fromUser")
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "fromUser")
 	private List<HelpRequest> helpRequestList1;
 	@ElementCollection(targetClass = Group.class)
 	@CollectionTable(name = "users_groups", 
@@ -321,11 +321,6 @@ public class User implements Serializable {
 	}
 
 	public List<FriendshipRequest> getFriendshipRequestList() {
-		/*List<FriendshipRequest> list = new ArrayList<FriendshipRequest>();
-		while(this.friendshipRequestList.iterator().hasNext() && this.friendshipRequestList.size()!=list.size()){
-			list.add(this.friendshipRequestList.iterator().next());
-		}
-		System.out.println(list);*/
 		return friendshipRequestList;
 	}
 
@@ -333,27 +328,27 @@ public class User implements Serializable {
 		this.friendshipRequestList = friendshipRequestList;
 	}
 
-	public List<FriendshipRequest> getFriendshipRequestList1() {
+	public List<FriendshipRequest> getSentFriendshipRequestList() {
 		return friendshipRequestList1;
 	}
 
-	public void setFriendshipRequestList1(List<FriendshipRequest> friendshipRequestList1) {
+	public void setSentFriendshipRequestList(List<FriendshipRequest> friendshipRequestList1) {
 		this.friendshipRequestList1 = friendshipRequestList1;
 	}
 
-	public List<HelpRequest> getHelpRequestList() {
+	public List<HelpRequest> getHelpReqList() {
 		return helpRequestList;
 	}
 
-	public void setHelpRequestList(List<HelpRequest> helpRequestList) {
+	public void setHelpReqList(List<HelpRequest> helpRequestList) {
 		this.helpRequestList = helpRequestList;
 	}
 
-	public List<HelpRequest> getHelpRequestList1() {
+	public List<HelpRequest> getSentHelpReqList() {
 		return helpRequestList1;
 	}
 
-	public void setHelpRequestList1(List<HelpRequest> helpRequestList1) {
+	public void setSentHelpReqList(List<HelpRequest> helpRequestList1) {
 		this.helpRequestList1 = helpRequestList1;
 	}
 
