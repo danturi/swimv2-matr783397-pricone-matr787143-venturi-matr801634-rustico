@@ -106,7 +106,7 @@ public class User implements Serializable {
 			@JoinColumn(name = "User_2", referencedColumnName = "Email")})
 	@ManyToMany
 	private List<User> userList;
-	@ManyToMany(mappedBy = "userList")
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "userList")
 	private List<User> userList1;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorUser")
 	private List<Feedback> feedbackList;
