@@ -28,7 +28,6 @@ public interface UserBeanLocal {
 
   
 
-    public boolean sendAbilityReq(AbilityRequest abilityRequest);
     
     public boolean replyToFriendReq(FriendshipRequest friendshipReq);
     
@@ -65,6 +64,8 @@ public interface UserBeanLocal {
     public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description);
     
     public SwimResponse sendAbilityReq(String emailUserFrom, String abilityDecription, String description);
+    
+    public SwimResponse replyToFriendshipReq(String emailUserFrom, String emailUserTo, boolean replyValue);
     
 }
 
