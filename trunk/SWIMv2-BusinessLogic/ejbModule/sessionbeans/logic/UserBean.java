@@ -287,8 +287,12 @@ public class UserBean implements UserBeanLocal {
 	public SwimResponse sendAbilityReq(String emailUserFrom, String abilityDecription, String description) {
 		SwimResponse swimResponse = null;
 		User userFrom = find(emailUserFrom);
-		TypedQuery<Ability> query = em.createNamedQuery("Ability.findByDescription", Ability.class).setParameter("description", abilityDecription);
-		Ability ability = query.getSingleResult();
+		Ability ability = null;
+		try{
+			TypedQuery<Ability> query = em.createNamedQuery("Ability.findByDescription", Ability.class).setParameter("description", abilityDecription);
+			ability = query.getSingleResult();
+		} catch (Exception e){
+		}
 		if(ability!=null) {
 			if(userFrom!=null){
 				List<Ability> abilities_holded = userFrom.getAbilityList();
@@ -304,7 +308,6 @@ public class UserBean implements UserBeanLocal {
 				List<AbilityRequest> listAbilityReq = userFrom.getAbilityRequestList();
 
 				for(AbilityRequest abilityReqOld : listAbilityReq){
-					System.out.println("abID in abilityReq = "+abilityReqOld.getAbilityId().getAbilityId()+"	abID in ability = "+ability.getAbilityId()+"\n");
 					if(abilityReqOld.getAbilityId().getAbilityId().equals(ability.getAbilityId())){
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta aggiunta abilità non inviata perchè esiste già una richiesta pendente per tale abilità.\n");
 						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè esiste già una richiesta pendente per tale abilità.\n");
@@ -320,7 +323,7 @@ public class UserBean implements UserBeanLocal {
 				abilityReq.setUser(userFrom);
 				userFrom.getAbilityRequestList().add(abilityReq);
 				em.persist(userFrom);
-				
+
 
 				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità inviata con SUCCESSO!.");
 				System.out.println("\nUSERBEAN: Richiesta aggiunta abilità inviata con SUCCESSO!.");
@@ -332,6 +335,69 @@ public class UserBean implements UserBeanLocal {
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Abilità non valida.");
 			System.out.println("USERBEAN (sendAbilityReq): Abilità non valida.\n");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse replyToFriendshipReq(String emailUserFrom, String emailUserTo, boolean replyValue) {
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		User userTo = find(emailUserTo);
+		if(userFrom!=null && userTo!=null && userFrom!=userTo){
+			if(!(userFrom.getUserList().contains(userTo)) && !(userTo.getUserList().contains(userFrom))){
+
+				List<FriendshipRequest> listUserTo = userTo.getFriendshipRequestList();
+
+				FriendshipRequest currentFriendReq = null;
+
+				for(FriendshipRequest friendReq: listUserTo){
+					if(friendReq.getFromUser().equals(userFrom) && friendReq.getToUser().equals(userTo)){			
+						currentFriendReq = friendReq;
+					}
+				}
+				if(currentFriendReq!=null){
+
+					currentFriendReq.setAcceptanceStatus(replyValue);
+
+					if(replyValue==true){
+						
+						userFrom.getUserList().add(userTo);
+						userTo.getUserList1().add(userFrom);
+						em.persist(userTo);
+						em.persist(userFrom);
+						
+						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia ACCETTATA e amicizia stabilita con SUCCESSO.");
+						System.out.println("\nUSERBEAN: Richiesta d'amicizia ACCETTATA e amicizia stabilita con SUCCESSO!");
+					} else {
+						userFrom.getSentFriendshipRequestList().remove(currentFriendReq);
+						userTo.getFriendshipRequestList().remove(currentFriendReq);
+						em.remove(currentFriendReq);
+						em.persist(userTo);
+						em.persist(userFrom);
+						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia RIFIUTATA e amicizia NON stabilita.");
+						System.out.println("\nUSERBEAN: Richiesta d'amicizia RIFIUTATA. Amicizia NON stabilita.");
+					}
+					
+
+
+
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.FAILED,"Non è presenta nessuna richiesta d'amicizia dall'utente indicato.");
+					System.out.println("USERBEAN (replyToFriendshipReq): Non è presenta nessuna richiesta d'amicizia dall'utente indicato.");	
+				}
+
+
+
+
+			} else{
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"L'utente risulta già nella lista degli amici.");
+				System.out.println("USERBEAN (replyToFriendshipReq): L'utente risulta già nella lista degli amici.");
+			}
+
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+			System.out.println("USERBEAN (replyToFriendshipReq): Utente non valido.\n");
 		}
 		return swimResponse;
 	}
