@@ -4,11 +4,13 @@
  */
 package sessionbeans.logic;
 
+import entities.Ability;
 import entities.AbilityRequest;
 import entities.FriendshipRequest;
 import entities.HelpRequest;
 import entities.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,6 +34,49 @@ public class UserBean implements UserBeanLocal {
 	@PersistenceContext(unitName = "SWIMv2-ejbPU")
 	private EntityManager em;
 
+	public void checkInitialConditions(){
+		/**
+		 * 
+		 * CREAZIONE UTENTE AMMINISTRATORE SE NON ANCORA PRESENTE
+		 */
+		User admin = em.find(User.class, "ad");
+		if(admin==null){
+			admin = new User();
+			admin.setEmail("ad");
+			admin.setFirstname("admin");
+			admin.setLastname("admin");
+			admin.setPassword(MySHA512DigestClass.sha512HexDigest("ad"));
+			admin.setRegisteredOn(new Date());
+
+			List<Group> groups = new ArrayList<Group>();
+			groups.add(Group.ADMINISTRATOR);
+			groups.add(Group.USER);
+			groups.add(Group.DEFAULT);
+			admin.setGroups(groups);
+
+			em.persist(admin);
+		}
+
+		/**
+		 * 
+		 * POPOLAZIONE INSIEME DELLE ABILITA' SE NON ANCORA POPOLATO
+		 */
+
+		TypedQuery<Ability> query_abl = em.createQuery("SELECT abl FROM Ability abl", Ability.class);
+		List<Ability> listAbilities = query_abl.getResultList();
+		if(listAbilities.isEmpty()){
+			Ability idraulico = new Ability();
+			idraulico.setDescription("Idraulico");
+			//listAbilities.add(idraulico);
+			em.persist(idraulico);
+			Ability elettricista = new Ability();
+			elettricista.setDescription("Elettricista");
+			//listAbilities.add(elettricista);
+			em.persist(elettricista);
+		}
+
+
+	}
 
 	@Override
 	public SwimResponse findAll() {
@@ -43,6 +88,7 @@ public class UserBean implements UserBeanLocal {
 
 	@Override
 	public void createUser(User user) {
+		checkInitialConditions();
 		em.persist(user);
 	}
 
@@ -147,7 +193,7 @@ public class UserBean implements UserBeanLocal {
 				List<FriendshipRequest> listUserTo = userTo.getFriendshipRequestList();
 				//List<FriendshipRequest> listSentByUserTo = userTo.getSentFriendshipRequestList();
 				List<FriendshipRequest> listUserFrom = userFrom.getFriendshipRequestList();
-				
+
 				for(FriendshipRequest friendReq : listUserTo){
 					if(friendReq.getFromUser().equals(userFrom)){
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
@@ -155,7 +201,7 @@ public class UserBean implements UserBeanLocal {
 						return swimResponse;
 					}
 				}
-				
+
 				for(FriendshipRequest friendReq : listUserFrom){
 					if(friendReq.getFromUser().equals(userTo)){
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta d'amicizia NON inviata perchè già presente una pendente.\n");
@@ -193,7 +239,7 @@ public class UserBean implements UserBeanLocal {
 				userTo.getFriendshipRequestList().add(friendshipReq);		
 				em.persist(userTo);
 				em.persist(userFrom);
-				
+
 				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia inviata con SUCCESSO!.");
 				System.out.println("\nUSERBEAN: Richiesta d'amicizia inviata con SUCCESSO!\n");
 			} else {
@@ -233,6 +279,59 @@ public class UserBean implements UserBeanLocal {
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
 			System.out.println("USERBEAN (sendHelpReq): Utente non valido.\n");
+		}
+		return swimResponse;
+	}
+
+	@Override
+	public SwimResponse sendAbilityReq(String emailUserFrom, String abilityDecription, String description) {
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		TypedQuery<Ability> query = em.createNamedQuery("Ability.findByDescription", Ability.class).setParameter("description", abilityDecription);
+		Ability ability = query.getSingleResult();
+		if(ability!=null) {
+			if(userFrom!=null){
+				List<Ability> abilities_holded = userFrom.getAbilityList();
+
+				for(Ability ability_holded : abilities_holded){
+					if(ability_holded.getAbilityId().equals(ability.getAbilityId())){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta aggiunta abilità non inviata perchè già l'utente già possiede tale abilità.\n");
+						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè già l'utente già possiede tale abilità.\n");
+						return swimResponse;
+					}
+				}
+
+				List<AbilityRequest> listAbilityReq = userFrom.getAbilityRequestList();
+
+				for(AbilityRequest abilityReqOld : listAbilityReq){
+					System.out.println("abID in abilityReq = "+abilityReqOld.getAbilityId().getAbilityId()+"	abID in ability = "+ability.getAbilityId()+"\n");
+					if(abilityReqOld.getAbilityId().getAbilityId().equals(ability.getAbilityId())){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta aggiunta abilità non inviata perchè esiste già una richiesta pendente per tale abilità.\n");
+						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè esiste già una richiesta pendente per tale abilità.\n");
+						return swimResponse;
+					}
+				}
+
+				AbilityRequest abilityReq = new AbilityRequest();
+				abilityReq.setAbilityId(ability);
+				abilityReq.setDescription(description);
+				abilityReq.setDatetime(new Date());
+				abilityReq.setAcceptanceStatus(false);
+				abilityReq.setUser(userFrom);
+				userFrom.getAbilityRequestList().add(abilityReq);
+				em.persist(userFrom);
+				
+
+				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità inviata con SUCCESSO!.");
+				System.out.println("\nUSERBEAN: Richiesta aggiunta abilità inviata con SUCCESSO!.");
+
+			}else{
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+				System.out.println("USERBEAN (sendAbilityReq): Utente non valido.\n");
+			}
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Abilità non valida.");
+			System.out.println("USERBEAN (sendAbilityReq): Abilità non valida.\n");
 		}
 		return swimResponse;
 	}
