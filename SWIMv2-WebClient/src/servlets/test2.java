@@ -51,7 +51,7 @@ public class test2 extends HttpServlet {
 		/**
 		 * 
 		 * PROVA RICHIESTE DI AMICIZIA
-		 *//*
+		 */
 		userBean.sendFriendshipReq("aa","bb");
 		userBean.sendFriendshipReq("aa","cc");
 		userBean.sendFriendshipReq("cc","bb");
@@ -82,6 +82,11 @@ public class test2 extends HttpServlet {
 		for(FriendshipRequest friendReq :cc1FList){
 			System.out.println("Richiesta DI AMICIZIA trovata in cc1: ID "+friendReq.getFriendReqId()+"	MITTENTE = "+friendReq.getFromUser()+"	DESTINATARIO = "+friendReq.getToUser()+"\n");
 		}
+		
+		System.out.println("***** QUI RISPOSTA A RICHIESTA DI AMICIZIA***");
+		
+		
+		userBean.replyToFriendshipReq("cc", "bb", true);
 
 		/**
 		 * 
@@ -125,11 +130,11 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE AGGIUNTA ABILITA'
 		 */
-		
+		/*
 		
 		userBean.sendAbilityReq("aa","Idraulico","qui va descrizione richiesta abilita");
 		userBean.sendAbilityReq("aa","Elettricista","qui va descrizione richiesta abilita");
-		
+		userBean.sendAbilityReq("aa","prova","qui va descrizione richiesta abilita");*/
 		
 		SwimResponse swimResponse = userBean.findAll();
 
