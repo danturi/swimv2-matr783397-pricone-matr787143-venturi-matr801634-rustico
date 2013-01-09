@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -44,6 +45,8 @@ public class AbilityRequest implements Serializable {
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
+    @Size(max = 10000)
+   	private String description;
     @JoinColumn(name = "User", referencedColumnName = "Email")
     @ManyToOne(optional = false)
     private User user;
@@ -81,6 +84,12 @@ public class AbilityRequest implements Serializable {
 
     public Date getDatetime() {
         return datetime;
+    }
+    public String getDescription(){
+    	return description;
+    }
+    public void setDescription(String description){
+    	this.description = description;
     }
 
     public void setDatetime(Date datetime) {

@@ -38,6 +38,7 @@ import javax.validation.constraints.Size;
 
 
 import sessionbeans.logic.Group;
+import sessionbeans.logic.MySHA512DigestClass;
 import sessionbeans.logic.UserDTO;
 
 /**
@@ -137,7 +138,7 @@ public class User implements Serializable {
 			throw new RuntimeException("Password 1 and Password 2 have to be equal (typo?)");
 
 
-		try {
+		/*try {
 			MessageDigest md = null;
 			md = MessageDigest.getInstance("SHA-512");
 			md.update(user.getPassword1().getBytes());
@@ -152,9 +153,9 @@ public class User implements Serializable {
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
-
+		this.password = MySHA512DigestClass.sha512HexDigest(user.getPassword1());
 		this.email        = user.getEmail();
 		this.firstname    = user.getFName();
 		this.lastname     = user.getLName();        

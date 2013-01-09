@@ -4,6 +4,7 @@
  */
 package sessionbeans.logic;
 
+import entities.Ability;
 import entities.AbilityRequest;
 import entities.FriendshipRequest;
 import entities.HelpRequest;
@@ -25,7 +26,7 @@ public interface UserBeanLocal {
 
    
 
-    public boolean sendHelpReq(String ToUserEmail);
+  
 
     public boolean sendAbilityReq(AbilityRequest abilityRequest);
     
@@ -62,4 +63,8 @@ public interface UserBeanLocal {
     public SwimResponse sendFriendshipReq(String emailUserFrom, String emailUserTo);
     
     public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description);
+    
+    public SwimResponse sendAbilityReq(String emailUserFrom, String abilityDecription, String description);
+    
 }
+

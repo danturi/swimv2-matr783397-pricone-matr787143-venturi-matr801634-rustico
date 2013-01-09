@@ -40,7 +40,7 @@ public class Ability implements Serializable {
     @NotNull
     @Size(min = 1, max = 10000)
     private String description;
-    @ManyToMany(mappedBy = "abilityList")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "abilityList")
     private List<User> userList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "abilityId")
     private List<AbilityRequest> abilityRequestList;
