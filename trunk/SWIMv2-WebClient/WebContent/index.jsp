@@ -95,34 +95,37 @@
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
                                 window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
-                            }else{
-                                alert("Login fallito.");
-                            }
-                        },
-                         
-                        error: function (jqXHR, textStatus, errorThrown){
-                            alert("Errore nella fase di Login. HTTP STATUS: "+jqXHR.status);
-                        },
-                         
-                        complete: function(jqXHR, textStatus){
-                            //alert("complete");
-                        }                    
-                    });
-                 
-                    //event.preventDefault();
-                    return false;
-                });
-            });
-        </script>
-<meta name="Description"
+											} else {
+												alert("Login fallito.");
+											}
+										},
+
+										error : function(jqXHR, textStatus,
+												errorThrown) {
+											alert("Errore nella fase di Login. HTTP STATUS: "
+													+ jqXHR.status);
+										},
+
+										complete : function(jqXHR, textStatus) {
+											//alert("complete");
+										}
+									});
+
+							//event.preventDefault();
+							return false;
+						});
+	});
+</script>
+<meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<!-- InstanceEndEditable -->
-<link rel="stylesheet" type="text/css" href="images/stylesheet.css" />
-<script src="SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
-<link href="SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+<link href="<%=request.getContextPath() %>/images/stylesheet.css" rel="stylesheet" type="text/css"
+	ice:classes="*" />
+
+<link href="<%=request.getContextPath() %>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
-<!-- InstanceBeginEditable name="head" -->
-<!-- InstanceEndEditable -->
+<link href="<%=request.getContextPath() %>/images/stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+	type="text/css" />
 </head>
 <body>
 
@@ -133,155 +136,144 @@
 				&bull; <a href="#">Site Map</a>
 			</div>
 			<div class="toplogo">
-				<a href="#"><a href="#"><img
-						src="images/GIMP-file/swim-titolo.jpg" width="223" height="51"
-						alt="logo" /></a>
+				<a href="#"></a><img src="<%=request.getContextPath() %>/images/GIMP-file/swim-titolo_b.png"
+					width="223" height="51" alt="titolo" />
 			</div>
 			<div style="clear: both;"></div>
 		</div>
 	</div>
 	<div class="topnavigationArea">
 		<div class="container">
-			<!-- InstanceBeginEditable name="menï¿½" -->
 			<div class="topnavigationgroup">
 				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a href="#"
-						title="home" target="index.html">HOME</a></li>
+					<li style="border-right-style: solid;"><a href="index.jsp"
+						title="home" target="_parent">HOME</a></li>
 				</ul>
 			</div>
-			<!-- InstanceEndEditable -->
 			<div style="clear: both;"></div>
 		</div>
 	</div>
 	<div class="contentArea">
 		<div class="container">
-			<!-- InstanceBeginEditable name="content" -->
 			<div class="contentleft">
 				<h1>Hai bisogno di un aiuto?</h1>
-				<p>Sed aliquam, nunc eget euismod ullamcorper, lectus nunc
-					ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec
-					porttitor ligula eu dolor. Maecenas vitae nulla consequat libero
-					cursus venenatis.</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi
-					commodo, ipsum sed pharetra gravida, orci magna rhoncus neque, id
-					pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse
-					id velit vitae ligula volutpat condimentum. Aliquam erat volutpat.
-					Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra
-					posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod
-					ullamcorper, <a href="#">lectus nunc ullamcorper</a> orci,
-					fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu
-					dolor. Maecenas vitae nulla consequat libero cursus venenatis.
-				</p>
-				<p>
-					<img src="images/GIMP-file/help-sm.jpg" alt="helpHome" width="379"
-						height="319" border="0" align="left" usemap="#Map" />
-					<map name="Map" id="Map">
-						<area shape="poly"
-							coords="173,185,178,174,195,167,215,162,234,162,261,168,277,179,285,189,285,200,282,214,284,229,277,243,261,252,242,259,212,258,191,250,173,230,172,229"
-							href="index.html" target="_parent" alt="helpSearch" />
-						<area shape="poly" coords="173,226,173,228,174,225,173,192"
-							href="#" />
-					</map>
-				</p>
+				<p>&nbsp;</p>
+				<p>Swim &egrave; un social network pensato per tutti quegli
+					utenti che cercano e offrono aiuto ad altri utenti iscritti e che
+					amano stare sempre in contatto con i propri amici.</p>
+				<p>Bla bla bla bla bla bla bla....</p>
+				<p>&nbsp;</p>
+				<h3>Cerca tra gli utenti cliccando sul bottone &quot;help&quot;
+					nell'immagine o registrati subito!</h3>
 
+				<div class="middle">
+					<p>
+						<img src="<%=request.getContextPath() %>/images/GIMP-file/omino_help.png" alt="omino_help"
+							width="268" height="281" border="0" align="left" usemap="#Map" />
+						<map name="Map" id="Map">
+							<area shape="rect" coords="136,154,247,237" href="search.html" />
+						</map>
+					</p>
+					<div class="login">
 
-				<form id="registerForm" name="registerForm"
-					action="<%=request.getContextPath()%>/services/auth/register"
-					method="post">
-					<fieldset>
-						<legend>Registration</legend>
+						<!-- did we already try to login and it failed? -->
+						<c:if test="false">
+							<div class="authError"><h3><strong>Invalid User Name or Password.
+								Please try again.</strong></h3></div>
+						</c:if>
+						<form id="login" name="login" method="post"
+							action="j_security_check">
+							<table width="230" border="0" cellspacing="2" class="imageright">
+								<tr>
+									<td><table width="230" border="0" cellspacing="2"
+											class="imageright">
+											<tr></tr>
+											<tr>
+												<th class="formStyle" scope="row"></th>
+												<td><h3>
+														<strong>Accedi a SWIM</strong>
+													</h3></td>
+											</tr>
+											<tr>
+												<th class="formStyle" scope="row"></th>
+												<td>&nbsp;</td>
+											</tr>
+											<tr>
+												<td class="formStyle" scope="row">Email</td>
+												<td><input name="j_username" type="text"
+													class="formLabel" id="j_username" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+												<td class="formStyle" scope="row">Password</td>
+												<td><input name="j_password" type="password"
+													class="formLabel" id="j_password" size="25" maxlength="20" />
+												</td>
+											</tr>
+											<tr>
+												<th class="formStyle" scope="row">&nbsp;</th>
+												<td><p>
+														<input type="submit" name="login2" id="login2"
+															value="login" />
+													</p>
+													<p>
+														oppure <a href="registration.html" title="registration"
+															target="_parent">Iscriviti a Swim</a>
+													</p></td>
+											</tr>
+										</table>
+										<p>&nbsp;</p></td>
+								</tr>
+							</table>
+						</form>
+					</div>
 
-						<div>
-							<label for="fname">First Name</label> <input type="text"
-								id="fname" name="fname" />
-						</div>
-						<div>
-							<label for="lname">Last Name</label> <input type="text"
-								id="lname" name="lname" />
-						</div>
-
-						<div>
-							<label for="email">Email</label> <input type="text" id="email"
-								name="email" />
-						</div>
-						<div>
-							<label for="password1">Password</label> <input type="password"
-								id="password1" name="password1" />
-						</div>
-						<div>
-							<label for="password2">Password (repeat)</label> <input
-								type="password" id="password2" name="password2" />
-						</div>
-
-						<div class="buttonRow">
-							<input type="submit" value="Register and Login" />
-						</div>
-
-					</fieldset>
-				</form>
-
-
-			<!--  	<form id="loginForm" name="loginForm"
-					action="<%//request.getContextPath();%>/services/auth/login"
-					method="post">
-					<fieldset>
-						<legend>Login</legend>
-
-						<div>
-							<label for="email">Email</label> <input type="text" id="email"
-								name="email" />
-						</div>
-						<div>
-							<label for="password">Password</label> <input type="password"
-								id="password" name="password" />
-						</div>
-
-						<div class="buttonRow">
-							<input type="submit" value="Login" />
-						</div>
-
-					</fieldset>
-				</form> -->
-				<form action="j_security_check" method="post">
-					<fieldset>
-						<legend>Login</legend>
-
-						<div>
-							<label for="email">Email</label> <input type="text"
-								id="j_username" name="j_username" />
-						</div>
-						<div>
-							<label for="password">Password</label> <input type="password"
-								id="j_password" name="j_password" />
-						</div>
-
-						<div class="buttonRow">
-							<input type="submit" value="Login" />
-						</div>
-
-					</fieldset>
-				</form>
-
+				</div>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 			</div>
-			<!-- InstanceEndEditable -->
-			<!-- InstanceBeginEditable name="sidebar" -->
 			<div class="contentright">
-				<h2>Cras tempor. Morbi egestas.</h2>
-				<img class="imageright" src="images/page_image.jpg" border="0" />
-				<p>Urna non consequat tempus, nunc arcu mollis enim, eu aliquam
-					erat nulla non nibh consectetuer malesuada velit. Nam ante nulla,
-					interdum vel, tristique ac, condimentum non, tellus. Proin ornare
-					feugiat nisl.</p>
-				<p>Suspendisse dolor nisl, ultrices at, eleifend vel, consequat
-					at, dolor. Vivamus auctor leo vel dui. Aliquam erat volutpat.
-					Phasellus nibh.</p>
+				<div class="register">
+					<form id="registerForm" name="registerForm"
+						action="<%=request.getContextPath()%>/services/auth/register"
+						method="post">
+						<fieldset>
+							<legend>Registration</legend>
+
+							<div>
+								<label for="fname">First Name</label> <input type="text"
+									id="fname" name="fname" />
+							</div>
+							<div>
+								<label for="lname">Last Name</label> <input type="text"
+									id="lname" name="lname" />
+							</div>
+
+							<div>
+								<label for="email">Email</label> <input type="text" id="email"
+									name="email" />
+							</div>
+							<div>
+								<label for="password1">Password</label> <input type="password"
+									id="password1" name="password1" />
+							</div>
+							<div>
+								<label for="password2">Password (repeat)</label> <input
+									type="password" id="password2" name="password2" />
+							</div>
+
+							<div class="buttonRow">
+								<input type="submit" value="Register and Login" />
+							</div>
+
+						</fieldset>
+					</form>
+				</div>
 			</div>
-			<!-- InstanceEndEditable -->
 			<div style="clear: both;"></div>
 		</div>
 	</div>
+
 	<div class="footerArea">
 		<div class="container">
 			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by
@@ -291,10 +283,12 @@
 	</div>
 
 	<script type="text/javascript">
-            <!--
-            var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
-            //-->
-        </script>
+		<!--
+			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {
+				imgDown : "<%=request.getContextPath() %>/SpryAssets/SpryMenuBarDownHover.gif",
+				imgRight : "<%=request.getContextPath() %>/SpryAssets/SpryMenuBarRightHover.gif"
+			});
+		//-->
+		</script>
 </body>
-<!-- InstanceEnd -->
 </html>
