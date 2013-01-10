@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%><c:if
 	test="${pageContext.request.userPrincipal!=null}">
-	<c:redirect url="/secure/index.jsp" />
+	<c:redirect url="/secure/homeUser.jsp" />
 	<!-- this will redirect if user is already logged in -->
 </c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -42,7 +42,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
-                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
+                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/homeUser.jsp");
                             }else if (data.status == "CREATEUSER_FAILED"){
                             	alert("Utente già esistente o errore nel server. Registrazione fallita.");
                             }
@@ -94,7 +94,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS" ){
                                 //redirect to secured page
-                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/index.jsp");
+                                window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/secure/homeUser.jsp");
 											} else {
 												alert("Login fallito.");
 											}
