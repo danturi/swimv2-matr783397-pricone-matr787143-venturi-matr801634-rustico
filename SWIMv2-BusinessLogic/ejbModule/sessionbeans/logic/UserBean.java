@@ -26,7 +26,7 @@ import sessionbeans.facades.UserFacadeLocal;
  *
  * @author MARCO
  */
-@Stateless
+@Stateless(name = "UserBean")
 public class UserBean implements UserBeanLocal {
 	/*@EJB
     private UserFacadeLocal userFacade;*/
