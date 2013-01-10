@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import swimauth.json.JsonResponse;
 import sessionbeans.logic.Group;
 import entities.User;
-import sessionbeans.logic.UserBeanLocal;
+import sessionbeans.logic.UserBeanRemote;
 import sessionbeans.logic.UserDTO;
  
 @Path("/auth")
@@ -31,7 +31,7 @@ import sessionbeans.logic.UserDTO;
 public class UserManagementService {
     
     @EJB
-    private UserBeanLocal userBean;
+    private UserBeanRemote userBean;
  
     
  
