@@ -1,4 +1,4 @@
-<%@ page import="sessionbeans.logic.UserBeanLocal" %>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
@@ -102,17 +102,12 @@
         </script>
 </head>
 <body>
-<%!
-UserBeanLocal userBean;
-%>
+<%!UserBeanRemote userBean;%>
 <%
-
-Context context = new InitialContext();
-userBean = (UserBeanLocal) context.lookup(UserBeanLocal.class.getName());
+	Context context = new InitialContext();
+userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 System.out.println("****** QUI EJB CALL DA JSP ******");
 //userBean.sendFriendshipReq("aa", "bb");
-
-
 %>
 
 	<div class="bannerArea">
@@ -138,6 +133,7 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 				<ul id="MenuBar1" class="MenuBarHorizontal">
 					<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
 					<li><a href="#">AMICI</a></li>
 					<li><a href="profiloUser.jsp">PROFILO</a></li>
 					<li class="MenuBarHorizontal"><a href="index.html"

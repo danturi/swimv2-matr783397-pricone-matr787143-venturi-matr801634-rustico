@@ -1,20 +1,67 @@
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
+<%@page import="java.security.Principal"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
+	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:ice="http://ns.adobe.com/incontextediting">
 	<head>
 	<title>SWIMv2</title>
 	<meta name="description" content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<link href="images/stylesheet.css" rel="stylesheet" type="text/css" ice:classes="*" />
+<link href="<%=request.getContextPath()%>/images/stylesheet.css" rel="stylesheet" type="text/css" ice:classes="*" />
 		
-		<link href="SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
-	<link href="/images/stylesheet.css" rel="stylesheet" type="text/css" />
-	<link href="/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+		<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+	<link href="<%=request.getContextPath()%>/images/stylesheet.css" rel="stylesheet" type="text/css" />
+	<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+	<script src="<%=request.getContextPath()%>/js/json2.js"
+	type="text/javascript"></script>
+
+<%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
+
+<script type="text/javascript">
+        $(function(){
+            "use strict";
+            $('#logoutLink').click(function(){
+                 
+                var destinationUrl = this.href;
+                 
+                $.ajax({
+                    url: destinationUrl,
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+                         
+                    success: function (data, textStatus, jqXHR){
+                        //alert("success");
+                        if (data.status == "SUCCESS" ){
+                            //redirect to welcome page
+                            window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/index.jsp");
+                        }else{
+                            alert("failed");
+                        }
+                    },
+                         
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("Errore di logout. HTTP STATUS: "+jqXHR.status);
+                    },
+                         
+                    complete: function(jqXHR, textStatus){
+                        //alert("complete");
+                    }                    
+                });
+                 
+                return false;
+            });
+        });
+</script>
 </head>
 <body>
 	
 		<div class="bannerArea">
 			<div class="container">
 <div class="bannernav"><a href="#" >Privacy Policy</a> &bull; <a href="#" >Contact Us</a> &bull; <a href="#" >Site Map</a></div>
-			<div class="toplogo"><a href="#"></a><img src="images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
+			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
 		</div>
@@ -22,10 +69,10 @@
 			<div class="container">
 			  <div class="topnavigationgroup">
 			    <ul id="MenuBar1" class="MenuBarHorizontal">
-			      <li style="border-right-style: solid;"><a href="#">LOGOUT</a></li>
+			      <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 			      <li><a href="#">AMICI</a></li>
-			      <li><a href="profiloUser.html">PROFILO</a></li>
-			      <li><a href="index.html" title="home" target="_parent">HOME</a></li>
+			      <li><a href="profiloUser.jsp">PROFILO</a></li>
+			      <li><a href="homeUser.jsp" title="home" target="_parent">HOME</a></li>
 		        </ul>
 </div>
 			  <div style="clear:both;"></div>
@@ -39,7 +86,7 @@
 	  <p>Stai cercando una persona? Inserisci i suoi dati e la cercher&ograve; per te nella community.	  </p>
 <p>&nbsp;</p>
 <h6>Non &egrave; obbligatorio compilare tutti i campi</h6>
-<p><img src="images/omino_search.gif" alt="omino_search" width="305" height="307" align="right" /></p>
+<p><img src="<%=request.getContextPath()%>/images/omino_search.gif" alt="omino_search" width="305" height="307" align="right" /></p>
 <table width="254" border="0">
         <tr>
           <th width="54" class="formStyle" scope="row">Cognome</th>
@@ -99,16 +146,26 @@
         </tr>
       </table>
 <p>&nbsp;</p>
-<p>oppure <a href="userList.html">Lista di tutti gli utenti iscritti</a></p>
+<p>oppure <a href="userList.jsp">Lista di tutti gli utenti iscritti</a></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </div>
 			<div class="contentright">
-				<h2>Cras tempor. Morbi egestas.</h2>
-				<img class="imageright" src="images/page_image.jpg" border="0" />
-				<p>Urna non consequat tempus, nunc arcu mollis enim, eu aliquam erat nulla non nibh consectetuer malesuada velit. Nam ante nulla, interdum vel, tristique ac, condimentum non, tellus. Proin ornare feugiat nisl.</p>
-				<p>Suspendisse dolor nisl, ultrices at, eleifend vel, consequat at, dolor. Vivamus auctor leo vel dui. Aliquam erat volutpat. Phasellus nibh.</p>
+				<h2>&nbsp;</h2>
+				<h2>Le tue notifiche:</h2>
+				<p>&nbsp;</p>
+				<p>Richieste di aiuto</p>
+				<p>&nbsp;</p>
+				<p>Richieste di amicizia</p>
+				<p>&nbsp;</p>
+				<p>
+					Richieste abilit&agrave;<img
+						src="<%=request.getContextPath()%>/images/omino_msg.jpg"
+						alt="omino_msg" width="158" height="165" align="right" />
+				</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
 			</div>
 			<div style="clear:both;"></div>
 			</div>
@@ -120,7 +177,7 @@
 		</div>
         <script type="text/javascript">
 <!--
-var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
+var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarRightHover.gif"});
 //-->
         </script>
 	</body>
