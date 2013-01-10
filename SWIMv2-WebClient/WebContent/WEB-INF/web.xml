@@ -29,8 +29,8 @@
 		<auth-method>FORM</auth-method>
 		<realm-name>userMgmtJdbcRealm</realm-name>
 		<form-login-config>
-			<form-login-page>/WEB-INF/login.jsp</form-login-page>
-			<form-error-page>/WEB-INF/login.jsp?auth-error=1</form-error-page>
+			<form-login-page>/index.jsp</form-login-page>
+			<form-error-page>/index.jsp?auth-error=1</form-error-page>
 		</form-login-config>
 	</login-config>
 	<!-- you could also define a page that is displayed if glassfish determins 
