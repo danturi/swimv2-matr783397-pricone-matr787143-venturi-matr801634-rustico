@@ -20,17 +20,10 @@ import javax.ejb.Remote;
  * @author MARCO
  */
 @Remote
-public interface UserBeanLocal {
+public interface UserBeanRemote {
     
     /*
 
-
-   
-
-  
-
-    
-    public boolean replyToFriendReq(FriendshipRequest friendshipReq);
     
     repleTo Help Req*/
 
