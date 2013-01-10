@@ -11,6 +11,7 @@ import entities.HelpRequest;
 import entities.User;
 import java.util.List;
 import javax.ejb.Local;
+import javax.ejb.Remote;
 
 
 
@@ -18,7 +19,7 @@ import javax.ejb.Local;
  *
  * @author MARCO
  */
-@Local
+@Remote
 public interface UserBeanLocal {
     
     /*
