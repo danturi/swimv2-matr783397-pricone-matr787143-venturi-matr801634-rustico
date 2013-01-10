@@ -27,7 +27,7 @@ import javax.persistence.TypedQuery;
  * @author MARCO
  */
 @Stateless(name = "UserBean")
-public class UserBean implements UserBeanLocal {
+public class UserBean implements UserBeanRemote {
 	/*@EJB
     private UserFacadeLocal userFacade;*/
 
