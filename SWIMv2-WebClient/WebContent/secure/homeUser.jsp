@@ -1,3 +1,6 @@
+<%@ page import="sessionbeans.logic.UserBeanLocal" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
@@ -99,6 +102,18 @@
         </script>
 </head>
 <body>
+<%!
+UserBeanLocal userBean;
+%>
+<%
+
+Context context = new InitialContext();
+userBean = (UserBeanLocal) context.lookup(UserBeanLocal.class.getName());
+System.out.println("****** QUI EJB CALL DA JSP ******");
+//userBean.sendFriendshipReq("aa", "bb");
+
+
+%>
 
 	<div class="bannerArea">
 		<div class="container">
