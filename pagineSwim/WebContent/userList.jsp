@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="images/stylesheet.css" />
 		
 		<link href="SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="list.min.js"></script>
+        <script type="text/javascript" src="list.js"></script>
 		<!-- TemplateBeginEditable name="head" -->
 		<!-- TemplateEndEditable -->
 </head>
@@ -93,11 +93,7 @@
 			<!-- TemplateEndEditable --></div>
 		</div>
 		
-		<script type="text/javascript">
-		<!--
-		var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:	"SpryAssets/SpryMenuBarRightHover.gif"});
-		//-->
-		</script>
+		
         <script type="text/javascript">
 		
 			var options = {
