@@ -178,14 +178,10 @@ ul.MenuBarHorizontal iframe
 }
 
 
-
-/* Custom Classes added by Codify Design Studio  */
-
 ul.MenuBarHorizontal a:visited {
 	color: white;
 	display: none;
 }
-
 ul ul a { background-color: #436d9c; }
 ul a.MenuBarItemHover { background-color: #19385a; }
 ul .MenuBarItemSubmenu ul li a { border: none; }
