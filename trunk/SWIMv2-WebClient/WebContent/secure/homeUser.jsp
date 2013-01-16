@@ -1,11 +1,10 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote" %>
-<%@ page import="javax.naming.InitialContext" %>
-<%@ page import="javax.naming.Context" %>
-<%@page import="java.security.Principal"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
-	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-	<c:if
-	test="${pageContext.request.userPrincipal=='ad'}">
+<%@ page import="sessionbeans.logic.UserBeanRemote" %> <%@ page
+import="javax.naming.InitialContext" %> <%@ page
+import="javax.naming.Context" %> <%@page
+import="java.security.Principal"%> <%@page contentType="text/html"
+pageEncoding="UTF-8"%><%@ taglib uri='http://java.sun.com/jsp/jstl/core'
+prefix='c'%>
+<c:if test="${pageContext.request.userPrincipal.name=='ad'}">
 	<c:redirect url="/secure/admin/homeAdmin.jsp" />
 	<!-- this will redirect if user is already logged in -->
 </c:if>
@@ -17,15 +16,12 @@
 <!-- TemplateEndEditable -->
 <meta name="Description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/images/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
 
-<link
-	href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css"
-	rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+	type="text/css" />
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
-<!-- see https://github.com/douglascrockford/JSON-js -->
 <script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
 
@@ -102,17 +98,15 @@
         </script>
 </head>
 <body>
-<%!UserBeanRemote userBean;%>
-<%
-	Context context = new InitialContext();
-userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
-System.out.println("****** QUI EJB CALL DA JSP ******");
-//userBean.sendFriendshipReq("aa", "bb");
-%>
+	<%!UserBeanRemote userBean;%> <% Context context = new
+	InitialContext(); userBean = (UserBeanRemote)
+	context.lookup(UserBeanRemote.class.getName());
+	System.out.println("****** QUI EJB CALL DA JSP ******");
+	//userBean.sendFriendshipReq("aa", "bb"); %>
 
 	<div class="bannerArea">
 		<div class="container">
-			<!-- TemplateBeginEditable name="banner_menï¿½" -->
+			<!-- TemplateBeginEditable name="banner_men�" -->
 			<div class="bannernav">
 				<a href="#">Privacy Policy</a> &bull; <a href="#">Contact Us</a>
 				&bull; <a href="#">Site Map</a>
@@ -120,23 +114,23 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 			<!-- TemplateEndEditable -->
 			<div class="toplogo">
 				<a href="#"><a href="#"><img
-						src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
-						width="223" height="51" alt="titolo" /></a>
+						src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51"
+						alt="titolo" /></a>
 			</div>
 			<div style="clear: both;"></div>
 		</div>
 	</div>
 	<div class="topnavigationArea">
 		<div class="container">
-			<!-- TemplateBeginEditable name="menï¿½" -->
+			<!-- TemplateBeginEditable name="men�" -->
 			<div class="topnavigationgroup">
 				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a id="logoutLink"
+							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
 					<li><a href="#">AMICI</a></li>
 					<li><a href="profiloUser.jsp">PROFILO</a></li>
-					<li class="MenuBarHorizontal"><a href="index.html"
+					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
+					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
 			</div>
@@ -150,8 +144,7 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 			<div class="contentleft">
 				<div class="middle">
 					<h1>
-						<img
-							src="<%=request.getContextPath()%>/images/GIMP-file/utente_incognito.png"
+						<img src="<%=request.getContextPath()%>/images/GIMP-file/utente_incognito.jpg"
 							alt="omino_incognito" width="179" height="137" align="right" />
 					</h1>
 					<h1>Benvenuto Nome Utente</h1>
@@ -166,8 +159,6 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 						<area shape="poly" coords="221,163" href="#" />
 						<area shape="poly" coords="211,183" href="#" />
 						<area shape="poly" coords="245,152" href="#" />
-						<area shape="rect" coords="154,163,269,250" href="helpSearch.html"
-							target="_parent" alt="helpbuttonHome" />
 					</map>
 					<%
 						Principal p = request.getUserPrincipal();
@@ -209,8 +200,7 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 				<p>Richieste di amicizia</p>
 				<p>&nbsp;</p>
 				<p>
-					Richieste abilit&agrave;<img
-						src="<%=request.getContextPath()%>/images/omino_msg.jpg"
+					Richieste abilit&agrave;<img src="<%=request.getContextPath()%>/images/omino_msg.jpg"
 						alt="omino_msg" width="158" height="165" align="right" />
 				</p>
 				<p>&nbsp;</p>
@@ -230,10 +220,6 @@ System.out.println("****** QUI EJB CALL DA JSP ******");
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		<!--
-		var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarRightHover.gif"});
-	//-->
-	</script>
+
 </body>
 </html>
