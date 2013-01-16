@@ -1,14 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
-	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%><c:if
-	test="${pageContext.request.userPrincipal!=null}">
+uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<c:if test="${pageContext.request.userPrincipal!=null}">
 	<c:redirect url="/secure/homeUser.jsp" />
 	<!-- this will redirect if user is already logged in -->
 </c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<!-- InstanceBegin template="/Templates/swim_template.dwt" codeOutsideHTMLIsLocked="false" -->
+<html xmlns:ice="http://ns.adobe.com/incontextediting">
 <head>
-<!-- InstanceBeginEditable name="doctitle" -->
 <title>SWIMv2</title>
 <script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
@@ -118,17 +116,18 @@
 </script>
 <meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<link href="<%=request.getContextPath() %>/images/stylesheet.css" rel="stylesheet" type="text/css"
-	ice:classes="*" />
+<!-- <link href="//images/stylesheet.css" rel="stylesheet" type="text/css"
+	ice:classes="*" />-->
 
-<link href="<%=request.getContextPath() %>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
-	type="text/css" />
-<link href="<%=request.getContextPath() %>/images/stylesheet.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath() %>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+<!--<link href="//SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+	type="text/css" />-->
+<link href="<%=request.getContextPath()%>//images/stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>//SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
 </head>
 <body>
 
+	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
 	<div class="bannerArea">
 		<div class="container">
 			<div class="bannernav">
@@ -136,7 +135,7 @@
 				&bull; <a href="#">Site Map</a>
 			</div>
 			<div class="toplogo">
-				<a href="#"></a><img src="<%=request.getContextPath() %>/images/GIMP-file/swim-titolo_b.png"
+				<a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
 					width="223" height="51" alt="titolo" />
 			</div>
 			<div style="clear: both;"></div>
@@ -146,7 +145,9 @@
 		<div class="container">
 			<div class="topnavigationgroup">
 				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a href="index.jsp"
+					<li style="border-right-style: solid;"><a href="search.html"
+						title="home" target="_parent">CERCA UTENTI</a></li>
+					<li style="border-right-style: solid;"><a href="index.html"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
 			</div>
@@ -161,25 +162,23 @@
 				<p>Swim &egrave; un social network pensato per tutti quegli
 					utenti che cercano e offrono aiuto ad altri utenti iscritti e che
 					amano stare sempre in contatto con i propri amici.</p>
-				<p>Bla bla bla bla bla bla bla....</p>
 				<p>&nbsp;</p>
-				<h3>Cerca tra gli utenti cliccando sul bottone &quot;help&quot;
-					nell'immagine o registrati subito!</h3>
-
+				<h3>Iscriviti subito!</h3>
 				<div class="middle">
 					<p>
-						<img src="<%=request.getContextPath() %>/images/GIMP-file/omino_help.png" alt="omino_help"
-							width="268" height="281" border="0" align="left" usemap="#Map" />
-						<map name="Map" id="Map">
-							<area shape="rect" coords="136,154,247,237" href="search.html" />
-						</map>
+						<img src="<%=request.getContextPath()%>/images/GIMP-file/omino_help.png" alt="omino_help"
+							width="268" height="281" border="0" align="left" />
 					</p>
 					<div class="login">
 
 						<!-- did we already try to login and it failed? -->
 						<c:if test="false">
-							<div class="authError"><h3><strong>Invalid User Name or Password.
-								Please try again.</strong></h3></div>
+							<div class="authError">
+								<h3>
+									<strong>Invalid User Name or Password. Please try
+										again.</strong>
+								</h3>
+							</div>
 						</c:if>
 						<form id="login" name="login" method="post"
 							action="j_security_check">
@@ -233,7 +232,7 @@
 				<p>&nbsp;</p>
 			</div>
 			<div class="contentright">
-				<div class="register">
+			<div class="register">
 					<form id="registerForm" name="registerForm"
 						action="<%=request.getContextPath()%>/services/auth/register"
 						method="post">
@@ -269,11 +268,33 @@
 						</fieldset>
 					</form>
 				</div>
-			</div>
-			<div style="clear: both;"></div>
-		</div>
-	</div>
+				<h2>Ecco i nostri iscritti!</h2>
+				<p>&nbsp;</p>
+				<div id="slideCont"
+					style="position: relative; z-index: 1; width: 220px; left: 0px; overflow: hidden;">
+					<div id="slideA"
+						style="position: absolute; z-index: 1; top: 10px; left: 0px; width: 200px; overflow: hidden;">
+						<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+						<div id="slideB"
+							style="position: relative; z-index: 1; top: 0px; left: 0px; width: 200px; overflow: hidden;">
+							<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+						</div>
+					</div>
+				</div>
 
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+	</div>
 	<div class="footerArea">
 		<div class="container">
 			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by
@@ -282,13 +303,6 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		<!--
-			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {
-				imgDown : "<%=request.getContextPath() %>/SpryAssets/SpryMenuBarDownHover.gif",
-				imgRight : "<%=request.getContextPath() %>/SpryAssets/SpryMenuBarRightHover.gif"
-			});
-		//-->
-		</script>
+
 </body>
 </html>
