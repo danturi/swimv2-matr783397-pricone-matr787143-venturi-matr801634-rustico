@@ -52,7 +52,7 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE DI AMICIZIA
 		 */
-		userBean.sendFriendshipReq("aa","bb");
+		userBean.sendFriendshipReq("aa","bb");/*
 		userBean.sendFriendshipReq("aa","cc");
 		userBean.sendFriendshipReq("cc","bb");
 		userBean.sendFriendshipReq("bb","aa");
@@ -122,9 +122,9 @@ public class test2 extends HttpServlet {
 		}
 		for(HelpRequest helpReq :cc1HList){
 			System.out.println("Richiesta DI AIUTO trovata in cc1: ID "+helpReq.getHelpReqId()+"	MITTENTE = "+helpReq.getFromUser()+"	DESTINATARIO = "+helpReq.getToUser()+"\n");
-		}
+		}*/
 		
-		*/
+		
 		
 		/**
 		 * 
@@ -137,7 +137,7 @@ public class test2 extends HttpServlet {
 		userBean.sendAbilityReq("aa","prova","qui va descrizione richiesta abilita");*/
 		
 		SwimResponse swimResponse = userBean.findAll();
-
+		System.out.println("*****ATTRIBUTO PASSATO: "+request.getAttribute("v"));
 		
 
 		try {
@@ -159,6 +159,7 @@ public class test2 extends HttpServlet {
 				out.println("<p>Errore lista utenti</p>");
 			}
 			//out.println("<p>User byEmail found: "+ userBean.findUserByEmail("prova@a.com").getEmail() +"</p>");
+			out.println("<p>Attributi passati:  USER = "+request.getParameter("user")+" scelta = "+request.getParameter("value")+"</p>");
 			out.println("</body>");
 			out.println("</html>");
 		} finally {            

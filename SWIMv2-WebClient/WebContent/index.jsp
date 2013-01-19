@@ -116,14 +116,11 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 </script>
 <meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<!-- <link href="//images/stylesheet.css" rel="stylesheet" type="text/css"
-	ice:classes="*" />-->
-
-<!--<link href="//SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
-	type="text/css" />-->
-<link href="<%=request.getContextPath()%>//images/stylesheet.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath()%>//SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
+	
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
+<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
+	
 </head>
 <body>
 
@@ -147,8 +144,6 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 				<ul id="MenuBar1" class="MenuBarHorizontal">
 					<li style="border-right-style: solid;"><a href="search.html"
 						title="home" target="_parent">CERCA UTENTI</a></li>
-					<li style="border-right-style: solid;"><a href="index.html"
-						title="home" target="_parent">HOME</a></li>
 				</ul>
 			</div>
 			<div style="clear: both;"></div>

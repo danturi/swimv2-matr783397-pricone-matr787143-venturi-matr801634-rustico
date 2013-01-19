@@ -58,6 +58,7 @@ prefix='c'%>
         </script>
 </head>
 <body>
+<%session.setAttribute("ReplyResult","null"); %>
 	
 		<div class="bannerArea">
 			<div class="container">
@@ -85,60 +86,48 @@ prefix='c'%>
 		<div class="contentArea">
 			<div class="container">
 <div class="contentleft">
-      <div class="top">
-        <h1><img src="<%=request.getContextPath()%>/images/GIMP-file/utente_incognito.png" alt="omino_incognito" width="205" height="148" hspace="20" vspace="0" align="absmiddle" />Nome utente</h1>
-      </div>
+      
       <div class="middle">
-        <div class="middleleft">
-              <h2>Informazioni</h2>
-                  <table width="327" border="1" cellpadding="2" cellspacing="0">
+   
+              <h2>Hai ricevuto alcune richieste d'amicizia!</h2>
+                  <table width="100%" border="" cellpadding="8" cellspacing="5">
                     <tr>
-                      <td width="60"><h3> Genere:</h3></td>
-                      <td width="257" class="formLabel">&nbsp;</td>
+                      <td width="60%" class="formLabel" align="absmiddle"><h2> Genere</h2></td>
+                      <td width="20%" align="center" valign="middle">
+                      		<a href="<%=request.getContextPath()%>/Control?actionType=replyToFriendReq&toUser=bb&value=approve"><img src="<%=request.getContextPath()%>/images/accetta.png" alt="accetta" align="absmiddle" /></a></td>
+                      		<p>&nbsp;</p>
+                      		<td width="20%" align="center" valign="middle">
+                      		<a href="#"><img src="<%=request.getContextPath()%>/images/rifiuta.png" alt="rifiuta" align="absmiddle" /></a>
+                      	</td>
                     </tr>
                     <tr>
-                      <td><h3>Et&agrave;:</h3></td>
-                      <td class="formLabel">&nbsp;</td>
+                     <td class="formLabel"><h3><strong>Genere:</strong> </h3></td>
                     </tr>
                     <tr>
-                      <td><h3>Residenza:</h3></td>
-                      <td class="formLabel">&nbsp;</td>
+                      <td class="formLabel"><h3> Genere:</h3></td>
                     </tr>
                     <tr>
-                      <td><h3>Luogo:</h3></td>
-                      <td class="formLabel">&nbsp;</td>
+                     <td class="formLabel"><h3> Genere:</h3></td>
                     </tr>
                     <tr>
-                      <td><h3>Professione:</h3></td>
-                      <td class="formLabel">&nbsp;</td>
+                     <td class="formLabel"><h3> Genere:</h3></td>
                     </tr>
                     <tr>
-                      <td><h3>Email:</h3></td>
-                      <td class="formLabel">&nbsp;</td>
+                      <td class="formLabel"><h3> Genere:</h3></td>
                     </tr>
                   </table>
-                  <p>&nbsp;</p>
-                  <h2>Rating</h2>
-          <table width="178" border="1" cellpadding="2" cellspacing="0">
-                    <tr>
-                      <td width="114"><h3>Il tuo punteggio &egrave;:</h3></td>
-                      <td width="50" class="formLabel">&nbsp;</td>
-                    </tr>
-          </table>
-          <p>&nbsp;</p>
-                  <p><a href="feedback.jsp"><strong>Visualizza tutti i miei Feedback</strong><strong></strong></a></p>
+                  
+                  
                   <h3>&nbsp;</h3>
-                  <h3>&nbsp;</h3>
-</div>
-		<div class="middleright">
-<h2>Abilit&agrave;</h2>
-                  <p>abilit�1</p>
-  		  <p>abilit�2</p>
-                  <p>abilit�3</p>
-                  <p>&nbsp;</p>
-                  <p><a href="changeAbility.jsp"><strong>Modifica abilit&agrave;</strong></a></p>
-                  <p>&nbsp;</p>
-		</div>
+                  <%if(session.getAttribute("ReplyResult").equals("ok")){
+                	  out.write("<h3>La risposta alla richiesta d'amicizia è stata gestita con successo!<h3>");
+                	 
+                  } else {
+                	  
+                	  out.write("<h3>La risposta alla richiesta d'amicizia NON è stata gestita correttamente.<h3>");
+                  }  %>
+         
+
       </div>
 </div>
 			<div class="contentright">
