@@ -69,11 +69,14 @@
 			<div class="container">
 			  <div class="topnavigationgroup">
 			    <ul id="MenuBar1" class="MenuBarHorizontal">
-			      <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-			      <li><a href="#">AMICI</a></li>
-			      <li><a href="profiloUser.jsp">PROFILO</a></li>
-			      <li><a href="homeUser.jsp" title="home" target="_parent">HOME</a></li>
-		        </ul>
+							<li style="border-right-style: solid;"><a id="logoutLink"
+						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+					<li><a href="#">AMICI</a></li>
+					<li><a href="profiloUser.jsp">PROFILO</a></li>
+					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
+					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
+						title="home" target="_parent">HOME</a></li>
+				</ul>
 </div>
 			  <div style="clear:both;"></div>
 			</div>

@@ -14,14 +14,13 @@ prefix='c'%>
 <!-- TemplateBeginEditable name="doctitle" -->
 <title>SWIMv2</title>
 <!-- TemplateEndEditable -->
-<meta name="Description"
+<meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
+	
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
-
 <link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
-<!-- TemplateBeginEditable name="head" -->
-<!-- TemplateEndEditable -->
+	
 <script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
 
