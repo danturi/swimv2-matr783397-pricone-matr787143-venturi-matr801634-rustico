@@ -1,7 +1,11 @@
 package sessionbeans.logic;
 
-public class SwimResponse{
+import java.io.Serializable;
 
+public class SwimResponse implements Serializable{
+
+
+	private static final long serialVersionUID = 1L;
 	private int status = FAILED;
 	private String statusMsg;
 	private Object data;
