@@ -138,6 +138,7 @@ public class UserBean implements UserBeanRemote {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
+			user.getFriendshipRequestList().size();
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getFriendshipRequestList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
