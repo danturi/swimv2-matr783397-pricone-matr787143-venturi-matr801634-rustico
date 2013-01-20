@@ -160,7 +160,7 @@
 				<p>&nbsp;</p>
 				<p>Richieste di aiuto</p>
 				<p>&nbsp;</p>
-				<p>Richieste di amicizia</p>
+				<p><a href="friendReq.jsp">Richieste di amicizia</a></p>
 				<p>&nbsp;</p>
 				<p>
 					Richieste abilit&agrave;<img

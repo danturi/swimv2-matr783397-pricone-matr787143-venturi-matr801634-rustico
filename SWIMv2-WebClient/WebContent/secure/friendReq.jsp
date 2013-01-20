@@ -1,9 +1,11 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote" %> <%@ page
-import="javax.naming.InitialContext" %> <%@ page
-import="javax.naming.Context" %> <%@page
-import="java.security.Principal"%> <%@page contentType="text/html"
-pageEncoding="UTF-8"%><%@ taglib uri='http://java.sun.com/jsp/jstl/core'
-prefix='c'%>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %> 
+<%@ page import="sessionbeans.logic.SwimResponse" %>
+<%@ page import="entities.User" %>
+<%@ page import="entities.FriendshipRequest" %>
+<%@ page import="java.util.List" %>
+<%@ page import="javax.naming.InitialContext" %> 
+<%@ page import="javax.naming.Context" %> 
+<%@page import="java.security.Principal"%> <%@page contentType="text/html"pageEncoding="UTF-8"%><%@ taglib uri='http://java.sun.com/jsp/jstl/core'prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <html>
@@ -58,7 +60,19 @@ prefix='c'%>
         </script>
 </head>
 <body>
-<%session.setAttribute("ReplyResult","null"); %>
+	<%UserBeanRemote userBean;
+	 Context context = new
+	InitialContext(); userBean = (UserBeanRemote)
+	context.lookup(UserBeanRemote.class.getName());
+	User user = userBean.find(request.getUserPrincipal().getName());
+	SwimResponse swimResponse = userBean.getFriendshipReqList(user.getEmail());
+	List<FriendshipRequest> friendReqList = null;
+	if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+		friendReqList = (List<FriendshipRequest>) swimResponse.getData();
+	}
+	
+	
+	//userBean.sendFriendshipReq("aa", "bb"); %>
 	
 		<div class="bannerArea">
 			<div class="container">
@@ -74,9 +88,9 @@ prefix='c'%>
 							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 					<li><a href="#">AMICI</a></li>
-					<li><a href="profiloUser.jsp">PROFILO</a></li>
-					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
+					<li><a href="<%=request.getContextPath()%>/secure/profiloUser.jsp">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
+					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
 		      </div>
@@ -88,44 +102,42 @@ prefix='c'%>
 <div class="contentleft">
       
       <div class="middle">
+      		
+      		<% boolean newRequest = false;
+      		
+      		for(FriendshipRequest freq: friendReqList){
+      			if(freq.getAcceptanceStatus()==false) newRequest=true;	
+      		}
+      		if(newRequest){
+      		System.out.println(friendReqList);
+  			out.write("<h2>Hai ricevuto alcune richieste d'amicizia!</h2>");
+  			out.write("<table width=\"100%\" border=\"\" cellpadding=\"8\" cellspacing=\"5\">");
+      			for(FriendshipRequest freq: friendReqList){
+      				if(freq.getAcceptanceStatus()==false){
+      				out.write("<tr>");
+      				out.write("<td width=\"60%\" class=\"formLabel\" align=\"absmiddle\"><h2> Nome Utente</h2></td>");
+      				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
+      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser=aa&value=approve\"><img src=\"/SWIMv2-WebClient/images/accetta.png\" alt=\"accetta\" align=\"absmiddle\" /></a></td>");
+      				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
+      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser=aa&value=decline\"><img src=\"/SWIMv2-WebClient/images/rifiuta.png\" alt=\"rifiuta\" align=\"absmiddle\" /></a></td>");
+      				out.write("</tr>");
+      				}
+      			}
+      			out.write("</table>");
+      		} else {
+      			out.write("<h2>Non è stata ricevuta nessuna richiesta d'amicizia.</h2>");
+      		}
+      		%>
    
-              <h2>Hai ricevuto alcune richieste d'amicizia!</h2>
-                  <table width="100%" border="" cellpadding="8" cellspacing="5">
-                    <tr>
-                      <td width="60%" class="formLabel" align="absmiddle"><h2> Genere</h2></td>
-                      <td width="20%" align="center" valign="middle">
-                      		<a href="<%=request.getContextPath()%>/Control?actionType=replyToFriendReq&toUser=bb&value=approve"><img src="<%=request.getContextPath()%>/images/accetta.png" alt="accetta" align="absmiddle" /></a></td>
-                      		<p>&nbsp;</p>
-                      		<td width="20%" align="center" valign="middle">
-                      		<a href="#"><img src="<%=request.getContextPath()%>/images/rifiuta.png" alt="rifiuta" align="absmiddle" /></a>
-                      	</td>
-                    </tr>
-                    <tr>
-                     <td class="formLabel"><h3><strong>Genere:</strong> </h3></td>
-                    </tr>
-                    <tr>
-                      <td class="formLabel"><h3> Genere:</h3></td>
-                    </tr>
-                    <tr>
-                     <td class="formLabel"><h3> Genere:</h3></td>
-                    </tr>
-                    <tr>
-                     <td class="formLabel"><h3> Genere:</h3></td>
-                    </tr>
-                    <tr>
-                      <td class="formLabel"><h3> Genere:</h3></td>
-                    </tr>
-                  </table>
-                  
-                  
                   <h3>&nbsp;</h3>
-                  <%if(session.getAttribute("ReplyResult").equals("ok")){
-                	  out.write("<h3>La risposta alla richiesta d'amicizia è stata gestita con successo!<h3>");
-                	 
+                  <%if(request.getAttribute("ReplyResult")!=null){
+                  if(request.getAttribute("ReplyResult").equals("ok")){
+                	  out.write("<h2>La risposta alla richiesta d'amicizia è stata gestita con successo!<h2>");
+                	  request.setAttribute("ReplyResult", "null");
                   } else {
-                	  
-                	  out.write("<h3>La risposta alla richiesta d'amicizia NON è stata gestita correttamente.<h3>");
-                  }  %>
+                	  System.out.println("*****"+session.getAttribute("ReplyResult"));
+                	  out.write("<h2>La risposta alla richiesta d'amicizia NON è stata gestita correttamente.<h2>");
+                  }}  %>
          
 
       </div>
@@ -136,7 +148,7 @@ prefix='c'%>
 			  <p>&nbsp;</p>
 			  <p>Richieste di aiuto</p>
 			  <p>&nbsp;</p>
-			  <p>Richieste di amicizia</p>
+			  <p><a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a></p>
 			  <p>&nbsp;</p>
 			  <p>Richieste abilit&agrave;<img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="158" height="165" align="right" /></p>
 			  <p>&nbsp;</p>
