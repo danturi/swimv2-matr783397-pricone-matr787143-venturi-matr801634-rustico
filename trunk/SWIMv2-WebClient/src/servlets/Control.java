@@ -41,21 +41,23 @@ public class Control extends HttpServlet {
 	public void replyToFriendshipReq(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		boolean replyValue = false;
-		HttpSession session = request.getSession();
+	
 		SwimResponse swimResponse = null;
 		
 		if(request.getParameter("value").equals("approve")) replyValue = true;
-	
-		swimResponse = userBean.replyToFriendshipReq(request.getUserPrincipal().getName(), request.getParameter("toUser"), replyValue);
+		
+		swimResponse = userBean.replyToFriendshipReq(request.getParameter("toUser"),request.getUserPrincipal().getName(),  replyValue);
 		if(swimResponse!=null){
 			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
-				session.setAttribute("ReplyResult", "ok");
+				request.setAttribute("ReplyResult", "ok");
+				System.out.println("******CONTROL : QUI ARRIVA ******");
 			} else {
-				session.setAttribute("ReplyResult", "fail");
+				request.setAttribute("ReplyResult", "fail");
 			}
 		} else {
-			session.setAttribute("ReplyResult", "fail");
+			request.setAttribute("ReplyResult", "fail");
 		}
+		System.out.println("******CONTROL: qui ReplyResult: "+request.getAttribute("ReplyResult"));
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/friendReq.jsp");
         dispatcher.forward(request, response);
 		
