@@ -120,6 +120,19 @@ public class UserBean implements UserBeanRemote {
 	public void detachUser(User user) {
 		em.detach(user);
 	}
+	
+	@Override
+	public SwimResponse getAbilityList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			user.getAbilityList().size();
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista abilità effettuato", user.getAbilityList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
 
 	@Override
 	public SwimResponse getFriendsList(String email) {
