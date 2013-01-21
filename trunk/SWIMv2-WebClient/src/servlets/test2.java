@@ -55,8 +55,9 @@ public class test2 extends HttpServlet {
 		 */
 		
 		userBean.sendFriendshipReq("aa","cc");
-		userBean.sendFriendshipReq("aa","ff");
-		userBean.sendFriendshipReq("aa","ee");/*
+		//userBean.sendFriendshipReq("aa","ff");
+		//userBean.sendFriendshipReq("aa","ee");
+		/*
 		userBean.sendFriendshipReq("aa","cc");
 		userBean.sendFriendshipReq("cc","bb");
 		userBean.sendFriendshipReq("bb","aa");
