@@ -70,15 +70,15 @@
 	<%
 		UserBeanRemote userBean;
 		Context context = new InitialContext();
-		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class
-				.getName());
+		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 		String email = request.getParameter("user");
-		User usr = null;
-		if (email != null) {
-			usr = userBean.find(email);
-		} else {
-
+		if(email==null && request.getAttribute("LastProfileUserView")!=null) {
+			email = request.getAttribute("LastProfileUserView").toString();
+			request.setAttribute("LastProfileUserView", null);
 		}
+		User usr = null;
+		
+	
 	%>
 
 
@@ -89,9 +89,7 @@
 				&bull; <a href="#">Site Map</a>
 			</div>
 			<div class="toplogo">
-				<a href="#"></a><a href="#"></a><a href="#"><a href="#"><a
-						href="#"><a href="#"></a><img
-							src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
+				<a href="#"></a><a href="#"></a><a href="#"><a href="#"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
 							width="223" height="51" alt="titolo" />
 			</div>
 			<div style="clear: both;"></div>
@@ -105,9 +103,9 @@
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 					<li><a href="#">AMICI</a></li>
 					<li><a
-						href="profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
-					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
+						href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
+					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
 			</div>
@@ -128,24 +126,36 @@
 								User usrPrincipal = userBean.find(request.getUserPrincipal().getName());
 								if (usrPrincipal != null) {
 									SwimResponse friendListRsp = userBean.getFriendsList(request.getUserPrincipal().getName());
-									if (friendListRsp.getStatus() == SwimResponse.SUCCESS) {
+									SwimResponse revFriendListRsp = userBean.getReversedFriendsList(request.getUserPrincipal().getName());
+									if (friendListRsp.getStatus() == SwimResponse.SUCCESS && revFriendListRsp.getStatus() == SwimResponse.SUCCESS) {
 										List<User> friendList = (List<User>) friendListRsp.getData();
-										if(friendList.contains(usr)){
+										List<User> revFriendList = (List<User>) revFriendListRsp.getData();
+										if(friendList.contains(usr) || revFriendList.contains(usr)){
 											out.write("<img src=\"/SWIMv2-WebClient/images/alreadyfriendship.png\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 										} else{
-											SwimResponse friendReqRsp = userBean.getFriendshipReqList(usr.getEmail());
-											if (friendReqRsp.getStatus() == SwimResponse.SUCCESS) {
-												List<FriendshipRequest> friendReqList = (List<FriendshipRequest>) friendReqRsp.getData();
-												boolean existFriendReq = false;
-												for (FriendshipRequest freq: friendReqList){
-													if(freq.getAcceptanceStatus()==false && freq.getFromUser().equals(usrPrincipal)){
-														existFriendReq = true;
+											SwimResponse userPrincipalSentFriendReqRsp = userBean.getSentFriendshipReqList(request.getUserPrincipal().getName());
+											SwimResponse userPrincipalReceivedFriendReqRsp = userBean.getFriendshipReqList(request.getUserPrincipal().getName());
+											if (userPrincipalSentFriendReqRsp.getStatus() == SwimResponse.SUCCESS && userPrincipalReceivedFriendReqRsp.getStatus() == SwimResponse.SUCCESS) {
+												List<FriendshipRequest> userPrincipalSentFriendReqList = (List<FriendshipRequest>) userPrincipalSentFriendReqRsp.getData();
+												List<FriendshipRequest> userPrincipalReceivedFriendReqList = (List<FriendshipRequest>) userPrincipalReceivedFriendReqRsp.getData();
+												boolean existSentFriendReq = false;
+												boolean existReceivedFriendReq = false;
+												for (FriendshipRequest freq: userPrincipalSentFriendReqList){
+													if(freq.getAcceptanceStatus()==false && freq.getToUser().equals(usr)){
+														existSentFriendReq = true;
 													}
 												}
-												if(existFriendReq){
+												for (FriendshipRequest freq: userPrincipalReceivedFriendReqList){
+													if(freq.getAcceptanceStatus()==false && freq.getFromUser().equals(usr)){
+														existReceivedFriendReq = true;
+													}
+												}
+												if(existSentFriendReq && !existReceivedFriendReq){
 													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqsent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
+												} else if (!existSentFriendReq && existReceivedFriendReq){
+													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqalreadysent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 												} else {
-													out.write("<img src=\"/SWIMv2-WebClient/images/askfriendship.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
+													out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=sendFriendReq&toUser="+usr.getEmail()+"\"><img src=\"/SWIMv2-WebClient/images/askforfriendship.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/></a>");
 												}
 											} else {
 												out.write("<h2>Si è verificato un errore. Utente non correttamente identificato.</h2>");
@@ -159,7 +169,7 @@
 								}
 
 							} else {
-								out.write("<h2>Il mio profilo</h2>");
+								out.write("<h1><strong>Il mio profilo</strong></h1>");
 							}
 							out.write("<p>&nbsp;</p>");
 							out.write("<p>&nbsp;</p>");
@@ -225,8 +235,7 @@
 							out.write("<h2>Competente professionali</h2>");
 							SwimResponse swimRsp2 = userBean.getAbilityList(email);
 							if (swimRsp2.getStatus() == SwimResponse.SUCCESS) {
-								List<Ability> abilityList = (List<Ability>) swimRsp2
-										.getData();
+								List<Ability> abilityList = (List<Ability>) swimRsp2.getData();
 								if (!abilityList.isEmpty()) {
 									for (Ability ab : abilityList) {
 										out.write("<p>" + ab.getDescription() + "</p>");
@@ -265,7 +274,7 @@
 				<p>Richieste di aiuto</p>
 				<p>&nbsp;</p>
 				<p>
-					<a href="friendReq.jsp">Richieste di amicizia</a>
+					<a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a>
 				</p>
 				<p>&nbsp;</p>
 				<p>
