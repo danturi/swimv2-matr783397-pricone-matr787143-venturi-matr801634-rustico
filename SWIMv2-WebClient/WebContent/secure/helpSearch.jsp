@@ -72,7 +72,7 @@
 							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 					<li><a href="#">AMICI</a></li>
-					<li><a href="profiloUser.jsp">PROFILO</a></li>
+					<li><a href="profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
 					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
 					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>

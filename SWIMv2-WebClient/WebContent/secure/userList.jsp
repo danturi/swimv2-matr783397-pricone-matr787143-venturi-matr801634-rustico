@@ -90,7 +90,7 @@
 							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 					<li><a href="#">AMICI</a></li>
-					<li><a href="profiloUser.jsp">PROFILO</a></li>
+					<li><a href="profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
 					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
 					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
@@ -124,7 +124,7 @@
 									
 									for(User u: userList){
 										
-										out.write("<li><span class=\"name\"><a>"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
 									}
 								} else {
 									out.write("<h2>Errore: nessun utente trovato.</h2>");
