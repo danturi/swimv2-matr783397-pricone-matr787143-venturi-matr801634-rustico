@@ -146,6 +146,19 @@ public class UserBean implements UserBeanRemote {
 		}
 		return swimResponse;
 	}
+	
+	@Override
+	public SwimResponse getReversedFriendsList(String email) {
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			user.getUserList1().size();
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista reversa degli amici effettuato", user.getUserList1());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+	}
 
 	@Override
 	public SwimResponse getFriendshipReqList(String email) {
@@ -165,6 +178,7 @@ public class UserBean implements UserBeanRemote {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
+			user.getSentFriendshipRequestList().size();
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di amicizia effettuato", user.getSentFriendshipRequestList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
