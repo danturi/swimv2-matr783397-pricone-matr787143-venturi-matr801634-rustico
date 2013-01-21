@@ -74,6 +74,7 @@ public class Ability implements Serializable {
     }
 
     public List<User> getUserList() {
+    	userList.size();
         return userList;
     }
 
