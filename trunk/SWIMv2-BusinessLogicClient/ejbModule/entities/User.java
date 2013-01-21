@@ -84,6 +84,8 @@ public class User implements Serializable {
 	@Size(max = 128)
 	private String lastname;
 	private Character sex;
+	@Size(max = 64)
+	private String age;
 	@Size(max = 128)
 	private String city;
 	@Size(max = 64)
@@ -231,6 +233,14 @@ public class User implements Serializable {
 
 	public void setSex(Character sex) {
 		this.sex = sex;
+	}
+	
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
 	public String getCity() {
