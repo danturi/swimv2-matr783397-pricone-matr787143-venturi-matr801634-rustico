@@ -47,6 +47,8 @@ public interface UserBeanRemote {
     
     public SwimResponse getFriendsList(String email);
     
+    public SwimResponse getReversedFriendsList(String email);
+    
     public SwimResponse getFriendshipReqList(String email);
     
     public SwimResponse getSentFriendshipReqList(String email);
