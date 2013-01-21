@@ -65,7 +65,7 @@
 	InitialContext(); userBean = (UserBeanRemote)
 	context.lookup(UserBeanRemote.class.getName());
 	User user = userBean.find(request.getUserPrincipal().getName());
-	SwimResponse swimResponse = userBean.getFriendshipReqList(user.getEmail());
+	SwimResponse swimResponse = userBean.getFriendshipReqList(request.getUserPrincipal().getName());
 	List<FriendshipRequest> friendReqList = null;
 	if(swimResponse.getStatus()==SwimResponse.SUCCESS){
 		friendReqList = (List<FriendshipRequest>) swimResponse.getData();
@@ -88,7 +88,7 @@
 							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
 					<li><a href="#">AMICI</a></li>
-					<li><a href="<%=request.getContextPath()%>/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
 					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
 					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
@@ -117,9 +117,9 @@
       				out.write("<tr>");
       				out.write("<td width=\"60%\" class=\"formLabel\" align=\"absmiddle\"><h2> Nome Utente</h2></td>");
       				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
-      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser=aa&value=approve\"><img src=\"/SWIMv2-WebClient/images/accetta.png\" alt=\"accetta\" align=\"absmiddle\" /></a></td>");
+      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=approve\"><img src=\"/SWIMv2-WebClient/images/accetta.png\" alt=\"accetta\" align=\"absmiddle\" /></a></td>");
       				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
-      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser=aa&value=decline\"><img src=\"/SWIMv2-WebClient/images/rifiuta.png\" alt=\"rifiuta\" align=\"absmiddle\" /></a></td>");
+      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=decline\"><img src=\"/SWIMv2-WebClient/images/rifiuta.png\" alt=\"rifiuta\" align=\"absmiddle\" /></a></td>");
       				out.write("</tr>");
       				}
       			}
