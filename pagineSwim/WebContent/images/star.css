@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+
+#STAR_RATING ul
+{
+  margin: 0px;
+  padding: 0px;
+  height: 16px;
+  list-style: none;
+}
+#STAR_RATING li
+{
+  width: 19px;
+  height: 16px;
+  display: block;
+  float: left;
+  background-image: url('star-off.gif');
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+#STAR_RATING li.on
+{
+  background-image: url('star-on.gif');
+}
+#STAR_RATING span.output
+{
+	padding: 3px;
+	color: #00C;
+	font-weight: bold;
+}
+
+.feedback {
+	list-style:none;
+	}
+.feedback li#fb {
+	padding-top:40px;
+}
