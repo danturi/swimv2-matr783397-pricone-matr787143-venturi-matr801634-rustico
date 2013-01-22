@@ -270,7 +270,7 @@ public class UserBean implements UserBeanRemote {
 					}
 					if(filteredByFirstname) resultList=resultList3;
 				}
-				
+
 				/*if(filteredByFirstname){
 					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList3);
 					System.out.println("\n**** USERBEAN: MATCH LIST3: "+resultList3);
@@ -498,22 +498,23 @@ public class UserBean implements UserBeanRemote {
 	}
 
 	@Override
-	public SwimResponse sendAbilityReq(String emailUserFrom, String abilityDecription, String description) {
+	public SwimResponse sendAbilityReq(String emailUserFrom, Long abilityId, String description) {
 		SwimResponse swimResponse = null;
 		User userFrom = find(emailUserFrom);
-		Ability ability = null;
+		/*Ability ability = null;
 		try{
 			TypedQuery<Ability> query = em.createNamedQuery("Ability.findByDescription", Ability.class).setParameter("description", abilityDecription);
 			ability = query.getSingleResult();
 		} catch (Exception e){
-		}
+		}*/
+		Ability ability = em.find(Ability.class, abilityId);
 		if(ability!=null) {
 			if(userFrom!=null){
 				List<Ability> abilities_holded = userFrom.getAbilityList();
 
 				for(Ability ability_holded : abilities_holded){
 					if(ability_holded.getAbilityId().equals(ability.getAbilityId())){
-						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta aggiunta abilità non inviata perchè già l'utente già possiede tale abilità.\n");
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"abilityAlreadyOwned");
 						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè già l'utente già possiede tale abilità.\n");
 						return swimResponse;
 					}
@@ -523,7 +524,7 @@ public class UserBean implements UserBeanRemote {
 
 				for(AbilityRequest abilityReqOld : listAbilityReq){
 					if(abilityReqOld.getAbilityId().getAbilityId().equals(ability.getAbilityId())){
-						swimResponse = new SwimResponse(SwimResponse.FAILED,"Richiesta aggiunta abilità non inviata perchè esiste già una richiesta pendente per tale abilità.\n");
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"reqAlreadySent");
 						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè esiste già una richiesta pendente per tale abilità.\n");
 						return swimResponse;
 					}
@@ -543,11 +544,11 @@ public class UserBean implements UserBeanRemote {
 				System.out.println("\nUSERBEAN: Richiesta aggiunta abilità inviata con SUCCESSO!.");
 
 			}else{
-				swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 				System.out.println("USERBEAN (sendAbilityReq): Utente non valido.\n");
 			}
 		} else {
-			swimResponse = new SwimResponse(SwimResponse.FAILED,"Abilità non valida.");
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidAbility");
 			System.out.println("USERBEAN (sendAbilityReq): Abilità non valida.\n");
 		}
 		return swimResponse;
@@ -616,9 +617,60 @@ public class UserBean implements UserBeanRemote {
 		return swimResponse;
 	}
 
+	@Override
+	public SwimResponse replyToAbilityReq(String emailUserFrom, Long abilityId, boolean replyValue){
+		SwimResponse swimResponse = null;
+		Ability chosenAbility = em.find(Ability.class, abilityId);
+		User userFrom = find(emailUserFrom);
+
+		if(userFrom!=null){
+			if(chosenAbility!=null){
+				userFrom.getAbilityRequestList().size();
+				List<AbilityRequest> abilityReqList = userFrom.getAbilityRequestList();
+
+				AbilityRequest currentRequest = null;
+
+				for(AbilityRequest req: abilityReqList){
+					if(req.getAbilityId().getAbilityId().equals(abilityId) && req.getAcceptanceStatus()==false){
+						currentRequest = req;
+					}
+				}
+				if(currentRequest!=null){
+
+					currentRequest.setAcceptanceStatus(replyValue);
+
+					if(replyValue==true){
+						userFrom.getAbilityList().size();
+						userFrom.getAbilityList().add(chosenAbility);
+						em.persist(userFrom);
+
+						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità accettata.");
+						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità accettata.");
+					} else {
+						userFrom.getAbilityRequestList().remove(currentRequest);
+						em.remove(currentRequest);
+						em.persist(userFrom);
+
+						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità rifiutata.");
+						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità rifiutata.");
+					}
+
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.FAILED,"noSuchRequestFound");
+					System.out.println("USERBEAN (replyToAbilityReq): Non è presenta nessuna richiesta per questa abilità dall'utente indicato.");	
+				}
+			} else {
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidAbility");
+				System.out.println("USERBEAN (replyToAbilityReq): Abilità non valida.\n");
+			}
+
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+			System.out.println("USERBEAN (replyToAbilityReq): Utente non valido.\n");
+		}
 
 
+		return swimResponse;
 
-
-
+	}
 }
