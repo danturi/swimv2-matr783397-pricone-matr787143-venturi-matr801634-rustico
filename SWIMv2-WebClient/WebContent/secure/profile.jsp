@@ -151,7 +151,7 @@
 													}
 												}
 												if(existSentFriendReq && !existReceivedFriendReq){
-													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqsent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
+													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqhasbeensent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 												} else if (!existSentFriendReq && existReceivedFriendReq){
 													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqalreadysent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 												} else {

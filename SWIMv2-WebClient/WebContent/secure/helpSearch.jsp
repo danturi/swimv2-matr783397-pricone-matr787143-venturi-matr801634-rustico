@@ -2,6 +2,10 @@
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
+<%@ page import="sessionbeans.logic.SwimResponse"%>
+<%@ page import="java.util.List"%>
+<%@ page import="entities.User"%>
+<%@ page import="entities.Ability"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -9,16 +13,11 @@
 	<head>
 	<title>SWIMv2</title>
 	<meta name="description" content="Designed and developed by Codify Design Studio - codifydesign.com" />
-<link href="<%=request.getContextPath()%>/images/stylesheet.css" rel="stylesheet" type="text/css" ice:classes="*" />
-		
-		<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
-	<link href="<%=request.getContextPath()%>/images/stylesheet.css" rel="stylesheet" type="text/css" />
-	<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
-	<script src="<%=request.getContextPath()%>/js/json2.js"
-	type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
+<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+<script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
-
 <script type="text/javascript">
         $(function(){
             "use strict";
@@ -57,6 +56,12 @@
 </script>
 </head>
 <body>
+<%
+UserBeanRemote userBean;
+Context context = new InitialContext();
+userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
+SwimResponse abilitySetRsp = userBean.getAbilitySet();	
+%>
 	
 		<div class="bannerArea">
 			<div class="container">
@@ -90,6 +95,7 @@
 <p>&nbsp;</p>
 <h6>Non &egrave; obbligatorio compilare tutti i campi</h6>
 <p><img src="<%=request.getContextPath()%>/images/omino_search.gif" alt="omino_search" width="305" height="307" align="right" /></p>
+<form name="queryform" action="<%=request.getContextPath()%>/secure/result.jsp" method="post">
 <table width="254" border="0">
         <tr>
           <th width="54" class="formStyle" scope="row">Cognome</th>
@@ -113,20 +119,39 @@
         </tr>
         <tr>
           <th width="54" class="formStyle" scope="row">Prima</th>
-          <td><select name="ability" class="formLabel" id="ability">
-            <option value="0">non richiesta</option>
-            <option>abilit&agrave;1</option>
-            <option>abilit&agrave;2</option>
-            <option>abilit&agrave;3</option>
+          <td>
+          <select name="ability" class="formLabel" id="ability">
+            <option value="0">--Non richiesta--</option>
+            <%
+            if(abilitySetRsp!=null){
+            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
+           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
+           			int n = 1;
+            			for(Ability ability: abilitySet){
+            				out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
+            				n++;
+           				 }
+            	}
+            }
+            %>
           </select></td>
         </tr>
         <tr>
           <th width="54" class="formStyle" scope="row">Seconda</th>
           <td><select name="ability2" class="formLabel" id="ability2">
-            <option value="0">non richiesta</option>
-            <option>abilit&agrave;1</option>
-            <option>abilit&agrave;2</option>
-            <option>abilit&agrave;3</option>
+            <option value="0">--Non richiesta--</option>
+             <%
+            if(abilitySetRsp!=null){
+            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
+           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
+           			int n = 1;
+        			for(Ability ability: abilitySet){
+        				out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
+        				n++;
+       				 }
+            	}
+            }
+            %>
           </select></td>
         </tr>
         <tr>
@@ -148,6 +173,7 @@
           <td><input name="helpSearchButton" type="submit" id="helpSearchButton" value="CERCA" /></td>
         </tr>
       </table>
+      </form>
 <p>&nbsp;</p>
 <p>oppure <a href="userList.jsp">Lista di tutti gli utenti iscritti</a></p>
 <p>&nbsp;</p>
