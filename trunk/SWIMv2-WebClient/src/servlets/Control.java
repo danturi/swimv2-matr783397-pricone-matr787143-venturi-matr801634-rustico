@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import entities.User;
 
 import sessionbeans.logic.SwimResponse;
 import sessionbeans.logic.UserBeanRemote;
@@ -39,6 +42,9 @@ public class Control extends HttpServlet {
 
 			request.setAttribute("ReplyResult", "fail");
 		}
+		
+		if(request.getAttribute("FoundResult").equals("searching")) searchUserMatching(request, response);
+		
 
 
 
@@ -97,6 +103,37 @@ public class Control extends HttpServlet {
 			request.setAttribute("ReplyResult", "fail");
 		}
 
+	}
+	
+	public void searchUserMatching(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		
+		SwimResponse swimResponse = null;
+		System.out.println("\n**** CONTROL: QUI SEARCH_USER_MATCHING***\n");
+		String lastname = request.getParameter("lastname");
+		String firstname = request.getParameter("firstname");
+		String city = request.getParameter("place");
+		String ability = request.getParameter("ability");
+		String ability2 = request.getParameter("ability2");
+		String onlyfriends = request.getParameter("friends");
+		
+		swimResponse = userBean.searchUserMatching(request.getUserPrincipal().getName(), lastname, firstname, city, ability, ability2, onlyfriends);
+		
+		
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("FoundResult", "ok");
+				System.out.println("\n**** CONTROL: QUI SEARCH_USER_MATCHING FoundResult ok***\n");
+				request.setAttribute("MatchingList", swimResponse.getData());
+				System.out.println("\n**** CONTROL: MATCH LIST: "+(List<User>)swimResponse.getData());
+			} else {
+				request.setAttribute("FoundResult", "fail");
+			}
+		} else {
+			request.setAttribute("FoundResult", "fail");
+		}
+		
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/result.jsp");
+		dispatcher.forward(request, response);
 	}
 
 
