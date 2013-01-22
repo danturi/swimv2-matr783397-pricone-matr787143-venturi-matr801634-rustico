@@ -66,20 +66,21 @@
 	<% Context context = new
 	InitialContext(); userBean = (UserBeanRemote)
 	context.lookup(UserBeanRemote.class.getName());
-	SwimResponse swimResponse = userBean.findAll();
-	List<User> userList = null;
-	if(swimResponse.getStatus()==SwimResponse.SUCCESS){
-		userList = (List<User>) swimResponse.getData();
+	//request.setAttribute("FoundResult", "null");
+	if(request.getAttribute("AbilityReqSent")==null){
+		request.setAttribute("AbilityReqSent", "sending");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/Control");
+		dispatcher.forward(request, response);
 	}
 	
-	System.out.println("****** QUI EJB CALL DA JSP ******");
-	//userBean.sendFriendshipReq("aa", "bb"); %>
+	
+	 %>
 	
 		<div class="bannerArea">
 			<div class="container"><!-- TemplateBeginEditable name="banner_menï¿½" -->
 			  <div class="bannernav"><a href="#" >Privacy Policy</a> &bull; <a href="#" >Contact Us</a> &bull; <a href="#" >Site Map</a></div>
 			<!-- TemplateEndEditable -->
-			  <div class="toplogo"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
+			  <div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
 		</div>
@@ -104,43 +105,43 @@
 			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
 			  <div class="contentleft">
               	<div class="middle">
-		    	  <h1>Lista Utenti</h1>
 					<p>&nbsp;</p>
-		    	  <p>Ecco chi ha le carratteristiche che cercavi:</p>
-              	
-                        <div id="user-list">
-                          <input class="search" size="30" placeholder="Cerca utente" />
-                          <ul class="sort-by">
-                            <li class="sort btn" data-sort="name">Ordina per nome (A/Z - Z/A)</li>
-                            
-                          </ul>
-                          <ul class="filter">
-                            
-                           
-                           </ul>
-                           <div class="wrapper">
-								<ul class="list">
-								<% if(userList!=null){
-									
-									for(User u: userList){
-										
-										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
-									}
-								} else {
-									out.write("<h2>Errore: nessun utente trovato.</h2>");
-								}
-								%>
-        
-                                
-                            </ul>
-                            
-                            </div>
-                  </div>
+					<% 
+					if(request.getAttribute("AbilityReqSent").equals("ok")){
+						
+						out.write("<h2><span style=\"color: red;\">La tua richiesta di abilitazione è stata inviata con successo!</span><h2>");
+						
+						
+					} else if (request.getAttribute("AbilityReqSent").equals("reqAlreadySent")){
+						out.write("<h2><span style=\"color: red;\">Esiste già una richiesta pendente per la competenza selezionata. Richiesta non inviata.</span><h2>");
+
+					} else if (request.getAttribute("AbilityReqSent").equals("abilityAlreadyOwned")){
+						out.write("<h2><span style=\"color: red;\">Sei già abilitato a questa competenza. Richiesta non inviata.</span><h2>");
+
+					} else {
+						out.write("<h2><span style=\"color: red;\">Si è verificatio un errore nel sistema. Richiesta non inviata.</span><h2>");
+					}
+					request.setAttribute("AbilityReqSent",null);
+					%>
+		    	 
                         
            		</div>
-           		
+           		<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				
+				
 		    </div>
-			<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="contentRight" -->
+	
 			<div class="contentright">
 			  <h2>&nbsp;</h2>
 			  <h2>Le tue notifiche:</h2>
@@ -162,30 +163,6 @@
 			  <div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
 			<!-- TemplateEndEditable --></div>
 		</div>
-		
-		
-        <script type="text/javascript">
-		
-			var options = {
-				valueNames: [ 'name' ]
-			};
-		
-			var featureList = new List('user-list', options);
-			
-			/*filtro uomini
-			$('#filter-men').click(function() {
-				featureList.filter(function(item) {
-					if(item.values().gender == "uomo") {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				return false;
-			});
-			*/
-			
-		
-		</script>
+
 	</body>
 </html>

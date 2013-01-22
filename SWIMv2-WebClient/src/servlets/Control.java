@@ -42,9 +42,14 @@ public class Control extends HttpServlet {
 
 			request.setAttribute("ReplyResult", "fail");
 		}
-		
-		if(request.getAttribute("FoundResult").equals("searching")) searchUserMatching(request, response);
-		
+		if(request.getAttribute("FoundResult")!=null){
+			if(request.getAttribute("FoundResult").equals("searching")) searchUserMatching(request, response);
+		}
+		if(request.getAttribute("AbilityReqSent")!=null){
+			if(request.getAttribute("AbilityReqSent").equals("sending")) sendAbilityRequest(request, response);
+		}
+
+
 
 
 
@@ -104,9 +109,9 @@ public class Control extends HttpServlet {
 		}
 
 	}
-	
+
 	public void searchUserMatching(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
-		
+
 		SwimResponse swimResponse = null;
 		System.out.println("\n**** CONTROL: QUI SEARCH_USER_MATCHING***\n");
 		String lastname = request.getParameter("lastname");
@@ -115,10 +120,10 @@ public class Control extends HttpServlet {
 		String ability = request.getParameter("ability");
 		String ability2 = request.getParameter("ability2");
 		String onlyfriends = request.getParameter("friends");
-		
+
 		swimResponse = userBean.searchUserMatching(request.getUserPrincipal().getName(), lastname, firstname, city, ability, ability2, onlyfriends);
-		
-		
+
+
 		if(swimResponse!=null){
 			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
 				request.setAttribute("FoundResult", "ok");
@@ -131,8 +136,41 @@ public class Control extends HttpServlet {
 		} else {
 			request.setAttribute("FoundResult", "fail");
 		}
-		
+
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/result.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	public void sendAbilityRequest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		SwimResponse swimResponse = null;
+		//PrintWriter out = response.getWriter();
+		System.out.println("\n**** CONTROL: QUI SEND_ABILITY_REQ***\n");
+		String abilityId = request.getParameter("abilityrequested");
+		//out.write("<p>"+abilityId+"</p>");
+		String description = request.getParameter("comments");
+
+		swimResponse = userBean.sendAbilityReq(request.getUserPrincipal().getName(), Long.valueOf(abilityId), description);
+
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("AbilityReqSent", "ok");
+				System.out.println("\n**** CONTROL: QUI SEND_ABILITY_REQ FoundResult AbilityReqSent***\n");
+			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqAlreadySent")){
+
+				request.setAttribute("AbilityReqSent", "reqAlreadySent");
+
+			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("abilityAlreadyOwned")){
+
+				request.setAttribute("AbilityReqSent", "abilityAlreadyOwned");
+				
+			} else {
+				request.setAttribute("AbilityReqSent", "fail");
+			}
+		} else {
+			request.setAttribute("AbilityReqSent", "fail");
+		}
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/abilityreqsent.jsp");
 		dispatcher.forward(request, response);
 	}
 

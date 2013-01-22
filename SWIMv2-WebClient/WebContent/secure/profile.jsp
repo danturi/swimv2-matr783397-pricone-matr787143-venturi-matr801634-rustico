@@ -250,7 +250,7 @@
 							if (usr.getEmail().equals(
 									request.getUserPrincipal().getName())) {
 								out.write("<p>&nbsp;</p>");
-								out.write("<p><a href=\"changeAbility.jsp\"><strong>Modifica competenze</strong></a></p>");
+								out.write("<p><a href=\"/SWIMv2-WebClient/secure/changeAbility.jsp\"><strong>Modifica competenze</strong></a></p>");
 								out.write("<p>&nbsp;</p>");
 							}
 							out.write("</div>");

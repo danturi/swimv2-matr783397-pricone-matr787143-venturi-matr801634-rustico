@@ -118,10 +118,12 @@
 						for(User usr: resultList){
 							out.write("<p>Nome:"+usr.getFirstname()+" Cognome:"+usr.getLastname()+" Email:"+usr.getEmail()+"</p>");
 						}
-						request.setAttribute("MatchingList",null);
-						request.setAttribute("FoundResult",null);
+						
+					} else if(request.getAttribute("FoundResult").equals("fail")){
+						
 					}
-					
+					request.setAttribute("MatchingList",null);
+					request.setAttribute("FoundResult",null);
 					%>
 		    	  <p>Ecco chi ha le carratteristiche che cercavi:</p>
               	

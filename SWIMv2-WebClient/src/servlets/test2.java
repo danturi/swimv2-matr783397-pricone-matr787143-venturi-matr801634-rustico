@@ -53,10 +53,10 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE DI AMICIZIA
 		 */
-		
-		userBean.sendFriendshipReq("aa","cc");
-		userBean.sendFriendshipReq("aa","dd");
-		userBean.sendFriendshipReq("aa","ee");
+		userBean.replyToAbilityReq("bb", Long.valueOf("4"), false);
+		//userBean.sendFriendshipReq("aa","cc");
+		//userBean.sendFriendshipReq("aa","dd");
+		//userBean.sendFriendshipReq("aa","ee");
 		//userBean.sendFriendshipReq("aa","ff");
 		//userBean.sendFriendshipReq("aa","ee");
 		/*
@@ -137,11 +137,11 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE AGGIUNTA ABILITA'
 		 */
-		/*
 		
-		userBean.sendAbilityReq("aa","Idraulico","qui va descrizione richiesta abilita");
-		userBean.sendAbilityReq("aa","Elettricista","qui va descrizione richiesta abilita");
-		userBean.sendAbilityReq("aa","prova","qui va descrizione richiesta abilita");*/
+		
+		userBean.sendAbilityReq("aa",Long.valueOf("1"),"qui va descrizione richiesta abilita");
+		//userBean.sendAbilityReq("aa","Elettricista","qui va descrizione richiesta abilita");
+		//userBean.sendAbilityReq("aa","prova","qui va descrizione richiesta abilita");
 		
 		SwimResponse swimResponse = userBean.findAll();
 		System.out.println("*****ATTRIBUTO PASSATO: "+request.getAttribute("v"));
