@@ -83,8 +83,7 @@
 	
 		<div class="bannerArea">
 			<div class="container"><!-- TemplateBeginEditable name="banner_menï¿½" -->
-			  <div class="bannernav"><a href="#" >Privacy Policy</a> &bull; <a href="#" >Contact Us</a> &bull; <a href="#" >Site Map</a></div>
-			<!-- TemplateEndEditable -->
+			  <div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
 			  <div class="toplogo"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>

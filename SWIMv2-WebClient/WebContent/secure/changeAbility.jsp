@@ -79,9 +79,7 @@
 
 	<div class="bannerArea">
 		<div class="container">
-			<div class="bannernav">
-				<a href="#">Privacy Policy</a> &bull; <a href="#">Contact Us</a>
-				&bull; <a href="#">Site Map</a>
+			<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.
 			</div>
 			<div class="toplogo">
 				<a href="#"></a><a href="#"></a></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
@@ -142,7 +140,7 @@
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <td><textarea name="comments" cols=60 rows=10>Scrivi qui una motivazione per cui ti ritieni idoneo alla competenza selezionata sopra.
+          <td><textarea name="comments" cols="60" rows="10" maxlength="10000">Scrivi qui una motivazione per cui ti ritieni idoneo alla competenza selezionata sopra.
 			</textarea></td>
         </tr>
         <tr>
@@ -161,8 +159,7 @@
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+				
 				
 			</div>
 

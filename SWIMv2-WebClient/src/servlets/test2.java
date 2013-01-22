@@ -53,7 +53,7 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE DI AMICIZIA
 		 */
-		userBean.replyToAbilityReq("bb", Long.valueOf("4"), false);
+		userBean.replyToAbilityReq("aa", Long.valueOf("7"), true);
 		//userBean.sendFriendshipReq("aa","cc");
 		//userBean.sendFriendshipReq("aa","dd");
 		//userBean.sendFriendshipReq("aa","ee");

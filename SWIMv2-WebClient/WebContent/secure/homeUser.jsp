@@ -106,10 +106,7 @@ prefix='c'%>
 	<div class="bannerArea">
 		<div class="container">
 			<!-- TemplateBeginEditable name="banner_men�" -->
-			<div class="bannernav">
-				<a href="#">Privacy Policy</a> &bull; <a href="#">Contact Us</a>
-				&bull; <a href="#">Site Map</a>
-			</div>
+			<div class="bannernav">Benvenuto! Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
 			<!-- TemplateEndEditable -->
 			<div class="toplogo">
 				<a href="#"><a href="#"><img
