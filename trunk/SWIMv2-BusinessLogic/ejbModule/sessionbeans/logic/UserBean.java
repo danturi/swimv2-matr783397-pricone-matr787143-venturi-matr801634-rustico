@@ -305,6 +305,21 @@ public class UserBean implements UserBeanRemote {
 		return swimResponse;
 
 	}
+	
+	@Override
+	public SwimResponse getNewAbilityReqList(){
+		TypedQuery<AbilityRequest> query = em.createQuery("SELECT abr FROM AbilityRequest abr", AbilityRequest.class);
+		List<AbilityRequest> allAbilityReqList = query.getResultList();
+		List<AbilityRequest> newAbilityReqList = new ArrayList<AbilityRequest>();
+		
+		for(AbilityRequest abr: allAbilityReqList){
+			if(!abr.getIsEvaluated()){
+				newAbilityReqList.add(abr);
+			}
+		}
+		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"newAbilityReqList", newAbilityReqList);
+		return swimResponse;
+	}
 
 	@Override
 	public SwimResponse getAbilityList(String email) {
@@ -524,9 +539,21 @@ public class UserBean implements UserBeanRemote {
 
 				for(AbilityRequest abilityReqOld : listAbilityReq){
 					if(abilityReqOld.getAbilityId().getAbilityId().equals(ability.getAbilityId())){
-						swimResponse = new SwimResponse(SwimResponse.FAILED,"reqAlreadySent");
-						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè esiste già una richiesta pendente per tale abilità.\n");
-						return swimResponse;
+						
+						if(abilityReqOld.getIsEvaluated()){
+							if(abilityReqOld.getAcceptanceStatus()==true){
+								swimResponse = new SwimResponse(SwimResponse.FAILED,"abilityAlreadyOwned");
+								System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè già l'utente già possiede tale abilità.\n");
+								return swimResponse;
+							} 
+						} else {
+							
+							swimResponse = new SwimResponse(SwimResponse.FAILED,"reqAlreadySent");
+							System.out.println("\nUSERBEAN: Richiesta aggiunta abilità NON inviata perchè esiste già una richiesta pendente per tale abilità.\n");
+							return swimResponse;
+						}
+						
+						
 					}
 				}
 
@@ -535,6 +562,7 @@ public class UserBean implements UserBeanRemote {
 				abilityReq.setDescription(description);
 				abilityReq.setDatetime(new Date());
 				abilityReq.setAcceptanceStatus(false);
+				abilityReq.setIsEvaluated(false);
 				abilityReq.setUser(userFrom);
 				userFrom.getAbilityRequestList().add(abilityReq);
 				em.persist(userFrom);
@@ -631,7 +659,8 @@ public class UserBean implements UserBeanRemote {
 				AbilityRequest currentRequest = null;
 
 				for(AbilityRequest req: abilityReqList){
-					if(req.getAbilityId().getAbilityId().equals(abilityId) && req.getAcceptanceStatus()==false){
+					if(req.getAbilityId().getAbilityId().equals(abilityId) && !req.getIsEvaluated()){
+						req.setIsEvaluated(true);
 						currentRequest = req;
 					}
 				}
@@ -647,10 +676,7 @@ public class UserBean implements UserBeanRemote {
 						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità accettata.");
 						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità accettata.");
 					} else {
-						userFrom.getAbilityRequestList().remove(currentRequest);
-						em.remove(currentRequest);
-						em.persist(userFrom);
-
+						
 						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità rifiutata.");
 						System.out.println("\nUSERBEAN: Richiesta aggiunta abilità rifiutata.");
 					}
