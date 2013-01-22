@@ -1,7 +1,7 @@
 <%@ page import="sessionbeans.logic.UserBeanRemote" %> 
 <%@ page import="sessionbeans.logic.SwimResponse" %>
 <%@ page import="entities.User" %>
-<%@ page import="entities.FriendshipRequest" %>
+<%@ page import="entities.AbilityRequest" %>
 <%@ page import="java.util.List" %>
 <%@ page import="javax.naming.InitialContext" %> 
 <%@ page import="javax.naming.Context" %> 
@@ -58,21 +58,35 @@
             });
         });
         </script>
+        <style type="text/css">
+		<!--
+		div.scroll {
+		height: 200px;
+		width: 500px;
+		overflow: auto;
+		border: 1px solid #666;
+		background-color: #D1FFFF;
+		padding: 8px;
+		}
+		-->
+		</style>
 </head>
 <body>
 	<%UserBeanRemote userBean;
 	 Context context = new
 	InitialContext(); userBean = (UserBeanRemote)
 	context.lookup(UserBeanRemote.class.getName());
-	User user = userBean.find(request.getUserPrincipal().getName());
-	SwimResponse swimResponse = userBean.getFriendshipReqList(request.getUserPrincipal().getName());
-	List<FriendshipRequest> friendReqList = null;
-	if(swimResponse.getStatus()==SwimResponse.SUCCESS){
-		friendReqList = (List<FriendshipRequest>) swimResponse.getData();
+	SwimResponse swimResponse = userBean.getNewAbilityReqList();
+	List<AbilityRequest> newAbilityReqList = null;
+	if(swimResponse!=null){
+		if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+			newAbilityReqList = (List<AbilityRequest>) swimResponse.getData();
+		}
 	}
 	
 	
-	//userBean.sendFriendshipReq("aa", "bb"); %>
+	%>
+	
 	
 		<div class="bannerArea">
 			<div class="container">
@@ -83,17 +97,14 @@
 		</div>
 		<div class="topnavigationArea">
 			<div class="container">
-			  <div class="topnavigationgroup">
-			    <ul id="MenuBar1" class="MenuBarHorizontal">
-							<li style="border-right-style: solid;"><a id="logoutLink"
-						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="#">AMICI</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
-						title="home" target="_parent">HOME</a></li>
-				</ul>
-		      </div>
+			 <div class="topnavigationgroup">
+     		 <ul id="MenuBar1" class="MenuBarHorizontal">
+      		  <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+      		  <li><a href="#">RICERCA UTENTI</a></li>
+     	  	 <li><a href="#">ABILITA'</a></li>
+      		  <li><a href="#">HOME</a></li>
+      </ul>
+      </div>
 			  <div style="clear:both;"></div>
 		  </div>
 		</div>
@@ -103,41 +114,43 @@
       
       <div class="middle">
       		
-      		<% boolean newRequest = false;
-      		
-      		for(FriendshipRequest freq: friendReqList){
-      			if(freq.getAcceptanceStatus()==false) newRequest=true;	
-      		}
-      		if(newRequest){
-      		System.out.println(friendReqList);
-  			out.write("<h2>Hai ricevuto alcune richieste d'amicizia!</h2>");
-  			out.write("<table width=\"100%\" border=\"\" cellpadding=\"8\" cellspacing=\"5\">");
-      			for(FriendshipRequest freq: friendReqList){
-      				if(freq.getAcceptanceStatus()==false){
-      				out.write("<tr>");
-      				out.write("<td width=\"60%\" align=\"center\"><h1>"+freq.getFromUser().getFirstname()+" "+freq.getFromUser().getLastname()+"</h1></td>");
-      				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
-      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=approve\"><img src=\"/SWIMv2-WebClient/images/accetta.jpg\" alt=\"accetta\" align=\"absmiddle\" /></a></td>");
-      				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
-      				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=decline\"><img src=\"/SWIMv2-WebClient/images/rifiuta.jpg\" alt=\"rifiuta\" align=\"absmiddle\" /></a></td>");
-      				out.write("</tr>");
-      				}
+      		<%
+      				
+      		if(!newAbilityReqList.isEmpty()){
+  			out.write("<h2>Sono state ricevute alcune richieste di abilitazione:</h2>");
+  			out.write("<p>&nbsp;</p>");
+  
+      			for(AbilityRequest abr: newAbilityReqList){
+      				
+      				out.write("<div class=\"scroll\">");
+      				out.write("<h2>Email utente: "+abr.getUser().getEmail()+"</h2>");
+      				//out.write("<p>&nbsp;</p>");
+      				out.write("<h2>Abilità richiesta: "+abr.getAbilityId().getDescription()+"</h2>");
+      				//out.write("<p>&nbsp;</p>");
+      				out.write("<h2>Descrizione:</h2>");
+      				//out.write("<p>&nbsp;</p>");
+      				out.write("<p>"+abr.getDescription()+"</p>");
+      				out.write("</div>");
+      				out.write("<p>&nbsp;</p>");
+      	  			out.write("<p>&nbsp;</p>");
+      				
       			}
-      			out.write("</table>");
+      			
       		} else {
-      			out.write("<h2>Non è stata ricevuta nessuna richiesta d'amicizia.</h2>");
+      			out.write("<h2>Non è stata ricevuta nessuna richiesta.</h2>");
       		}
       		%>
+      		
    
                   <h3>&nbsp;</h3>
-                  <%if(request.getAttribute("ReplyResult")!=null){
+                  <%/*if(request.getAttribute("ReplyResult")!=null){
                   if(request.getAttribute("ReplyResult").equals("ok")){
                 	  out.write("<h2><span style=\"color: red;\">La risposta alla richiesta d'amicizia è stata gestita con successo!</span><h2>");
                 	  request.setAttribute("ReplyResult", "null");
                   } else {
                 	  System.out.println("*****"+session.getAttribute("ReplyResult"));
                 	  out.write("<h2>La risposta alla richiesta d'amicizia NON è stata gestita correttamente.<h2>");
-                  }}  %>
+                  }}  */%>
          
 
       </div>
@@ -154,22 +167,18 @@
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+				
 </div>
 			<div class="contentright">
 			  <h2>&nbsp;</h2>
 			  <h2>Le tue notifiche:</h2>
-			  <p>&nbsp;</p>
-			  <p>Richieste di aiuto</p>
-			  <p>&nbsp;</p>
-			  <p><a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a></p>
-			  <p>&nbsp;</p>
-			  <p>Richieste abilit&agrave;<img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="158" height="165" align="right" /></p>
-			  <p>&nbsp;</p>
-			  <p>&nbsp;</p>
-		    </div>
+			  <p><a href="<%=request.getContextPath()%>/secure/admin/showAbilityReq.jsp">Richieste aggiunta abilit&agrave;</a></p>
+				<h2>&nbsp;</h2>
+				<h2><img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="121" height="159" align="right" /></h2>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			  </div>
 			<div style="clear:both;"></div>
 		  </div>
 		</div>

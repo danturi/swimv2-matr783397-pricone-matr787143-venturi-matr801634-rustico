@@ -78,7 +78,7 @@
 	
 		<div class="bannerArea">
 			<div class="container"><!-- TemplateBeginEditable name="banner_menï¿½" -->
-			  <div class="bannernav"><a href="#" >Privacy Policy</a> &bull; <a href="#" >Contact Us</a> &bull; <a href="#" >Site Map</a></div>
+			  <div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
 			<!-- TemplateEndEditable -->
 			  <div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
@@ -106,8 +106,8 @@
 			  <div class="contentleft">
               	<div class="middle">
 					<p>&nbsp;</p>
-					<% 
-					if(request.getAttribute("AbilityReqSent").equals("ok")){
+					
+					<%if(request.getAttribute("AbilityReqSent").equals("ok")){
 						
 						out.write("<h2><span style=\"color: red;\">La tua richiesta di abilitazione è stata inviata con successo!</span><h2>");
 						
