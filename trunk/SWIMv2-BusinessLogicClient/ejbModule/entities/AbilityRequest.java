@@ -40,12 +40,13 @@ public class AbilityRequest implements Serializable {
     @Basic(optional = false)
     private Long abilityReqId;
     private Boolean acceptanceStatus;
+    private Boolean isEvaluated;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
-    @Size(max = 10000)
+    @Column(length=10000)
    	private String description;
     @JoinColumn(name = "User", referencedColumnName = "Email")
     @ManyToOne(optional = false)
@@ -80,6 +81,14 @@ public class AbilityRequest implements Serializable {
 
     public void setAcceptanceStatus(Boolean acceptanceStatus) {
         this.acceptanceStatus = acceptanceStatus;
+    }
+    
+    public Boolean getIsEvaluated() {
+        return isEvaluated;
+    }
+
+    public void setIsEvaluated(Boolean isEvaluated) {
+        this.isEvaluated = isEvaluated;
     }
 
     public Date getDatetime() {
