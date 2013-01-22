@@ -132,7 +132,7 @@
                   <h3>&nbsp;</h3>
                   <%if(request.getAttribute("ReplyResult")!=null){
                   if(request.getAttribute("ReplyResult").equals("ok")){
-                	  out.write("<h2>La risposta alla richiesta d'amicizia è stata gestita con successo!<h2>");
+                	  out.write("<h2><span style=\"color: red;\">La risposta alla richiesta d'amicizia è stata gestita con successo!</span><h2>");
                 	  request.setAttribute("ReplyResult", "null");
                   } else {
                 	  System.out.println("*****"+session.getAttribute("ReplyResult"));
