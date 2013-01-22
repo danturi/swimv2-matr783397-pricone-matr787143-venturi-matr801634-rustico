@@ -43,6 +43,10 @@ public interface UserBeanRemote {
     
     public void removeUser(String email);
     
+    public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String onlyfriends);
+    
+    public SwimResponse getAbilitySet();
+    
     public SwimResponse getAbilityList(String email);
     
     public SwimResponse getFriendsList(String email);
