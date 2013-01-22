@@ -67,12 +67,38 @@ public class UserBean implements UserBeanRemote {
 		if(listAbilities.isEmpty()){
 			Ability idraulico = new Ability();
 			idraulico.setDescription("Idraulico");
-			//listAbilities.add(idraulico);
 			em.persist(idraulico);
 			Ability elettricista = new Ability();
 			elettricista.setDescription("Elettricista");
-			//listAbilities.add(elettricista);
 			em.persist(elettricista);
+			Ability meccanico = new Ability();
+			meccanico.setDescription("Meccanico");
+			em.persist(meccanico);
+			Ability falegname = new Ability();
+			falegname.setDescription("Falegname");
+			em.persist(falegname);
+			Ability informatico = new Ability();
+			informatico.setDescription("Informatico");
+			em.persist(informatico);
+			Ability architetto = new Ability();
+			architetto.setDescription("Architetto");
+			em.persist(architetto);
+			Ability fabbro = new Ability();
+			fabbro.setDescription("Fabbro");
+			em.persist(fabbro);
+			Ability webDesigner = new Ability();
+			webDesigner.setDescription("Web Designer");
+			em.persist(webDesigner);
+			Ability sarto = new Ability();
+			sarto.setDescription("Sarto");
+			em.persist(sarto);
+			Ability elettrauto = new Ability();
+			elettrauto.setDescription("Elettrauto");
+			em.persist(elettrauto);
+			Ability carrozziere = new Ability();
+			carrozziere.setDescription("Carrozziere");
+			em.persist(carrozziere);
+
 		}
 
 
@@ -120,7 +146,166 @@ public class UserBean implements UserBeanRemote {
 	public void detachUser(User user) {
 		em.detach(user);
 	}
-	
+
+	@Override
+	public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String friends){
+		SwimResponse swimResponse;
+		boolean onlyFriends = false;
+		boolean filteredByCity = false;
+		boolean filteredByLastname = false;
+		boolean filteredByFirstname = false;
+		if(friends!=null){
+			if(friends.equals("on")) onlyFriends = true;
+		}
+
+		User usr = find(userPrincipal);
+		if(usr!=null){
+			List<User> resultList = new ArrayList<User>();
+			List<User> resultList2 = new ArrayList<User>();
+			List<User> resultList3 = new ArrayList<User>();
+			//List<User> resultList4 = new ArrayList<User>();
+			List<Ability> abilitySet = (List<Ability>) getAbilitySet().getData();
+			if(onlyFriends){
+				List<User> usrFriendList = (List<User>) getFriendsList(userPrincipal).getData();
+
+				for(User tryUser: usrFriendList){ // FILTRO PER CITTA'
+					if(!city.equals("") && tryUser.getCity()!=null){
+						if(tryUser.getCity().equals(city)) resultList.add(tryUser);
+					} else {
+						resultList.add(tryUser);
+					}
+				}
+
+				/*for(User tryUser2: resultList){// FILTRO PER ABILITA'
+					tryUser2.getAbilityList().size();
+					if(!ability.equals("0")){
+						for(Ability ab: tryUser2.getAbilityList()){
+
+							if(!ab.getAbilityId().equals(Long.valueOf(ability))){
+								resultList.remove(tryUser2);
+							}
+						}
+					}
+					if(!ability2.equals("0")){
+						for(Ability ab: tryUser2.getAbilityList()){
+
+							if(!ab.getAbilityId().equals(Long.valueOf(ability2))){
+								resultList.remove(tryUser2);
+							}
+						}
+					}
+				}*/
+
+				if(!lastname.equals("")){// FILTRO PER COGNOME
+					for(User tryUser3: resultList){
+						if(tryUser3.getLastname().equals(lastname)){
+							resultList2.add(tryUser3);
+						}
+					}
+				}
+
+				if(!firstname.equals("")){// FILTRO PER NOME
+					for(User tryUser4: resultList2){
+						if(tryUser4.getFirstname().equals(firstname)){
+							resultList3.add(tryUser4);
+						}
+					}
+				}
+
+				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList3);
+				return swimResponse;
+
+			} else {
+				TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
+				List<User> globalList = query.getResultList();
+
+
+				for(User tryUser: globalList){ // FILTRO PER CITTA'
+					if(!city.equals("") && tryUser.getCity()!=null){
+						if(tryUser.getCity().equals(city)) {
+							filteredByCity = true;
+							resultList.add(tryUser);
+						}
+					} else {
+						resultList.add(tryUser);
+					}
+				}
+				//System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+				/*for(User tryUser2: resultList){// FILTRO PER ABILITA'
+					tryUser2.getAbilityList().size();
+					if(!ability.equals("0")){
+						for(Ability ab: tryUser2.getAbilityList()){
+
+							if(!ab.getAbilityId().equals(Long.valueOf(ability))){
+								resultList.remove(tryUser2);
+							}
+						}
+					}
+					if(!ability2.equals("0")){
+						for(Ability ab: tryUser2.getAbilityList()){
+
+							if(!ab.getAbilityId().equals(Long.valueOf(ability2))){
+								resultList.remove(tryUser2);
+							}
+						}
+					}
+				}*/
+
+				if(!lastname.equals("")){// FILTRO PER COGNOME
+					for(User tryUser3: resultList){
+						if(tryUser3.getLastname().equals(lastname)){
+							filteredByLastname= true;
+							resultList2.add(tryUser3);
+						}
+					}
+					if(filteredByLastname) resultList=resultList2;
+				}
+				//System.out.println("\n**** USERBEAN: MATCH LIST2: "+resultList2);
+				if(!firstname.equals("")){// FILTRO PER NOME
+					for(User tryUser4: resultList){
+						if(tryUser4.getFirstname().equals(firstname)){
+							filteredByFirstname= true;
+							resultList3.add(tryUser4);
+						}
+					}
+					if(filteredByFirstname) resultList=resultList3;
+				}
+				
+				/*if(filteredByFirstname){
+					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList3);
+					System.out.println("\n**** USERBEAN: MATCH LIST3: "+resultList3);
+				}else if(filteredByLastname) {
+					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList2);
+					System.out.println("\n**** USERBEAN: MATCH LIST2: "+resultList2);
+				} else if(filteredByCity){
+					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList);
+					System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList);
+					System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+				}*/
+				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList);
+				System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+				return swimResponse;
+
+
+
+			}
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"");
+			return swimResponse;
+		}
+
+	}
+
+	@Override
+	public SwimResponse getAbilitySet() {
+		TypedQuery<Ability> query = em.createQuery("SELECT ab FROM Ability ab", Ability.class);
+		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Lista abilità ricevuta", query.getResultList());
+		return swimResponse;
+
+	}
+
 	@Override
 	public SwimResponse getAbilityList(String email) {
 		SwimResponse swimResponse;
@@ -146,7 +331,7 @@ public class UserBean implements UserBeanRemote {
 		}
 		return swimResponse;
 	}
-	
+
 	@Override
 	public SwimResponse getReversedFriendsList(String email) {
 		SwimResponse swimResponse;
@@ -390,12 +575,12 @@ public class UserBean implements UserBeanRemote {
 					currentFriendReq.setAcceptanceStatus(replyValue);
 
 					if(replyValue==true){
-						
+
 						userFrom.getUserList().add(userTo);
 						userTo.getUserList1().add(userFrom);
 						em.persist(userTo);
 						em.persist(userFrom);
-						
+
 						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia ACCETTATA e amicizia stabilita con SUCCESSO.");
 						System.out.println("\nUSERBEAN: Richiesta d'amicizia ACCETTATA e amicizia stabilita con SUCCESSO!");
 					} else {
@@ -407,7 +592,7 @@ public class UserBean implements UserBeanRemote {
 						swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'amicizia RIFIUTATA e amicizia NON stabilita.");
 						System.out.println("\nUSERBEAN: Richiesta d'amicizia RIFIUTATA. Amicizia NON stabilita.");
 					}
-					
+
 
 
 
