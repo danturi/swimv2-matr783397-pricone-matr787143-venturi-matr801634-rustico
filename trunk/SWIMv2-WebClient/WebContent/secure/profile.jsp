@@ -169,12 +169,21 @@
 								out.write("<h1><strong>Il mio profilo</strong></h1>");
 							}
 							out.write("<p>&nbsp;</p>");
-							out.write("<p>&nbsp;</p>");
 							out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"
 									+ usr.getFirstname()
 									+ " "
 									+ usr.getLastname()
 									+ "</h1>");
+							// QUI CONTROLLARE SE USER PRINCIPAL A NULL
+							if (!usr.getEmail().equals(
+									request.getUserPrincipal().getName())) {
+								List<Ability> usrAbilityList = (List<Ability>) userBean.getAbilityList(usr.getEmail()).getData();
+								if(usrAbilityList!=null){
+									if(!usrAbilityList.isEmpty()){
+										out.write("<p><a href=\"/SWIMv2-WebClient/secure/askforhelp.jsp?toUser="+usr.getEmail()+"\"><img src=\"/SWIMv2-WebClient/images/askforhelp.jpg\" alt=\"askforhelp\" align=\"absmiddle\" /></a></p>");
+									}
+								}
+							}
 							out.write("</div>");
 							out.write("<div class=\"middle\">");
 							out.write("<div class=\"middleleft\">");
@@ -227,6 +236,7 @@
 								out.write("<p><a href=\"/SWIMv2-WebClient/secure/changeInfo.jsp\"><strong>Modifica informazioni</strong></a></p>");
 								out.write("<p>&nbsp;</p>");
 							}
+							
 							out.write("<p>&nbsp;</p>");
 							out.write("<h2>Rating</h2>");
 							out.write("<p>&nbsp;</p>");
