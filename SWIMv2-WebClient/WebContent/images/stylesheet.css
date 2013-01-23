@@ -160,6 +160,7 @@ a:hover    {
 	background-color: #FFF;
 	background-image: url(cont_backgr.jpg);
 	background-repeat: repeat-x;
+	min-height:600px;
 }
 
 
@@ -266,12 +267,13 @@ a:hover    {
 	font-size: 12px;
 	font-weight: bold;
 	text-align: right;
-	padding-bottom: 0px;
+	
 	
 }
 .formLabel, .search {
 	background-color: #DDE6FF;
 	font-size: 12px;
+	font-weight: bold;
 }
 
  .sort-by li{

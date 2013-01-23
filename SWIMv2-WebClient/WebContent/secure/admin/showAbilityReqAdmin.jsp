@@ -171,19 +171,7 @@ div.scroll {
 
 
 				</div>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+
 
 			</div>
 			<div class="contentright">
@@ -199,9 +187,7 @@ div.scroll {
 					<img src="<%=request.getContextPath()%>/images/omino_msg.jpg"
 						alt="omino_msg" width="121" height="159" align="right" />
 				</h2>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+				
 			</div>
 			<div style="clear: both;"></div>
 		</div>

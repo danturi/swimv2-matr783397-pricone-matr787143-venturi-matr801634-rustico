@@ -133,8 +133,8 @@ if(request.getAttribute("SendInfoForm")!=null){
         </tr>
         <tr>
           <th width="54" class="formStyle" scope="row">Sesso</th>
-          <td><input name="sex" type="radio" value="male" class="formLabel" id="sex" size="30" />Maschio
-         		 <input name="sex" type="radio" value="female" class="formLabel" id="sex" size="30" />Femmina</td>
+          <td><input name="sex" type="radio" value="Maschio" class="formLabel" id="sex" size="30" checked="checked"/>Maschio
+         		 <input name="sex" type="radio" value="Femmina" class="formLabel" id="sex" size="30" />Femmina</td>
         </tr>
         <tr>
           <th width="54" class="formStyle" scope="row">&nbsp;</th>
@@ -173,12 +173,7 @@ if(request.getAttribute("SendInfoForm")!=null){
         </tr>
       </table>
       </form>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
 </div>
 			<div class="contentright">
 				<h2>&nbsp;</h2>

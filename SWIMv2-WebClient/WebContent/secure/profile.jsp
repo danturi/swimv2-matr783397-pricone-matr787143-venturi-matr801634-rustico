@@ -150,7 +150,7 @@
 												if(existSentFriendReq && !existReceivedFriendReq){
 													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqhasbeensent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 												} else if (!existSentFriendReq && existReceivedFriendReq){
-													out.write("<img src=\"/SWIMv2-WebClient/images/friendreqalreadysent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
+													out.write("<a href=\""+request.getContextPath()+"/secure/friendReq.jsp\"><img src=\"/SWIMv2-WebClient/images/friendreqalreadysent.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/>");
 												} else {
 													out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=sendFriendReq&toUser="+usr.getEmail()+"\"><img src=\"/SWIMv2-WebClient/images/askforfriendship.jpg\" alt=\"gia_amici\" align=\"absmiddle\"/></a>");
 												}
@@ -179,10 +179,10 @@
 							out.write("<div class=\"middle\">");
 							out.write("<div class=\"middleleft\">");
 							out.write("<h2>Informazioni</h2>");
-							out.write("<table width=\"327\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">");
+							out.write("<table width=\"327\" border=\"0\" cellpadding=\"2\" cellspacing=\"8\">");
 							out.write("<tr>");
-							out.write("<td><h3>Email:</h3></td>");
-							out.write("<td class=\"formLabel\">&nbsp;</td>");
+							out.write("<td width=\"60\"><h3> Email:</h3></td>");
+							out.write("<td class=\"formLabel\">"+request.getUserPrincipal().getName()+"</td>");
 							out.write("</tr>");
 							out.write("<tr>");
 							out.write("<td width=\"60\"><h3> Genere:</h3></td>");
@@ -221,6 +221,12 @@
 							}
 							out.write("</tr>");
 							out.write("</table>");
+							if (usr.getEmail().equals(
+									request.getUserPrincipal().getName())) {
+								out.write("<p>&nbsp;</p>");
+								out.write("<p><a href=\"/SWIMv2-WebClient/secure/changeInfo.jsp\"><strong>Modifica informazioni</strong></a></p>");
+								out.write("<p>&nbsp;</p>");
+							}
 							out.write("<p>&nbsp;</p>");
 							out.write("<h2>Rating</h2>");
 							out.write("<p>&nbsp;</p>");

@@ -164,7 +164,64 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 						<img src="<%=request.getContextPath()%>/images/GIMP-file/omino_help.png" alt="omino_help"
 							width="268" height="281" border="0" align="left" />
 					</p>
-					<div class="login">
+					<div class="register">
+					<form id="registerForm" name="registerForm"
+						action="SWIMv2-WebClient/services/auth/register"
+						method="post">
+						<table width="230" border="0" cellspacing="2" class="imageright">
+							<tr>
+									<td><table width="230" border="0" cellspacing="9"
+											class="imageright">
+											<tr></tr>
+											<tr>
+												<th class="formStyle" scope="row"></th>
+												<td><h2>
+														<strong>Registrazione</strong>
+													</h2></td>
+											</tr>
+											<tr>
+											<td class="formStyle" scope="row">Nome</td>
+												<td><input name="fname" type="text"
+													class="formLabel" id="fname" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+											<td class="formStyle" scope="row">Cognome</td>
+												<td><input name="lname" type="text"
+													class="formLabel" id="lname" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+											<td class="formStyle" scope="row">Email</td>
+												<td><input name="email" type="text"
+													class="formLabel" id="email" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+											<td class="formStyle" scope="row">Password</td>
+												<td><input name="password1" type="password"
+													class="formLabel" id="password1" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+											<td class="formStyle" scope="row">Password (repeat)</td>
+												<td><input name="password2" type="password"
+													class="formLabel" id="password2" size="25" maxlength="40" /></td>
+											</tr>
+											<tr>
+												<th class="formStyle" scope="row">&nbsp;</th>
+												<td><p>
+														<input type="submit"  value="Register and Login" />
+													</p>
+												</td>
+											</tr>
+											</table>
+										<p>&nbsp;</p></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</div>
+				
+			</div>
+			<div class="contentright">
+			<div class="login">
 
 						<!-- did we already try to login and it failed? -->
 						<c:if test="false">
@@ -175,23 +232,20 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 								</h3>
 							</div>
 						</c:if>
+						
 						<form id="login" name="login" method="post"
 							action="j_security_check">
-							<table width="230" border="0" cellspacing="2" class="imageright">
-								<tr>
+							
 									<td><table width="230" border="0" cellspacing="2"
 											class="imageright">
 											<tr></tr>
 											<tr>
 												<th class="formStyle" scope="row"></th>
-												<td><h3>
+												<td><h2>
 														<strong>Accedi a SWIM</strong>
-													</h3></td>
+													</h2></td>
 											</tr>
-											<tr>
-												<th class="formStyle" scope="row"></th>
-												<td>&nbsp;</td>
-											</tr>
+											
 											<tr>
 												<td class="formStyle" scope="row">Email</td>
 												<td><input name="j_username" type="text"
@@ -207,64 +261,15 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 												<th class="formStyle" scope="row">&nbsp;</th>
 												<td><p>
 														<input type="submit" name="login2" id="login2"
-															value="login" />
+															value="Login" />
 													</p>
-													<p>
-														oppure <a href="registration.html" title="registration"
-															target="_parent">Iscriviti a Swim</a>
-													</p></td>
+													</td>
 											</tr>
 										</table>
-										<p>&nbsp;</p></td>
-								</tr>
-							</table>
 						</form>
 					</div>
 
-				</div>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-			</div>
-			<div class="contentright">
-			<div class="register">
-					<form id="registerForm" name="registerForm"
-						action="<%=request.getContextPath()%>/services/auth/register"
-						method="post">
-						<fieldset>
-							<legend>Registration</legend>
-
-							<div>
-								<label for="fname">First Name</label> <input type="text"
-									id="fname" name="fname" />
-							</div>
-							<div>
-								<label for="lname">Last Name</label> <input type="text"
-									id="lname" name="lname" />
-							</div>
-
-							<div>
-								<label for="email">Email</label> <input type="text" id="email"
-									name="email" />
-							</div>
-							<div>
-								<label for="password1">Password</label> <input type="password"
-									id="password1" name="password1" />
-							</div>
-							<div>
-								<label for="password2">Password (repeat)</label> <input
-									type="password" id="password2" name="password2" />
-							</div>
-
-							<div class="buttonRow">
-								<input type="submit" value="Register and Login" />
-							</div>
-
-						</fieldset>
-					</form>
-				</div>
 				<h2>Ecco i nostri iscritti!</h2>
-				<p>&nbsp;</p>
 				<div id="slideCont"
 					style="position: relative; z-index: 1; width: 220px; left: 0px; overflow: hidden;">
 					<div id="slideA"
@@ -274,7 +279,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 							src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
-						<div id="slideB"
+						<--<div id="slideB"
 							style="position: relative; z-index: 1; top: 0px; left: 0px; width: 200px; overflow: hidden;">
 							<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
 								src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img

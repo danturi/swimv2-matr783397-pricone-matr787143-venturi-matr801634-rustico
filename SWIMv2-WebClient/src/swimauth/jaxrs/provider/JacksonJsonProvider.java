@@ -23,12 +23,12 @@ public class JacksonJsonProvider implements ContextResolver<ObjectMapper> {
     }
  
     public JacksonJsonProvider() {
-        System.out.println("Constructor called: com.nabisoft.rs.provider.MyJacksonProvider");
+        System.out.println("Constructor called: swimauth.jaxrs.provider.JacksonProvider");
     }
      
     @Override
     public ObjectMapper getContext(Class<?> type) {
-        System.out.println("MyJacksonProvider.getContext(): "+type);
+        System.out.println("JacksonProvider.getContext(): "+type);
         return MAPPER;
     } 
 }

@@ -111,19 +111,22 @@
       		if(newRequest){
       		System.out.println(friendReqList);
   			out.write("<h2>Hai ricevuto alcune richieste d'amicizia!</h2>");
-  			out.write("<table width=\"100%\" border=\"\" cellpadding=\"8\" cellspacing=\"5\">");
+  			
       			for(FriendshipRequest freq: friendReqList){
       				if(freq.getAcceptanceStatus()==false){
+      				out.write("<table width=\"100%\" border=\"\" cellpadding=\"8\" cellspacing=\"5\">");
       				out.write("<tr>");
-      				out.write("<td width=\"60%\" align=\"center\"><h1>"+freq.getFromUser().getFirstname()+" "+freq.getFromUser().getLastname()+"</h1></td>");
+      				out.write("<td width=\"60%\" align=\"center\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+freq.getFromUser().getEmail()+"\"><h1>"+freq.getFromUser().getFirstname()+" "+freq.getFromUser().getLastname()+"</h1></a></td>");
       				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
       				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=approve\"><img src=\"/SWIMv2-WebClient/images/accetta.jpg\" alt=\"accetta\" align=\"absmiddle\" /></a></td>");
       				out.write("<td width=\"20%\" align=\"center\" valign=\"middle\">");
       				out.write("<a href=\"/SWIMv2-WebClient/Control?actionType=replyToFriendReq&toUser="+freq.getFromUser().getEmail()+"&value=decline\"><img src=\"/SWIMv2-WebClient/images/rifiuta.jpg\" alt=\"rifiuta\" align=\"absmiddle\" /></a></td>");
       				out.write("</tr>");
+      				out.write("</table>");
+      				out.write("<h3>&nbsp;</h3>");
       				}
       			}
-      			out.write("</table>");
+      			
       		} else {
       			out.write("<h2>Non è stata ricevuta nessuna richiesta d'amicizia.</h2>");
       		}
@@ -141,22 +144,7 @@
          
 
       </div>
-      <p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+     
 </div>
 			<div class="contentright">
 			  <h2>&nbsp;</h2>
