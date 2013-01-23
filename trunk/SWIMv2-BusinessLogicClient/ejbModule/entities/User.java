@@ -79,20 +79,21 @@ public class User implements Serializable {
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Date registeredOn;
-	@Size(max = 128)
+	@Column(length=128)
 	private String firstname;
-	@Size(max = 128)
+	@Column(length=128)
 	private String lastname;
-	private Character sex;
-	@Size(max = 64)
+	@Column(length=16)
+	private String sex;
+	@Column(length=8)
 	private String age;
-	@Size(max = 128)
+	@Column(length=128)
 	private String city;
-	@Size(max = 64)
+	@Column(length=128)
 	private String country;
-	@Size(max = 128)
+	@Column(length=128)
 	private String occupation;
-	@Size(max = 64)
+	@Column(length=128)
 	private String tel;
 	@Max(value=5)  @Min(value=0)//if you know range of your decimal fields consider using these annotations to enforce field validation
 	private Float rating;
@@ -227,11 +228,11 @@ public class User implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public Character getSex() {
+	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(Character sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 	
