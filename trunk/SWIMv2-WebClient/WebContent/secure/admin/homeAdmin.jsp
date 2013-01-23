@@ -125,7 +125,7 @@
 			<div class="contentright">
 			  <h2>&nbsp;</h2>
 			  <h2>Le tue notifiche:</h2>
-			  <p><a href="<%=request.getContextPath()%>/secure/admin/showAbilityReq.jsp">Richieste aggiunta abilit&agrave;</a></p>
+			  <p><a href="<%=request.getContextPath()%>/secure/admin/showAbilityReqAdmin.jsp">Richieste aggiunta abilit&agrave;</a></p>
 				<h2>&nbsp;</h2>
 				<h2><img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="121" height="159" align="right" /></h2>
 				<p>&nbsp;</p>
