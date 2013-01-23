@@ -149,7 +149,7 @@ if(request.getParameter("sendinfoform")!=null){
           <td><input name="job" type="text" class="formLabel" id="job" size="30" /></td>
         </tr>
         <tr>
-          <th width="54" class="formStyle" scope="row">Telefono</th>
+          <th width="54" class="formStyle" scope="row">Telefono <%=request.getParameter("QT")%></p></th>
           <td><input name="tel" type="text" class="formLabel" id="tel" size="30" /></td>
         </tr>
         
