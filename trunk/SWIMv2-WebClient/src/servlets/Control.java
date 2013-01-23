@@ -233,9 +233,21 @@ public class Control extends HttpServlet {
 		String job = request.getParameter("job");
 		String tel = request.getParameter("tel");
 		
-		
-		
+		swimResponse = userBean.changeUserInfo(request.getUserPrincipal().getName(), lastname, firstname, city, sex, age, job, tel);
 
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("SendInfoForm", "ok");
+				System.out.println("\n**** CONTROL: QUI CHANGEINFO SendInfoForm ok***\n");
+			} else {
+				request.setAttribute("SendInfoForm", "fail");
+			}
+		} else {
+			request.setAttribute("SendInfoForm", "fail");
+		}
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/changeInfo.jsp?sendinfoform=false");
+		dispatcher.forward(request, response);
 		
 	}
 
