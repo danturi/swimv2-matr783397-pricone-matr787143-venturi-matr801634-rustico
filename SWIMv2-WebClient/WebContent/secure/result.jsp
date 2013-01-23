@@ -111,51 +111,64 @@
               	<div class="middle">
 		    	  <h1>Lista Utenti</h1>
 					<p>&nbsp;</p>
-					<%
-					if(request.getAttribute("FoundResult").equals("ok")){
-						List<User> resultList = (List<User>) request.getAttribute("MatchingList");
-						for(User usr: resultList){
-							out.write("<p>Nome:"+usr.getFirstname()+" Cognome:"+usr.getLastname()+" Email:"+usr.getEmail()+"</p>");
-						}
-						
-					} else if(request.getAttribute("FoundResult").equals("fail")){
-						
-					}
-					request.setAttribute("MatchingList",null);
-					request.setAttribute("FoundResult",null);
-					%>
-		    	  <p>Ecco chi ha le carratteristiche che cercavi:</p>
-              	
-                        <div id="user-list">
-                          <input class="search" size="30" placeholder="Cerca utente" />
-                          <ul class="sort-by">
-                            <li class="sort btn" data-sort="name">Ordina per nome (A/Z - Z/A)</li>
-                            
-                          </ul>
-                          <ul class="filter">
-                            
-                           
-                           </ul>
-                           <div class="wrapper">
-								<ul class="list">
-								<% if(userList!=null){
-									
-									for(User u: userList){
+
+								<%
+								if(request.getAttribute("FoundResult").equals("ok")){
+									List<User> resultList = (List<User>) request.getAttribute("MatchingList");
+									if(!resultList.isEmpty()){
+										out.write("<p>Ecco chi ha le carratteristiche che cercavi:</p>");
+										out.write("<div id=\"user-list\">");
+										out.write("<input class=\"search\" size=\"30\" placeholder=\"Cerca utente\" />");
+										out.write("<ul class=\"sort-by\">");
+										out.write("<li class=\"sort btn\" data-sort=\"name\">Ordina per nome (A/Z - Z/A)</li>");
+										out.write("</ul>");
+										out.write("<ul class=\"filter\">");
+										out.write("</ul>");
+										out.write("<div class=\"wrapper\">");
+										out.write("<ul class=\"list\">");
+										for(User usr: resultList){
+											//out.write("<p>Nome:"+usr.getFirstname()+" Cognome:"+usr.getLastname()+" Email:"+usr.getEmail()+"</p>");
+											out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										}
+										out.write("</ul>");
+										out.write("</div>");
+										out.write("</div>");
+									} else {
+										out.write("<h2>Nessun utente corrisponde ai criteri di ricerca selezionati.</h2>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<p>&nbsp;</p>");
+							
 										
-										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
 									}
-								} else {
-									out.write("<h2>Errore: nessun utente trovato.</h2>");
+								} else if(request.getAttribute("FoundResult").equals("fail")){
+										
+									out.write("<h2>Si è verificato un problema. Nessun utente trovato.</h2>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+									out.write("<p>&nbsp;</p>");
+								
+									
 								}
+								request.setAttribute("MatchingList",null);
+								request.setAttribute("FoundResult",null);
 								%>
-        
-                                
-                            </ul>
-                            
-                            </div>
-                  </div>
-                        
+   
            		</div>
+           		<p>&nbsp;</p>
+           		<p>&nbsp;</p>
+           		<p>&nbsp;</p>
+           		<p>&nbsp;</p>
+           		<p>&nbsp;</p>
+           	
 		    </div>
 			<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="contentRight" -->
 			<div class="contentright">
