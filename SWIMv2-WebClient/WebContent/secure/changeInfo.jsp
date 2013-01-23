@@ -99,7 +99,18 @@ if(request.getParameter("sendinfoform")!=null){
 <div class="contentleft">
 	  <h1>Modifica informazioni profilo</h1>
 <p>&nbsp;</p>
+<%
+if(request.getAttribute("SendInfoForm")!=null){
+	if(request.getAttribute("SendInfoForm").equals("ok")){
+		out.write("<h2><span style=\"color: red;\">I tuoi dati sono stati modificati correttamente.</span><h2>");
+	} else {
+		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Dati non inseriti.</span><h2>");
 
+	}
+	
+}
+%>
+<p>&nbsp;</p>
 <h6>Non &egrave; obbligatorio compilare tutti i campi</h6>
 <p>&nbsp;</p>
 <form name="changeinfoform" action="<%=request.getContextPath()%>/secure/changeInfo.jsp?sendinfoform=true" method="post">
