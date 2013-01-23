@@ -152,6 +152,8 @@ public class UserBean implements UserBeanRemote {
 		SwimResponse swimResponse;
 		boolean onlyFriends = false;
 		boolean filteredByCity = false;
+		boolean filteredByAb1 = false;
+		boolean filteredByAb2 = false;
 		boolean filteredByLastname = false;
 		boolean filteredByFirstname = false;
 		if(friends!=null){
@@ -160,65 +162,29 @@ public class UserBean implements UserBeanRemote {
 
 		User usr = find(userPrincipal);
 		if(usr!=null){
+			List<User> globalList = new ArrayList<User>();
 			List<User> resultList = new ArrayList<User>();
 			List<User> resultList2 = new ArrayList<User>();
 			List<User> resultList3 = new ArrayList<User>();
-			//List<User> resultList4 = new ArrayList<User>();
-			List<Ability> abilitySet = (List<Ability>) getAbilitySet().getData();
+			List<User> resultList4 = new ArrayList<User>();
+			
+			
 			if(onlyFriends){
-				List<User> usrFriendList = (List<User>) getFriendsList(userPrincipal).getData();
-
-				for(User tryUser: usrFriendList){ // FILTRO PER CITTA'
-					if(!city.equals("") && tryUser.getCity()!=null){
-						if(tryUser.getCity().equals(city)) resultList.add(tryUser);
-					} else {
-						resultList.add(tryUser);
-					}
+				
+				List<User> globalListOf1 = (List<User>) getFriendsList(userPrincipal).getData();
+				List<User> globalListOf2 = (List<User>) getReversedFriendsList(userPrincipal).getData();
+				for(User usr1: globalListOf1){
+					globalList.add(usr1);
 				}
-
-				/*for(User tryUser2: resultList){// FILTRO PER ABILITA'
-					tryUser2.getAbilityList().size();
-					if(!ability.equals("0")){
-						for(Ability ab: tryUser2.getAbilityList()){
-
-							if(!ab.getAbilityId().equals(Long.valueOf(ability))){
-								resultList.remove(tryUser2);
-							}
-						}
-					}
-					if(!ability2.equals("0")){
-						for(Ability ab: tryUser2.getAbilityList()){
-
-							if(!ab.getAbilityId().equals(Long.valueOf(ability2))){
-								resultList.remove(tryUser2);
-							}
-						}
-					}
-				}*/
-
-				if(!lastname.equals("")){// FILTRO PER COGNOME
-					for(User tryUser3: resultList){
-						if(tryUser3.getLastname().equals(lastname)){
-							resultList2.add(tryUser3);
-						}
-					}
+				for(User usr2: globalListOf2){
+					if(!globalList.contains(usr2)) globalList.add(usr2);
 				}
-
-				if(!firstname.equals("")){// FILTRO PER NOME
-					for(User tryUser4: resultList2){
-						if(tryUser4.getFirstname().equals(firstname)){
-							resultList3.add(tryUser4);
-						}
-					}
-				}
-
-				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList3);
-				return swimResponse;
-
+				
+				System.out.println("\n**** USERBEAN: globalList: "+globalList);
 			} else {
 				TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
-				List<User> globalList = query.getResultList();
-
+				globalList = query.getResultList();
+			}
 
 				for(User tryUser: globalList){ // FILTRO PER CITTA'
 					if(!city.equals("") && tryUser.getCity()!=null){
@@ -231,44 +197,54 @@ public class UserBean implements UserBeanRemote {
 					}
 				}
 				//System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
-				/*for(User tryUser2: resultList){// FILTRO PER ABILITA'
+				for(User tryUser2: resultList){// FILTRO PER ABILITA'
 					tryUser2.getAbilityList().size();
+		
 					if(!ability.equals("0")){
+						filteredByAb1=true;
 						for(Ability ab: tryUser2.getAbilityList()){
 
-							if(!ab.getAbilityId().equals(Long.valueOf(ability))){
-								resultList.remove(tryUser2);
+							if(ab.getAbilityId().equals(Long.valueOf(ability)) && !resultList2.contains(tryUser2)){
+								resultList2.add(tryUser2);
 							}
 						}
 					}
+					
 					if(!ability2.equals("0")){
+						filteredByAb2=true;
 						for(Ability ab: tryUser2.getAbilityList()){
 
-							if(!ab.getAbilityId().equals(Long.valueOf(ability2))){
-								resultList.remove(tryUser2);
+							if(ab.getAbilityId().equals(Long.valueOf(ability2)) && !resultList2.contains(tryUser2)){
+								resultList2.add(tryUser2);
 							}
 						}
 					}
-				}*/
+					
+			
+					
+				}
+				if(filteredByAb1 || filteredByAb2) resultList=resultList2;
+				System.out.println("\n**** USERBEAN: "+filteredByAb1+"  "+filteredByAb2);
 
 				if(!lastname.equals("")){// FILTRO PER COGNOME
+					filteredByLastname= true;
 					for(User tryUser3: resultList){
 						if(tryUser3.getLastname().equals(lastname)){
 							filteredByLastname= true;
-							resultList2.add(tryUser3);
+							resultList3.add(tryUser3);
 						}
 					}
-					if(filteredByLastname) resultList=resultList2;
+					if(filteredByLastname) resultList=resultList3;
 				}
 				//System.out.println("\n**** USERBEAN: MATCH LIST2: "+resultList2);
 				if(!firstname.equals("")){// FILTRO PER NOME
 					for(User tryUser4: resultList){
 						if(tryUser4.getFirstname().equals(firstname)){
 							filteredByFirstname= true;
-							resultList3.add(tryUser4);
+							resultList4.add(tryUser4);
 						}
 					}
-					if(filteredByFirstname) resultList=resultList3;
+					if(filteredByFirstname) resultList=resultList4;
 				}
 
 				/*if(filteredByFirstname){
@@ -290,7 +266,7 @@ public class UserBean implements UserBeanRemote {
 
 
 
-			}
+			
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"");
 			return swimResponse;
