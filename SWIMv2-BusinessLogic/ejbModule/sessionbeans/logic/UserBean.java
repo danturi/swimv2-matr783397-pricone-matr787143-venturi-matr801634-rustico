@@ -186,13 +186,16 @@ public class UserBean implements UserBeanRemote {
 			}
 
 			for(User tryUser: globalList){ // FILTRO PER CITTA'
-				if(!city.equals("") && tryUser.getCity()!=null){
-					if(tryUser.getCity().equals(city)) {
-						filteredByCity = true;
-						resultList.add(tryUser);
+				if(!city.equals("")){
+					filteredByCity = true;
+					if(tryUser.getCity()!=null){
+						if(tryUser.getCity().equalsIgnoreCase(city)) {
+							resultList.add(tryUser);
+						}
 					}
+					
 				} else {
-					resultList.add(tryUser);
+					resultList = globalList;
 				}
 			}
 			//System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
@@ -226,26 +229,28 @@ public class UserBean implements UserBeanRemote {
 			if(!lastname.equals("")){// FILTRO PER COGNOME
 				filteredByLastname= true;
 				for(User tryUser3: resultList){
-					if(tryUser3.getLastname().equals(lastname)){
+					if(tryUser3.getLastname().equalsIgnoreCase(lastname)){
 						filteredByLastname= true;
 						resultList3.add(tryUser3);
 					}
 				}
 				if(filteredByLastname) resultList=resultList3;
 			}
-			//System.out.println("\n**** USERBEAN: MATCH LIST2: "+resultList2);
+			System.out.println("\n**** USERBEAN: MATCH LIST3: "+resultList3);
 			if(!firstname.equals("")){// FILTRO PER NOME
+				filteredByFirstname= true;
 				for(User tryUser4: resultList){
-					if(tryUser4.getFirstname().equals(firstname)){
+					if(tryUser4.getFirstname().equalsIgnoreCase(firstname)){
 						filteredByFirstname= true;
 						resultList4.add(tryUser4);
 					}
 				}
 				if(filteredByFirstname) resultList=resultList4;
 			}
+			System.out.println("\n**** USERBEAN: MATCH LIST4: "+resultList4);
 
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList);
-			System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+			System.out.println("\n**** USERBEAN: MATCH LIST: "+resultList);
 			return swimResponse;
 
 		} else {
