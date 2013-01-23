@@ -38,6 +38,15 @@ public class Control extends HttpServlet {
 		if(request.getParameter("actionType")!=null){
 			if(request.getParameter("actionType").equals("sendFriendReq")) sendFriendshipReq(request, response);
 			if(request.getParameter("actionType").equals("replyToFriendReq")) replyToFriendshipReq(request, response);
+			if(request.getParameter("actionType").equals("replyToAbilityReq")) {
+				if(request.isUserInRole("ADMINISTRATOR")){
+					replyToAbilityReq(request, response); 
+				} else {
+					request.setAttribute("ReplyResult", null);
+				}
+
+			}
+
 		} else {
 
 			request.setAttribute("ReplyResult", "fail");
@@ -50,7 +59,8 @@ public class Control extends HttpServlet {
 		}
 
 
-
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
+		dispatcher.forward(request, response);
 
 
 
@@ -106,6 +116,8 @@ public class Control extends HttpServlet {
 			dispatcher.forward(request, response);
 		} else{
 			request.setAttribute("ReplyResult", "fail");
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/friendReq.jsp");
+			dispatcher.forward(request, response);
 		}
 
 	}
@@ -143,10 +155,10 @@ public class Control extends HttpServlet {
 
 	public void sendAbilityRequest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		SwimResponse swimResponse = null;
-		//PrintWriter out = response.getWriter();
+
 		System.out.println("\n**** CONTROL: QUI SEND_ABILITY_REQ***\n");
 		String abilityId = request.getParameter("abilityrequested");
-		//out.write("<p>"+abilityId+"</p>");
+
 		String description = request.getParameter("comments");
 
 		swimResponse = userBean.sendAbilityReq(request.getUserPrincipal().getName(), Long.valueOf(abilityId), description);
@@ -162,7 +174,7 @@ public class Control extends HttpServlet {
 			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("abilityAlreadyOwned")){
 
 				request.setAttribute("AbilityReqSent", "abilityAlreadyOwned");
-				
+
 			} else {
 				request.setAttribute("AbilityReqSent", "fail");
 			}
@@ -174,6 +186,38 @@ public class Control extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
+	public void replyToAbilityReq(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+
+		boolean replyValue = false;
+
+		SwimResponse swimResponse = null;
+
+		if(request.getParameter("toUser")!=null && request.getParameter("abilityId")!=null && request.getParameter("value")!=null){
+			
+			if(request.getParameter("value").equals("approve")) replyValue = true;
+
+			swimResponse = userBean.replyToAbilityReq(request.getParameter("toUser"), Long.valueOf(request.getParameter("abilityId")), replyValue);
+			if(swimResponse!=null){
+				if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+					request.setAttribute("ReplyResult", "ok");
+					System.out.println("******CONTROL : QUI ARRIVA SUCCESS ok ******");
+				} else {
+					request.setAttribute("ReplyResult", swimResponse.getStatusMsg());
+				}
+			} else {
+				request.setAttribute("ReplyResult", "systemfail");
+			}
+			System.out.println("******CONTROL: qui ReplyResult: "+request.getAttribute("ReplyResult"));
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/showAbilityReqAdmin.jsp");
+			dispatcher.forward(request, response);
+	
+		} else{
+			request.setAttribute("ReplyResult", "urlfail");
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/showAbilityReqAdmin.jsp");
+			dispatcher.forward(request, response);
+		}
+
+	}
 
 
 
