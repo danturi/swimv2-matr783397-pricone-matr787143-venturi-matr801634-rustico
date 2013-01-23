@@ -61,7 +61,6 @@ UserBeanRemote userBean;
 Context context = new InitialContext();
 userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 User userPrincipal = userBean.find(request.getUserPrincipal().getName());
-SwimResponse abilitySetRsp = userBean.getAbilitySet();	
 if(request.getParameter("sendinfoform")!=null){
 	if(request.getParameter("sendinfoform").equals("true")){
 		request.setAttribute("SendInfoForm", "sending");
