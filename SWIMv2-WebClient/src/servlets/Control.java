@@ -57,6 +57,9 @@ public class Control extends HttpServlet {
 		if(request.getAttribute("AbilityReqSent")!=null){
 			if(request.getAttribute("AbilityReqSent").equals("sending")) sendAbilityRequest(request, response);
 		}
+		if(request.getAttribute("SendInfoForm")!=null){
+			if(request.getAttribute("SendInfoForm").equals("sending")) changeUserInfo(request, response);
+		}
 
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
@@ -217,6 +220,22 @@ public class Control extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 
+	}
+	
+	public void changeUserInfo(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		SwimResponse swimResponse = null;
+		System.out.println("\n**** CONTROL: QUI CHANGE_USER_INFO***\n");
+		String lastname = request.getParameter("lastname");
+		String firstname = request.getParameter("firstname");
+		String city = request.getParameter("place");
+		String sex = request.getParameter("sex");
+		String age = request.getParameter("age");
+		String job = request.getParameter("job");
+		String tel = request.getParameter("tel");
+		
+		
+
+		
 	}
 
 
