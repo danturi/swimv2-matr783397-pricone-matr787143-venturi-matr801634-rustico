@@ -151,7 +151,6 @@ public class UserBean implements UserBeanRemote {
 	public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String friends){
 		SwimResponse swimResponse;
 		boolean onlyFriends = false;
-		boolean filteredByCity = false;
 		boolean filteredByAb1 = false;
 		boolean filteredByAb2 = false;
 		boolean filteredByLastname = false;
@@ -187,13 +186,12 @@ public class UserBean implements UserBeanRemote {
 
 			for(User tryUser: globalList){ // FILTRO PER CITTA'
 				if(!city.equals("")){
-					filteredByCity = true;
 					if(tryUser.getCity()!=null){
 						if(tryUser.getCity().equalsIgnoreCase(city)) {
 							resultList.add(tryUser);
 						}
 					}
-					
+
 				} else {
 					resultList = globalList;
 				}
@@ -481,29 +479,44 @@ public class UserBean implements UserBeanRemote {
 	}
 
 	@Override
-	public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description) {
+	public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, Long abilityId, String description) {
 		SwimResponse swimResponse = null;
 		User userFrom = find(emailUserFrom);
 		User userTo = find(emailUserTo);
 		if(userFrom!=null && userTo!=null && userFrom!=userTo){// se i due utenti esistono nel sistema (e non sono lo stesso utente)...
+			Ability chosenAbility = em.find(Ability.class, abilityId);
+			if(chosenAbility!=null){
+				userTo.getHelpReqList().size();
+				List<HelpRequest> helpReqListUserTo = userTo.getHelpReqList();
+				for(HelpRequest helpReq: helpReqListUserTo){ //FILTRO RICHIESTE AIUTO A STESSO UTENTE CON STESSA ABILITA'
+					if(helpReq.getFromUser().equals(userFrom) && helpReq.getAbilityId().getAbilityId().equals(abilityId) && !helpReq.getIsEvaluated().booleanValue()){
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"reqAlreadySent");
+						System.out.println("\nUSERBEAN: Richiesta d'aiuto NON inviata perchè già presente una simile.\n");
+						return swimResponse;
+					}
+				}
+				HelpRequest helpReq = new HelpRequest();
+				helpReq.setFromUser(userFrom);
+				helpReq.setToUser(userTo);
+				helpReq.setAbilityId(chosenAbility);
+				helpReq.setIsEvaluated(false);
+				helpReq.setAcceptanceStatus(false);
+				helpReq.setDatetime(new Date());
+				helpReq.setDescription(description);
+				userFrom.getSentHelpReqList().add(helpReq);
+				userTo.getHelpReqList().add(helpReq);
+				em.persist(userTo);
+				em.persist(userFrom);
 
-			HelpRequest helpReq = new HelpRequest();
-			helpReq.setFromUser(userFrom);
-			helpReq.setToUser(userTo);
-			helpReq.setAcceptanceStatus(false);
-			helpReq.setDatetime(new Date());
-			helpReq.setDescription(description);
-			userFrom.getSentHelpReqList().add(helpReq);
-			userTo.getHelpReqList().add(helpReq);
-			em.persist(userTo);
-			em.persist(userFrom);
+				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+				System.out.println("\nUSERBEAN: Richiesta d'aiuto inviata con SUCCESSO!\n");
 
-			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta d'aiuto inviata con SUCCESSO!.");
-			System.out.println("\nUSERBEAN: Richiesta d'aiuto inviata con SUCCESSO!\n");
-
-
+			} else {
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidAbility");
+				System.out.println("USERBEAN (sendHelpReq): Abilità non valido.\n");
+			}
 		} else {
-			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 			System.out.println("USERBEAN (sendHelpReq): Utente non valido.\n");
 		}
 		return swimResponse;
