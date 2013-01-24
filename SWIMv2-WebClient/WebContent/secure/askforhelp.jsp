@@ -73,12 +73,7 @@
 		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 		User usr = null;
 		SwimResponse abilitySetRsp = userBean.getAbilitySet();	
-		if(request.getParameter("toUser")!=null){
-			usr = userBean.find(request.getParameter("toUser"));
-			if(usr!=null){
-				
-			}
-		}
+		
 	
 	%>
 
@@ -151,7 +146,7 @@
 							out.write("<td>&nbsp;</td>");
 							out.write("</tr>");
 							out.write("<tr>");
-							out.write("<td><textarea name=\"comments\" cols=\"60\" rows=\"10\" maxlength=\"10000\">Descrivi all'utente la tua situazione e quello di cui hai bisogno.</textarea></td>");
+							out.write("<td><textarea name=\"comments\" class=\"formLabel\"cols=\"60\" rows=\"10\" maxlength=\"10000\">Descrivi all'utente la tua situazione e quello di cui hai bisogno.</textarea></td>");
 							out.write("</tr>");
 							out.write("<tr>");
 							out.write("<th width=\"54\" class=\"formStyle\" scope=\"row\">&nbsp;</th>");

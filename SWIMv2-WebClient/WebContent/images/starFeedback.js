@@ -18,8 +18,8 @@ function star_vota(QT)
   
   //document.getElementById('STAR_RATING').innerHTML = star_output;
   
-  window.location.href="/SWIMv2-WebClient/makeFeed.jsp?vote="+QT
-  
+  //window.location.href="/SWIMv2-WebClient/secure/makeFeed.jsp?vote="+QT
+  window.location.href= window.location.href+"&vote="+QT
 
   
 }
