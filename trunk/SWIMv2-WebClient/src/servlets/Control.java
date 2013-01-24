@@ -64,6 +64,9 @@ public class Control extends HttpServlet {
 		if(request.getAttribute("HelpReqSent")!=null){
 			if(request.getAttribute("HelpReqSent").equals("sending")) sendHelpRequest(request, response);
 		}
+		if(request.getAttribute("FeedSent")!=null){
+			if(request.getAttribute("FeedSent").equals("sending")) sendFeedback(request, response);
+		}
 
 		//QUI SETTARE A NULL TUTTI GLI ATTRIBUTI PRIMA DELLA REDIRECT
 		//RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
@@ -333,6 +336,50 @@ public class Control extends HttpServlet {
 		System.out.println("******CONTROL: qui ReplyResult: "+request.getAttribute("ReplyResult"));
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/showHelpReq.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	public void sendFeedback(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		
+		SwimResponse swimResponse = null;
+
+		System.out.println("\n**** CONTROL: QUI SEND_FEED***\n");
+		String toUser = request.getParameter("toUser");
+		String reqId = request.getParameter("reqId");
+		String vote = request.getParameter("vote") + ".0f";
+		String description = request.getParameter("comments");
+		System.out.println("\n**** CONTROL: QUI ARRIVA 1 ***"+toUser+reqId+vote);
+		if(toUser!=null && reqId!=null && vote!=null){
+			System.out.println("\n**** CONTROL: QUI ARRIVA 2 ***\n");
+			swimResponse = userBean.sendFeedback(request.getUserPrincipal().getName(), toUser, reqId, vote, description);
+
+			if(swimResponse!=null){
+				System.out.println("*******CONTROL: QUI FEEDSENT = "+swimResponse.getStatusMsg());
+				if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+					request.setAttribute("FeedSent", "ok");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqNotSuitable")){
+					request.setAttribute("FeedSent", "reqNotSuitable");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidReq")){
+					request.setAttribute("FeedSent", "noValidReq");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidUser")){
+					request.setAttribute("FeedSent", "noValidUser");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noSuchRequestFound")){
+					request.setAttribute("FeedSent", "noSuchRequestFound");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("feedAlreadySent")){
+					request.setAttribute("FeedSent", "feedAlreadySent");
+				}  else {
+					request.setAttribute("FeedSent", "fail");
+				}
+			} else {
+				request.setAttribute("FeedSent", "fail");
+			}
+		} else {
+			request.setAttribute("FeedSent", "fail");
+		}
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/feedbacksent.jsp");
+		dispatcher.forward(request, response);
+		
+		
 	}
 
 

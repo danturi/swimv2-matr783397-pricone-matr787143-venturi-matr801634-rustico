@@ -221,6 +221,13 @@ div.scroll {
           				//out.write("<p>&nbsp;</p>");
           				out.write("<p>"+helpReq.getDescription()+"</p>");
           				out.write("</div>");
+          				if(helpReq.getIsEvaluated() && helpReq.getAcceptanceStatus()==true){
+          					if(helpReq.getFeedbackId()!=null){
+              					out.write("<h3>Utente già valutato per questa prestazione.</h3>");
+          					} else {
+                  				out.write("<p><a href=\"/SWIMv2-WebClient/secure/makeFeed.jsp?toUser="+helpReq.getToUser().getEmail()+"&reqId="+helpReq.getHelpReqId()+"\"><img src=\"/SWIMv2-WebClient/images/leavefeedback.jpg\" alt=\"leavefeedback\"/></a>");
+          					}
+          				}
           				out.write("<p>&nbsp;</p>");
           				out.write("<p>&nbsp;</p>");
           			}

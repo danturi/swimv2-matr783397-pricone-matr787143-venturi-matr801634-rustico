@@ -140,7 +140,7 @@
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <td><textarea name="comments" cols="60" rows="10" maxlength="10000">Scrivi qui una motivazione per cui ti ritieni idoneo alla competenza selezionata sopra.
+          <td><textarea name="comments"  class="formLabel" cols="60" rows="10" maxlength="10000">Scrivi qui una motivazione per cui ti ritieni idoneo alla competenza selezionata sopra.
 			</textarea></td>
         </tr>
         <tr>
