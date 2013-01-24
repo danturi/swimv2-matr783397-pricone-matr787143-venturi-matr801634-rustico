@@ -72,6 +72,8 @@ public interface UserBeanRemote {
     
     public SwimResponse replyToHelpReq(String emailUserFrom, String emailUserTo, Long reqId, boolean replyValue);
     
+    public SwimResponse sendFeedback(String emailUserFrom, String emailUserTo, String reqId, String vote, String description);
+    
     
     
 }

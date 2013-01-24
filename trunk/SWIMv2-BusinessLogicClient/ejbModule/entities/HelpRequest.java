@@ -50,8 +50,9 @@ public class HelpRequest implements Serializable {
     private Date datetime;
     @Column(length = 10000)
 	private String description;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "helpReqId")
-    private Feedback feedback;
+    @JoinColumn(name = "FeedbackId", referencedColumnName = "FeedbackId")
+    @OneToOne(optional = false)
+    private Feedback feedbackId;
     @JoinColumn(name = "ToUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
     private User toUser;
@@ -104,12 +105,12 @@ public class HelpRequest implements Serializable {
     public void setDescription(String description){
     	this.description = description;
     }
-    public Feedback getFeedback() {
-        return feedback;
+    public Feedback getFeedbackId() {
+        return feedbackId;
     }
 
-    public void setFeedback(Feedback feedback) {
-        this.feedback = feedback;
+    public void setFeedbackId(Feedback feedbackID) {
+        this.feedbackId = feedbackId;
     }
 
     public User getToUser() {
