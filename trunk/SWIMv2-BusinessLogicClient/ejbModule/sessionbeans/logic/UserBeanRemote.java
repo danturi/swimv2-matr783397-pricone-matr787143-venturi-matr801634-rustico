@@ -67,7 +67,7 @@ public interface UserBeanRemote {
     
     public SwimResponse sendFriendshipReq(String emailUserFrom, String emailUserTo);
     
-    public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, String description);
+    public SwimResponse sendHelpReq(String emailUserFrom, String emailUserTo, Long abilityId, String description);
     
     public SwimResponse sendAbilityReq(String emailUserFrom, Long abilityId, String description);
     

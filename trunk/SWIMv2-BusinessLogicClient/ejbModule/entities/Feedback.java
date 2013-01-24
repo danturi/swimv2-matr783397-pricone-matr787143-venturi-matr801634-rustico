@@ -6,6 +6,7 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +34,7 @@ public class Feedback implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Long feedbackId;
-    @Size(max = 1000)
+    @Column(length = 10000)
 	private String comment;
     @Max(value=5)  @Min(value=0)
 	private Float rating;

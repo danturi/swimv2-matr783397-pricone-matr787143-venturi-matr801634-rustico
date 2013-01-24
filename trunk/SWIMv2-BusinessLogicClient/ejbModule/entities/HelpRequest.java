@@ -42,21 +42,25 @@ public class HelpRequest implements Serializable {
     @Basic(optional = false)
     private Long helpReqId;
     private Boolean acceptanceStatus;
+    private Boolean isEvaluated;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
-    @Size(max = 10000)
+    @Column(length = 10000)
 	private String description;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "helpReqId")
     private Feedback feedback;
     @JoinColumn(name = "ToUser", referencedColumnName = "Email")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User toUser;
     @JoinColumn(name = "FromUser", referencedColumnName = "Email")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User fromUser;
+    @JoinColumn(name = "AbilityId", referencedColumnName = "AbilityId")
+    @ManyToOne(optional = false)
+    private Ability abilityId;
 
     public HelpRequest() {
     }
@@ -76,6 +80,14 @@ public class HelpRequest implements Serializable {
 
     public void setAcceptanceStatus(Boolean acceptanceStatus) {
         this.acceptanceStatus = acceptanceStatus;
+    }
+    
+    public Boolean getIsEvaluated() {
+        return isEvaluated;
+    }
+
+    public void setIsEvaluated(Boolean isEvaluated) {
+        this.isEvaluated = isEvaluated;
     }
 
     public Date getDatetime() {
@@ -114,6 +126,14 @@ public class HelpRequest implements Serializable {
 
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
+    }
+    
+    public Ability getAbilityId() {
+        return abilityId;
+    }
+
+    public void setAbilityId(Ability abilityId) {
+        this.abilityId = abilityId;
     }
 
     @Override
