@@ -6,6 +6,7 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,8 +42,7 @@ public class Feedback implements Serializable {
     @JoinColumn(name = "AuthorUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
     private User authorUser;
-    @JoinColumn(name = "HelpReqId", referencedColumnName = "HelpReqId")
-    @OneToOne(optional = false)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "feedbackId")
     private HelpRequest helpReqId;
     
 
