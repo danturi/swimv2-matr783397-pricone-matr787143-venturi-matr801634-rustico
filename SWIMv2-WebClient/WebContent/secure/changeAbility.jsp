@@ -155,10 +155,7 @@
       </form>
 				
 				</div>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+		
 				
 				
 			</div>
@@ -167,7 +164,9 @@
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
 				<p>&nbsp;</p>
-				<p>Richieste di aiuto</p>
+				<p>
+					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
+				</p>
 				<p>&nbsp;</p>
 				<p>
 					<a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a>
