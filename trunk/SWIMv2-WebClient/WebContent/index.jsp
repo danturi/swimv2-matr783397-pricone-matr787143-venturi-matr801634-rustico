@@ -271,16 +271,16 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
 				<h2>Ecco i nostri iscritti!</h2>
 				<div id="slideCont"
-					style="position: relative; z-index: 1; width: 220px; left: 0px; overflow: hidden;">
+					style="position: relative; z-index: 1; width: 220px; height: 50px; left: 0px; overflow: hidden;">
 					<div id="slideA"
-						style="position: absolute; z-index: 1; top: 10px; left: 0px; width: 200px; overflow: hidden;">
+						style="position: absolute; z-index: 1; top: 10px; left: 0 px; width: 200px; overflow: hidden;">
 						<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
 							src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
-						<--<div id="slideB"
-							style="position: relative; z-index: 1; top: 0px; left: 0px; width: 200px; overflow: hidden;">
+						<div id="slideB"
+							style="position: relative; z-index: 1; top: 0px; left: 0 px; width: 200px; overflow: hidden;">
 							<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
 								src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
 								src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
