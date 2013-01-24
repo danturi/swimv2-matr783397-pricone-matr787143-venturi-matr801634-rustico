@@ -6,6 +6,7 @@ package sessionbeans.logic;
 
 import entities.Ability;
 import entities.AbilityRequest;
+import entities.Feedback;
 import entities.FriendshipRequest;
 import entities.HelpRequest;
 import entities.User;
@@ -747,6 +748,86 @@ public class UserBean implements UserBeanRemote {
 		}  else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 			System.out.println("USERBEAN (replyToHelpReq): Utente non valido.\n");
+		}
+
+		return swimResponse;
+	}
+
+	public SwimResponse sendFeedback(String emailUserFrom, String emailUserTo, String reqIdString, String vote, String description){
+		System.out.println("USERBEAN (sendFeedback): *********INIZIO \n");
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		User userTo = find(emailUserTo);
+		Long reqId;
+		Float rating;
+		try{
+			Float minRating = Float.valueOf("0.0f");
+			Float maxRating = Float.valueOf("5.5f");
+			rating = Float.valueOf("4.0f");
+			if(rating<minRating || rating>maxRating){
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidVote");
+				System.out.println("USERBEAN (sendFeedback): Voto non valido.\n");
+				return swimResponse;
+			}
+		} catch (Exception e){
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidVote");
+			System.out.println("USERBEAN (sendFeedback): Voto non valido.\n");
+			e.printStackTrace();
+			return swimResponse;
+		}
+		try{
+			reqId = Long.valueOf(reqIdString);
+		} catch (Exception e){
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidReq");
+			System.out.println("USERBEAN (sendFeedback): HelpReq associata non valida\n");
+			return swimResponse;
+		}
+		
+		HelpRequest helpReq = em.find(HelpRequest.class, reqId);
+		if(userFrom!=null && userTo!=null && userFrom!=userTo){
+			if(helpReq!=null){
+				userTo.getHelpReqList().size();
+				if(userTo.getHelpReqList().contains(helpReq)){
+					if(helpReq.getFromUser().equals(userFrom)){
+
+
+						if(helpReq.getIsEvaluated() && helpReq.getAcceptanceStatus()==true){
+							if(helpReq.getFeedbackId()==null){
+							Feedback feedback = new Feedback();
+							feedback.setAuthorUser(userFrom);
+							feedback.setHelpReqId(helpReq);
+							feedback.setRating(rating);
+							feedback.setComment(description);
+							helpReq.setFeedbackId(feedback);
+							em.persist(feedback);
+							em.persist(helpReq);
+					
+							swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+							System.out.println("\nUSERBEAN: (sendFeedback) Feedback inviato con successo.");
+							}  else {
+								swimResponse = new SwimResponse(SwimResponse.FAILED,"feedAlreadySent");
+								System.out.println("USERBEAN (sendFeedback): Feedback già presente");
+							}
+						} else {
+							swimResponse = new SwimResponse(SwimResponse.FAILED,"reqNotSuitable");
+							System.out.println("USERBEAN (sendFeedback): HelpReq non adatta per un feedback.");
+						}
+					} else {
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+						System.out.println("USERBEAN (sendFeedback): Utente non valido.\n");
+					}
+
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.FAILED,"noSuchRequestFound");
+					System.out.println("USERBEAN (sendFeedback): Non è presente nessuna richiesta di aiuto con l'Id indicato dall'utente indicato.");
+				}
+			} else {
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidReq");
+				System.out.println("USERBEAN (sendFeedback): HelpReq non valida.\n");
+			}
+		}  else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+			System.out.println("USERBEAN (sendFeedback): Utente non valido.\n");
 		}
 
 		return swimResponse;
