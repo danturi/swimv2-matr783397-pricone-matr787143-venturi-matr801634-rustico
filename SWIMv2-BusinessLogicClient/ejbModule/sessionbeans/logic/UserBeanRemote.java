@@ -22,12 +22,7 @@ import javax.ejb.Remote;
 @Remote
 public interface UserBeanRemote {
     
-    /*
-
-    
-    repleTo Help Req*/
-
-  
+ 
     
     public SwimResponse findAll();
     
@@ -74,6 +69,10 @@ public interface UserBeanRemote {
     public SwimResponse replyToFriendshipReq(String emailUserFrom, String emailUserTo, boolean replyValue);
     
     public SwimResponse replyToAbilityReq(String emailUserFrom, Long abilityId, boolean replyValue);
+    
+    public SwimResponse replyToHelpReq(String emailUserFrom, String emailUserTo, Long reqId, boolean replyValue);
+    
+    
     
 }
 
