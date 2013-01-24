@@ -313,7 +313,8 @@ a:hover    {
 }
 
 #slideCont {
-	margin: 10px;
+	margin: 20px;
+	height: 50px;
 	border: solid 1px #30537B;
 }
 #slideCont img {
