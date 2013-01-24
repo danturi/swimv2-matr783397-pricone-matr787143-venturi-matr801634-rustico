@@ -119,56 +119,59 @@
 			if(request.getParameter("toUser")!=null){
 				usr = userBean.find(request.getParameter("toUser"));
 				if(usr!=null){
-					SwimResponse usrAbilityListRsp = userBean.getAbilityList(usr.getEmail());
-					if(usrAbilityListRsp.getStatus()==SwimResponse.SUCCESS){
-					List<Ability> usrAbilityList = (List<Ability>) usrAbilityListRsp.getData();
-					if(!usrAbilityList.isEmpty()){
+					if(!usr.getEmail().equals(request.getUserPrincipal().getName())){
+						SwimResponse usrAbilityListRsp = userBean.getAbilityList(usr.getEmail());
+						if(usrAbilityListRsp.getStatus()==SwimResponse.SUCCESS){
+						List<Ability> usrAbilityList = (List<Ability>) usrAbilityListRsp.getData();
+						if(!usrAbilityList.isEmpty()){
 			
-						out.write("<div class=\"middle\">");
-						out.write("<form name=\"askforhelpform\" action="+request.getContextPath()+"/secure/abilityreqsent.jsp\" method=\"post\">");
-						out.write("<table width=\"254\" border=\"0\">");
-						out.write("<tr>");
-						out.write("<th class=\"formStyle\" scope=\"row\">&nbsp;</th>");
-						out.write("<td>&nbsp;</td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<td width=\"54\" class=\"formStyle\" scope=\"row\"><h2>Scegli la competenza di cui hai bisogno</h2></td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<td>");
-						out.write("<select name=\"helprequested\" class=\"formLabel\" id=\"ability\">");
-						
-			           	int n = 1;
-			            for(Ability ability: usrAbilityList){
-			           		out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
-		 		           		n++;
-			            }			 
+							out.write("<div class=\"middle\">");
+							out.write("<form name=\"askforhelpform\" action=\""+request.getContextPath()+"/secure/helpreqsent.jsp\" method=\"post\">");
+							out.write("<table width=\"254\" border=\"0\">");
+							out.write("<tr>");
+							out.write("<th class=\"formStyle\" scope=\"row\">&nbsp;</th>");
+							out.write("<td>&nbsp;</td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<td width=\"54\" class=\"formStyle\" scope=\"row\"><h2>Scegli la competenza di cui hai bisogno</h2></td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<td>");
+							out.write("<select name=\"helprequested\" class=\"formLabel\" id=\"ability\">");
+							
+			    	        for(Ability ability: usrAbilityList){
+			     	      		out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+		 		 	          		
+			     	       }			 
 			  
-						out.write("</select></td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<th class=\"formStyle\" scope=\"row\">&nbsp;</th>");
-						out.write("<td>&nbsp;</td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<td><textarea name=\"comments\" cols=\"60\" rows=\"10\" maxlength=\"10000\">Descrivi all'utente la tua situazione e ciò di cui hai bisogno.</textarea></td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<th width=\"54\" class=\"formStyle\" scope=\"row\">&nbsp;</th>");
-						out.write("<td>&nbsp;</td>");
-						out.write("</tr>");
-						out.write("<tr>");
-						out.write("<th width=\"54\" scope=\"row\">&nbsp;</th>");
-						out.write("<td><input name=\"askforhelpButton\" type=\"submit\" id=\"sendabilityrequestButton\" value=\"Invia richiesta\" /></td>");
-						out.write("</tr>");
-						out.write("</table>");
-						out.write("</form>");
-						out.write("</div>");
+							out.write("</select></td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<th class=\"formStyle\" scope=\"row\">&nbsp;</th>");
+							out.write("<td>&nbsp;</td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<td><textarea name=\"comments\" cols=\"60\" rows=\"10\" maxlength=\"10000\">Descrivi all'utente la tua situazione e quello di cui hai bisogno.</textarea></td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<th width=\"54\" class=\"formStyle\" scope=\"row\">&nbsp;</th>");
+							out.write("<td><input type=\"hidden\" name=\"toUser\" value=\""+request.getParameter("toUser")+"\"></td>");
+							out.write("</tr>");
+							out.write("<tr>");
+							out.write("<th width=\"54\" scope=\"row\">&nbsp;</th>");
+							out.write("<td><input name=\"askforhelpButton\" type=\"submit\" id=\"sendabilityrequestButton\" value=\"Invia richiesta\" /></td>");
+							out.write("</tr>");
+							out.write("</table>");
+							out.write("</form>");
+							out.write("</div>");
+							} else {
+								out.write("<h2><span style=\"color: red;\">L'utente selezionato non è abilitato a nessuna competenza.</span><h2>");
+							}
 						} else {
-							out.write("<h2><span style=\"color: red;\">L'utente selezionato non è abilitato a nessuna competenza.</span><h2>");
+							out.write("<h2><span style=\"color: red;\">Si è verificato in problema. Non è possibile inviare la richiesta.</span><h2>");
 						}
 					} else {
-						out.write("<h2><span style=\"color: red;\">Si è verificato in problema. Non è possibile inviare la richiesta.</span><h2>");
+						out.write("<h2><span style=\"color: red;\">Utente non valido. Non è possibile inviare la richiesta.</span><h2>");
 					}
 				} else {
 					out.write("<h2><span style=\"color: red;\">Utente non valido. Non è possibile inviare la richiesta.</span><h2>");

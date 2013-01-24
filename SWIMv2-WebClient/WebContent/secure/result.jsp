@@ -135,26 +135,14 @@
 										out.write("</div>");
 									} else {
 										out.write("<h2>Nessun utente corrisponde ai criteri di ricerca selezionati.</h2>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<p>&nbsp;</p>");
+							
 							
 										
 									}
 								} else if(request.getAttribute("FoundResult").equals("fail")){
 										
 									out.write("<h2>Si è verificato un problema. Nessun utente trovato.</h2>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
-									out.write("<p>&nbsp;</p>");
+				
 								
 									
 								}
@@ -163,11 +151,7 @@
 								%>
    
            		</div>
-           		<p>&nbsp;</p>
-           		<p>&nbsp;</p>
-           		<p>&nbsp;</p>
-           		<p>&nbsp;</p>
-           		<p>&nbsp;</p>
+  
            	
 		    </div>
 			<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="contentRight" -->
