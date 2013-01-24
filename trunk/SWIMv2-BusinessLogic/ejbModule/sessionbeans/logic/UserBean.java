@@ -386,6 +386,7 @@ public class UserBean implements UserBeanRemote {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
+			user.getHelpReqList().size();
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getHelpReqList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
@@ -398,6 +399,7 @@ public class UserBean implements UserBeanRemote {
 		SwimResponse swimResponse;
 		User user = find(email);
 		if(user!=null){
+			user.getSentHelpReqList().size();
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista richieste di aiuto effettuato", user.getSentHelpReqList());
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
@@ -704,9 +706,49 @@ public class UserBean implements UserBeanRemote {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 			System.out.println("USERBEAN (replyToAbilityReq): Utente non valido.\n");
 		}
+		return swimResponse;
+	}
 
+	public SwimResponse replyToHelpReq(String emailUserFrom, String emailUserTo, Long reqId, boolean replyValue){
+
+		SwimResponse swimResponse = null;
+		User userFrom = find(emailUserFrom);
+		User userTo = find(emailUserTo);
+		HelpRequest helpReq = em.find(HelpRequest.class, reqId);
+
+		if(userFrom!=null && userTo!=null && userFrom!=userTo){
+			if(helpReq!=null){
+				userTo.getHelpReqList().size();
+				if(userTo.getHelpReqList().contains(helpReq)){
+					if(helpReq.getFromUser().equals(userFrom)){
+						if(!helpReq.getIsEvaluated()){
+							helpReq.setAcceptanceStatus(replyValue);
+							helpReq.setIsEvaluated(true);
+							em.persist(helpReq);
+							swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+							System.out.println("\nUSERBEAN: Richiesta di aiuto accettata.");
+						} else {
+							swimResponse = new SwimResponse(SwimResponse.FAILED,"reqAlreadyEvaluated");
+							System.out.println("USERBEAN (replyToHelpReq): Richiesta di aiuto già valutata");
+						}
+					} else {
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+						System.out.println("USERBEAN (replyToHelpReq): Utente non valido.\n");
+					}
+
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.FAILED,"noSuchRequestFound");
+					System.out.println("USERBEAN (replyToHelpReq): Non è presente nessuna richiesta di aiuto con l'Id indicato dall'utente indicato.");
+				}
+			} else {
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidReq");
+				System.out.println("USERBEAN (replyToHelpReq): HelpReq non valida.\n");
+			}
+		}  else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+			System.out.println("USERBEAN (replyToHelpReq): Utente non valido.\n");
+		}
 
 		return swimResponse;
-
 	}
 }
