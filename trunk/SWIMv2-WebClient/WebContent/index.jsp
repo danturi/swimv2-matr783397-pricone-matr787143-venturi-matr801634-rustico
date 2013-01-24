@@ -166,7 +166,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 					</p>
 					<div class="register">
 					<form id="registerForm" name="registerForm"
-						action="SWIMv2-WebClient/services/auth/register"
+						action="/SWIMv2-WebClient/services/auth/register"
 						method="post">
 						<table width="230" border="0" cellspacing="2" class="imageright">
 							<tr>

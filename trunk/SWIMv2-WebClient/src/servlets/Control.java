@@ -60,10 +60,13 @@ public class Control extends HttpServlet {
 		if(request.getAttribute("SendInfoForm")!=null){
 			if(request.getAttribute("SendInfoForm").equals("sending")) changeUserInfo(request, response);
 		}
+		if(request.getAttribute("HelpReqSent")!=null){
+			if(request.getAttribute("HelpReqSent").equals("sending")) sendHelpRequest(request, response);
+		}
 
-
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
-		dispatcher.forward(request, response);
+		//QUI SETTARE A NULL TUTTI GLI ATTRIBUTI PRIMA DELLA REDIRECT
+		//RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
+		//dispatcher.forward(request, response);
 
 
 
@@ -251,6 +254,42 @@ public class Control extends HttpServlet {
 		
 	}
 
+	public void sendHelpRequest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		
+		
+		SwimResponse swimResponse = null;
+
+		System.out.println("\n**** CONTROL: QUI SEND_HELP_REQ***\n");
+		String toUser = request.getParameter("toUser");
+		String abilityId = request.getParameter("helprequested");
+		if(abilityId!=null){
+		String description = request.getParameter("comments");
+
+		swimResponse = userBean.sendHelpReq(request.getUserPrincipal().getName(), toUser, Long.valueOf(abilityId), description);
+
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("HelpReqSent", "ok");
+			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqAlreadySent")){
+				request.setAttribute("HelpReqSent", "reqAlreadySent");
+			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidAbility")){
+				request.setAttribute("HelpReqSent", "noValidAbility");
+			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidUser")){
+				request.setAttribute("HelpReqSent", "noValidUser");
+			}  else {
+				request.setAttribute("HelpReqSent", "fail");
+			}
+		} else {
+			request.setAttribute("HelpReqSent", "fail");
+		}
+		} else {
+			request.setAttribute("HelpReqSent", "fail");
+		}
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/helpreqsent.jsp");
+		dispatcher.forward(request, response);
+		
+	}
 
 
 
