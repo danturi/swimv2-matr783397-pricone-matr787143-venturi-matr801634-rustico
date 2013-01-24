@@ -38,6 +38,7 @@ public class Control extends HttpServlet {
 		if(request.getParameter("actionType")!=null){
 			if(request.getParameter("actionType").equals("sendFriendReq")) sendFriendshipReq(request, response);
 			if(request.getParameter("actionType").equals("replyToFriendReq")) replyToFriendshipReq(request, response);
+			if(request.getParameter("actionType").equals("replyToHelpReq")) replyToHelpReq(request, response);
 			if(request.getParameter("actionType").equals("replyToAbilityReq")) {
 				if(request.isUserInRole("ADMINISTRATOR")){
 					replyToAbilityReq(request, response); 
@@ -199,7 +200,7 @@ public class Control extends HttpServlet {
 		SwimResponse swimResponse = null;
 
 		if(request.getParameter("toUser")!=null && request.getParameter("abilityId")!=null && request.getParameter("value")!=null){
-			
+
 			if(request.getParameter("value").equals("approve")) replyValue = true;
 
 			swimResponse = userBean.replyToAbilityReq(request.getParameter("toUser"), Long.valueOf(request.getParameter("abilityId")), replyValue);
@@ -216,7 +217,7 @@ public class Control extends HttpServlet {
 			System.out.println("******CONTROL: qui ReplyResult: "+request.getAttribute("ReplyResult"));
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/showAbilityReqAdmin.jsp");
 			dispatcher.forward(request, response);
-	
+
 		} else{
 			request.setAttribute("ReplyResult", "urlfail");
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/showAbilityReqAdmin.jsp");
@@ -224,7 +225,7 @@ public class Control extends HttpServlet {
 		}
 
 	}
-	
+
 	public void changeUserInfo(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		SwimResponse swimResponse = null;
 		System.out.println("\n**** CONTROL: QUI CHANGE_USER_INFO***\n");
@@ -235,7 +236,7 @@ public class Control extends HttpServlet {
 		String age = request.getParameter("age");
 		String job = request.getParameter("job");
 		String tel = request.getParameter("tel");
-		
+
 		swimResponse = userBean.changeUserInfo(request.getUserPrincipal().getName(), lastname, firstname, city, sex, age, job, tel);
 
 		if(swimResponse!=null){
@@ -251,46 +252,88 @@ public class Control extends HttpServlet {
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/changeInfo.jsp?sendinfoform=false");
 		dispatcher.forward(request, response);
-		
+
 	}
 
 	public void sendHelpRequest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
-		
-		
+
+
 		SwimResponse swimResponse = null;
 
 		System.out.println("\n**** CONTROL: QUI SEND_HELP_REQ***\n");
 		String toUser = request.getParameter("toUser");
 		String abilityId = request.getParameter("helprequested");
 		if(abilityId!=null){
-		String description = request.getParameter("comments");
+			String description = request.getParameter("comments");
 
-		swimResponse = userBean.sendHelpReq(request.getUserPrincipal().getName(), toUser, Long.valueOf(abilityId), description);
+			swimResponse = userBean.sendHelpReq(request.getUserPrincipal().getName(), toUser, Long.valueOf(abilityId), description);
 
-		if(swimResponse!=null){
-			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
-				request.setAttribute("HelpReqSent", "ok");
-			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqAlreadySent")){
-				request.setAttribute("HelpReqSent", "reqAlreadySent");
-			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidAbility")){
-				request.setAttribute("HelpReqSent", "noValidAbility");
-			} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidUser")){
-				request.setAttribute("HelpReqSent", "noValidUser");
-			}  else {
+			if(swimResponse!=null){
+				if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+					request.setAttribute("HelpReqSent", "ok");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqAlreadySent")){
+					request.setAttribute("HelpReqSent", "reqAlreadySent");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidAbility")){
+					request.setAttribute("HelpReqSent", "noValidAbility");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidUser")){
+					request.setAttribute("HelpReqSent", "noValidUser");
+				}  else {
+					request.setAttribute("HelpReqSent", "fail");
+				}
+			} else {
 				request.setAttribute("HelpReqSent", "fail");
 			}
-		} else {
-			request.setAttribute("HelpReqSent", "fail");
-		}
 		} else {
 			request.setAttribute("HelpReqSent", "fail");
 		}
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/helpreqsent.jsp");
 		dispatcher.forward(request, response);
-		
+
 	}
 
+	public void replyToHelpReq(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		boolean replyValue = false;
+
+		SwimResponse swimResponse = null;
+
+		if(request.getParameter("toUser")!=null && request.getParameter("reqId")!=null && request.getParameter("value")!=null){
+
+			if(request.getParameter("value").equals("approve")) replyValue = true;
+			
+			String toUser = request.getParameter("toUser");
+			String reqId = request.getParameter("reqId");
+
+			swimResponse = userBean.replyToHelpReq(toUser, request.getUserPrincipal().getName(), Long.valueOf(reqId), replyValue);
+
+			if(swimResponse!=null){
+				if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+					request.setAttribute("ReplyResult", "ok");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("reqAlreadyEvaluated")){
+					request.setAttribute("ReplyResult", "reqAlreadyEvaluated");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidUser")){
+					request.setAttribute("ReplyResult", "noValidUser");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noSuchRequestFound")){
+					request.setAttribute("ReplyResult", "noSuchRequestFound");
+				} else if(swimResponse.getStatus()==SwimResponse.FAILED && swimResponse.getStatusMsg().equals("noValidReq")){
+					request.setAttribute("ReplyResult", "noValidReq");
+				} else {
+					request.setAttribute("ReplyResult", "fail");
+				}
+			} else {
+				request.setAttribute("ReplyResult", "fail");
+			}
+
+
+		} else{
+			request.setAttribute("ReplyResult", "urlfail");
+
+		}
+		System.out.println("******CONTROL: qui ReplyResult: "+request.getAttribute("ReplyResult"));
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/showHelpReq.jsp");
+		dispatcher.forward(request, response);
+	}
 
 
 	@Override

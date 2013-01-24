@@ -176,15 +176,15 @@ SwimResponse abilitySetRsp = userBean.getAbilitySet();
       </form>
 <p>&nbsp;</p>
 <p>oppure <a href="userList.jsp">Lista di tutti gli utenti iscritti</a></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
 </div>
 			<div class="contentright">
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
 				<p>&nbsp;</p>
-				<p>Richieste di aiuto</p>
+				<p>
+					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
+				</p>
 				<p>&nbsp;</p>
 				<p><a href="friendReq.jsp">Richieste di amicizia</a></p>
 				<p>&nbsp;</p>

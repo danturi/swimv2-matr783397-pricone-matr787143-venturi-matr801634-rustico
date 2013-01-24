@@ -175,8 +175,7 @@
 									+ usr.getLastname()
 									+ "</h1>");
 							// QUI CONTROLLARE SE USER PRINCIPAL A NULL
-							if (!usr.getEmail().equals(
-									request.getUserPrincipal().getName())) {
+							if (!usr.getEmail().equals(request.getUserPrincipal().getName())) {
 								List<Ability> usrAbilityList = (List<Ability>) userBean.getAbilityList(usr.getEmail()).getData();
 								if(usrAbilityList!=null){
 									if(!usrAbilityList.isEmpty()){
@@ -191,7 +190,11 @@
 							out.write("<table width=\"327\" border=\"0\" cellpadding=\"2\" cellspacing=\"8\">");
 							out.write("<tr>");
 							out.write("<td width=\"60\"><h3> Email:</h3></td>");
-							out.write("<td class=\"formLabel\">"+request.getUserPrincipal().getName()+"</td>");
+							if (!usr.getEmail().equals(request.getUserPrincipal().getName())) {
+								out.write("<td class=\"formLabel\">"+usr.getEmail()+"</td>");
+							} else {
+								out.write("<td class=\"formLabel\">"+request.getUserPrincipal().getName()+"</td>");
+							}
 							out.write("</tr>");
 							out.write("<tr>");
 							out.write("<td width=\"60\"><h3> Genere:</h3></td>");
@@ -284,7 +287,9 @@
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
 				<p>&nbsp;</p>
-				<p>Richieste di aiuto</p>
+				<p>
+					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
+				</p>
 				<p>&nbsp;</p>
 				<p>
 					<a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a>

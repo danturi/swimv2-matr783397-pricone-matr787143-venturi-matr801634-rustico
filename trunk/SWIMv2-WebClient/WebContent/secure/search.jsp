@@ -91,8 +91,7 @@
       </table>
 <p>&nbsp;</p>
 <p>oppure <a href="userList.html">Lista di tutti gli utenti iscritti</a></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
 </div>
 			<div class="contentright">
 				<h2>Cras tempor. Morbi egestas.</h2>
