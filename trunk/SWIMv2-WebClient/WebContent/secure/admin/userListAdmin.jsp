@@ -72,31 +72,27 @@
 		userList = (List<User>) swimResponse.getData();
 	}
 	
-	System.out.println("****** QUI EJB CALL DA JSP ******");
-	//userBean.sendFriendshipReq("aa", "bb"); %>
+
+	%>
 	
-		<div class="bannerArea">
+			<div class="bannerArea">
 			<div class="container">
-			<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
-			  <div class="toplogo"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
+			<div class="bannernav">Pannello di amministrazione di SWIMv2</div>
+			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
 		</div>
-		<div class="topnavigationArea">
-			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
-			  <div class="topnavigationgroup">
-			    <ul id="MenuBar1" class="MenuBarHorizontal">
-							<li style="border-right-style: solid;"><a id="logoutLink"
-						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/friendsList.jsp">AMICI</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
-						title="home" target="_parent">HOME</a></li>
-				</ul>
-		    </div>
-			<!-- TemplateEndEditable -->
-			  <div style="clear:both;"></div>
+	<div class="topnavigationArea">
+			<div class="container">
+<div class="topnavigationgroup">
+      <ul id="MenuBar1" class="MenuBarHorizontal">
+        <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/userSearchAdmin.jsp">RICERCA UTENTI</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/abilityAdmin.jsp">ABILITA'</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/homeAdmin.jsp">HOME</a></li>
+      </ul>
+      </div>
+			<div style="clear:both;"></div>
 			</div>
 		</div>
 		<div class="contentArea">
@@ -105,7 +101,7 @@
               	<div class="middle">
 		    	  <h1>Lista Utenti</h1>
 					<p>&nbsp;</p>
-		    	  
+		    	
               	
                         <div id="user-list">
                           <input class="search" size="30" placeholder="Cerca utente" />
@@ -123,7 +119,7 @@
 									
 									for(User u: userList){
 										
-										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/admin/profileAdmin.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
 									}
 								} else {
 									out.write("<h2>Errore: nessun utente trovato.</h2>");
@@ -139,22 +135,16 @@
            		</div>
            		
 		    </div>
-			<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="contentRight" -->
 			<div class="contentright">
 			  <h2>&nbsp;</h2>
 			  <h2>Le tue notifiche:</h2>
-			  <p>&nbsp;</p>
-			  <p>
-					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
-				</p>
-			  <p>&nbsp;</p>
-			  <p><a href="friendReq.jsp">Richieste di amicizia</a></p>
-			  <p>&nbsp;</p>
-			  <p>Richieste abilit&agrave;<img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="158" height="165" align="right" /></p>
-			  <p>&nbsp;</p>
-			  <p>&nbsp;</p>
+			  <p><a href="<%=request.getContextPath()%>/secure/admin/showAbilityReqAdmin.jsp">Richieste aggiunta abilit&agrave;</a></p>
+				<h2>&nbsp;</h2>
+				<h2><img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="121" height="159" align="right" /></h2>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
 			  </div>
-			<!-- TemplateEndEditable -->
 			<div style="clear:both;"></div>
 			</div>
 		</div>

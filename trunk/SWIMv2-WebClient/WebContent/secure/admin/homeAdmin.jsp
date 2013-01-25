@@ -98,7 +98,7 @@
 <div class="topnavigationgroup">
       <ul id="MenuBar1" class="MenuBarHorizontal">
         <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-        <li><a href="#">RICERCA UTENTI</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/userSearchAdmin.jsp">RICERCA UTENTI</a></li>
         <li><a href="<%=request.getContextPath()%>/secure/admin/abilityAdmin.jsp">ABILITA'</a></li>
         <li><a href="<%=request.getContextPath()%>/secure/admin/homeAdmin.jsp">HOME</a></li>
       </ul>
@@ -141,10 +141,6 @@
 </div>
 		</div>
 		
-		<script type="text/javascript">
-		<!--
-		var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarRightHover.gif"});
-		//-->
-		</script>
+		
 	</body>
 </html>

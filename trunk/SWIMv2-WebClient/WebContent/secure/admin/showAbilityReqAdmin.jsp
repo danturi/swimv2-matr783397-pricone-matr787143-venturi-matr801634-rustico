@@ -92,25 +92,19 @@ div.scroll {
 	%>
 
 
-	<div class="bannerArea">
-		<div class="container">
-		<div class="bannernav">Pannello di amministrazione di SWIMv2</div>
-
-			<div class="toplogo">
-				<a href="#"></a><a href="#"></a><a href="#"><a href="#"><a
-						href="#"><a href="#"></a><img
-							src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
-							width="223" height="51" alt="titolo" />
-			</div>
-			<div style="clear: both;"></div>
+<div class="bannerArea">
+			<div class="container">
+			<div class="bannernav">Pannello di amministrazione di SWIMv2</div>
+			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
+              <div style="clear:both;"></div>
+          </div>
 		</div>
-	</div>
 	<div class="topnavigationArea">
 			<div class="container">
 <div class="topnavigationgroup">
       <ul id="MenuBar1" class="MenuBarHorizontal">
         <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-        <li><a href="#">RICERCA UTENTI</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/userSearchAdmin.jsp">RICERCA UTENTI</a></li>
         <li><a href="<%=request.getContextPath()%>/secure/admin/abilityAdmin.jsp">ABILITA'</a></li>
         <li><a href="<%=request.getContextPath()%>/secure/admin/homeAdmin.jsp">HOME</a></li>
       </ul>
