@@ -71,18 +71,19 @@ SwimResponse abilitySetRsp = userBean.getAbilitySet();
           </div>
 		</div>
 		<div class="topnavigationArea">
-			<div class="container">
+			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
 			  <div class="topnavigationgroup">
 			    <ul id="MenuBar1" class="MenuBarHorizontal">
 							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="#">AMICI</a></li>
-					<li><a href="profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
-					<li><a href="helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="homeUser.jsp"
+					<li><a href="<%=request.getContextPath()%>/secure/friendsList.jsp">AMICI</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
+					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
-</div>
+		    </div>
+			<!-- TemplateEndEditable -->
 			  <div style="clear:both;"></div>
 			</div>
 		</div>

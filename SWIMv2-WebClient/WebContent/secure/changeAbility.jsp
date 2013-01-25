@@ -89,22 +89,22 @@
 		</div>
 	</div>
 	<div class="topnavigationArea">
-		<div class="container">
-			<div class="topnavigationgroup">
-				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a id="logoutLink"
+			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
+			  <div class="topnavigationgroup">
+			    <ul id="MenuBar1" class="MenuBarHorizontal">
+							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="#">AMICI</a></li>
-					<li><a
-						href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/friendsList.jsp">AMICI</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
 					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
 					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
+		    </div>
+			<!-- TemplateEndEditable -->
+			  <div style="clear:both;"></div>
 			</div>
-			<div style="clear: both;"></div>
 		</div>
-	</div>
 	<div class="contentArea">
 		<div class="container">
 			<div class="contentleft">
@@ -125,10 +125,10 @@
             if(abilitySetRsp!=null){
             	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
            			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
-           			int n = 1;
+           			
             			for(Ability ability: abilitySet){
-            				out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
-            				n++;
+            				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+            				
            				 }
             	}
             }

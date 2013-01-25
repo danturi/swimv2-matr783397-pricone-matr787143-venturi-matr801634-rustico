@@ -66,20 +66,19 @@
 	<% Context context = new
 	InitialContext(); userBean = (UserBeanRemote)
 	context.lookup(UserBeanRemote.class.getName());
-	if(request.getAttribute("FeedSent")==null){
-		request.setAttribute("FeedSent", "sending");
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/Control");
-		dispatcher.forward(request, response);
+	SwimResponse friendListRsp = userBean.getFullFriendsList(request.getUserPrincipal().getName());
+	List<User> userList = null;
+	if(friendListRsp.getStatus()==SwimResponse.SUCCESS){
+		userList = (List<User>) friendListRsp.getData();
 	}
 	
-	
-	 %>
+	System.out.println("****** QUI EJB CALL DA JSP ******");
+	//userBean.sendFriendshipReq("aa", "bb"); %>
 	
 		<div class="bannerArea">
-			<div class="container"><!-- TemplateBeginEditable name="banner_menï¿½" -->
-			  <div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
-			<!-- TemplateEndEditable -->
-			  <div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
+			<div class="container">
+			<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
+			  <div class="toplogo"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
 		</div>
@@ -101,41 +100,45 @@
 			</div>
 		</div>
 		<div class="contentArea">
-			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
+			<div class="container">
 			  <div class="contentleft">
-              	<div class="middle">
-					<p>&nbsp;</p>
-					
-					<%if(request.getAttribute("FeedSent").equals("ok")){
+           
+								<% if(userList!=null){
+									if(!userList.isEmpty()){
+										
+										out.write("<div class=\"middle\">");
+										out.write("<h1>Ecco i tuoi amici</h1>");
+										out.write("<p>&nbsp;</p>");
+										out.write("<div id=\"user-list\">");
+										out.write("<input class=\"search\" size=\"30\" placeholder=\"Cerca utente\" />");
+										out.write("<ul class=\"sort-by\">");
+										out.write("<li class=\"sort btn\" data-sort=\"name\">Ordina per nome (A/Z - Z/A)</li>");
+										out.write("</ul>");
+										out.write("<ul class=\"filter\">");
+										out.write("</ul>");
+										out.write("<div class=\"wrapper\">");
+										out.write("<ul class=\"list\">");
+									
+										for(User u: userList){
+										
+											out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										}
+										out.write(" </ul>");
+										out.write(" </div>");
+										out.write("</div>");
+										out.write("</div>");
 						
-						out.write("<h2><span style=\"color: red;\">La valutazione dell'utente selezionato è avvenuta con successo. Grazie!</span><h2>");
-						
-						
-					} else if (request.getAttribute("FeedSent").equals("feedAlreadySent")){
-						out.write("<h2><span style=\"color: red;\">Valutazione annullata. Hai già inviato una valutazione per questa richiesta.</span><h2>");
-
-					} else if (request.getAttribute("FeedSent").equals("noValidReq")){
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. La richiesta di aiuto associata non è valida</span><h2>");
-
-					} else if (request.getAttribute("FeedSent").equals("noValidUser")){
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. Utente non valido.</span><h2>");
-
-					} else if (request.getAttribute("FeedSent").equals("reqNotSuitable")){
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. Non ti è possibile lasciare un feedback per questa richiesta.</span><h2>");
-
-					} else if (request.getAttribute("FeedSent").equals("urlfail")){
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. URL non valido.</span><h2>");
-					} else if (request.getAttribute("FeedSent").equals("noSuchRequestFound")){
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. Richiesta di aiuto associata non trovata.</span><h2>");
-
-					} else {
-						out.write("<h2><span style=\"color: red;\">Si è verificatio un problema. Feedback non inviato.</span><h2>");
-					}
-					request.setAttribute("FeedSent",null);
-					%>
-		    	 
-                        
-           		</div>
+									} else {
+										out.write("<div class=\"middle\">");
+										out.write("<h1>Non hai ancora amici.</h1>");
+										out.write("</div>");
+									}
+								} else {
+									out.write("<div class=\"middle\">");
+									out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Nessun utente amico trovato nel sistema.</span></h2>");
+									out.write("</div>");
+								}
+								%>
  
 		    </div>
 	
@@ -147,7 +150,7 @@
 					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
 				</p>
 			  <p>&nbsp;</p>
-			  <p><a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a></p>
+			  <p><a href="friendReq.jsp">Richieste di amicizia</a></p>
 			  <p>&nbsp;</p>
 			  <p>Richieste abilit&agrave;<img src="<%=request.getContextPath()%>/images/omino_msg.jpg" alt="omino_msg" width="158" height="165" align="right" /></p>
 			  <p>&nbsp;</p>
@@ -162,6 +165,30 @@
 			  <div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
 			<!-- TemplateEndEditable --></div>
 		</div>
-
+		
+		
+        <script type="text/javascript">
+		
+			var options = {
+				valueNames: [ 'name' ]
+			};
+		
+			var featureList = new List('user-list', options);
+			
+			/*filtro uomini
+			$('#filter-men').click(function() {
+				featureList.filter(function(item) {
+					if(item.values().gender == "uomo") {
+						return true;
+					} else {
+						return false;
+					}
+				});
+				return false;
+			});
+			*/
+			
+		
+		</script>
 	</body>
 </html>
