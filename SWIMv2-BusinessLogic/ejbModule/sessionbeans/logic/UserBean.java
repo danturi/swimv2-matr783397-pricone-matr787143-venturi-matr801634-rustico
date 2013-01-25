@@ -171,6 +171,24 @@ public class UserBean implements UserBeanRemote {
 			em.remove(user);
 		}
 	}
+	@Override
+	public SwimResponse addAbility(String newAbility){
+
+		SwimResponse swimResponse = null;
+
+		if(newAbility.length()>0 && newAbility.length()<128){
+
+			Ability newAb = new Ability();
+			newAb.setDescription(newAbility);
+			em.persist(newAb);
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidAbilityName");
+		}
+		return swimResponse;
+
+	}
 
 	@Override
 	public User find(String email) {
@@ -354,7 +372,7 @@ public class UserBean implements UserBeanRemote {
 		}
 		return swimResponse;
 	}
-	
+
 	@Override
 	public SwimResponse getFullFriendsList(String email){
 		SwimResponse swimResponse;
@@ -371,14 +389,14 @@ public class UserBean implements UserBeanRemote {
 			for(User usr2: globalListOf2){
 				if(!fullList.contains(usr2)) fullList.add(usr2);
 			}
-		
+
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista degli amici effettuato", fullList);
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
 		}
 		return swimResponse;
-		
-		
+
+
 	}
 	@Override
 	public SwimResponse getFriendsList(String email) {
@@ -833,7 +851,7 @@ public class UserBean implements UserBeanRemote {
 			System.out.println("USERBEAN (sendFeedback): HelpReq associata non valida\n");
 			return swimResponse;
 		}
-		
+
 		HelpRequest helpReq = em.find(HelpRequest.class, reqId);
 		if(userFrom!=null && userTo!=null && userFrom!=userTo){
 			if(helpReq!=null){
