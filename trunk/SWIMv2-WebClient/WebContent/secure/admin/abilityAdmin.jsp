@@ -1,4 +1,12 @@
+<%@ page import="sessionbeans.logic.UserBeanRemote"%>
+<%@ page import="javax.naming.InitialContext"%>
+<%@ page import="javax.naming.Context"%>
 <%@page import="java.security.Principal"%>
+<%@ page import="sessionbeans.logic.SwimResponse"%>
+<%@ page import="java.util.List"%>
+<%@ page import="entities.User"%>
+<%@ page import="entities.Ability"%>
+<%@ page import="entities.FriendshipRequest"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,59 +40,36 @@
                         if (data.status == "SUCCESS" ){
                             //redirect to welcome page
                             window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/index.jsp");
-                        }else{
-                            alert("failed");
-                        }
-                    },
-                         
-                    error: function (jqXHR, textStatus, errorThrown){
-                        alert("Errore di logout. HTTP STATUS: "+jqXHR.status);
-                    },
-                         
-                    complete: function(jqXHR, textStatus){
-                        //alert("complete");
-                    }                    
-                });
-                 
-                return false;
-            });
-        });
-         
-        $(function(){
-           $("#getTimeStampButton").click(function(){
-               $.ajax({
-                   url: "<%=request.getContextPath()%>/services/secure/timestamp/now",
-                   type: "GET",
-                   cache: false,
-                   dataType: "json",
-                        
-                   success: function (data, textStatus, jqXHR){
-                       //alert("success");
-                       if (data.status == "SUCCESS" ){
-                           $("#timeStampContent").html("Timestamp: "+data.data);
-                       }else{
-                           alert("failed");
-                       }
-                   },
-                        
-                   error: function (jqXHR, textStatus, errorThrown){
-                       //alert("error - HTTP STATUS: "+jqXHR.status);
-                       if (textStatus == "parsererror"){
-                           alert("You session has timed out");
-                           //forward to welcomde page
-                           window.location.replace("http://"+window.location.host+"<%=request.getContextPath()%>/index.jsp");
-                       }
-                   },
-                        
-                   complete: function(jqXHR, textStatus){
-                       //alert("complete");
-                   }                    
-               });
-           }); 
-        });
-        </script>
+											} else {
+												alert("failed");
+											}
+										},
+
+										error : function(jqXHR, textStatus,
+												errorThrown) {
+											alert("Errore di logout. HTTP STATUS: "
+													+ jqXHR.status);
+										},
+
+										complete : function(jqXHR, textStatus) {
+											//alert("complete");
+										}
+									});
+
+							return false;
+						});
+	});
+</script>
 </head>
 	<body>
+	<%
+		UserBeanRemote userBean;
+		Context context = new InitialContext();
+		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
+		User usr = null;
+		SwimResponse abilitySetRsp = userBean.getAbilitySet();	
+	
+	%>
 	
 		<div class="bannerArea">
 			<div class="container">
@@ -93,7 +78,7 @@
               <div style="clear:both;"></div>
           </div>
 		</div>
-		<div class="topnavigationArea">
+	<div class="topnavigationArea">
 			<div class="container">
 <div class="topnavigationgroup">
       <ul id="MenuBar1" class="MenuBarHorizontal">
@@ -110,17 +95,50 @@
 			<div class="container">
 <div class="contentleft">
       <h1>&nbsp;</h1>
-      <h1>Pannello di amministrazione</h1>
+      <h1>Definisci l'insieme di abilit&agrave; di Swim</h1>
 <p>&nbsp;</p>
-<p>Definisci l'insieme delle abilit&agrave; disponibili in Swim e gestisci gli utenti del Social Network e le loro richieste di aggiunta abilit&agrave; dal men&ugrave;.</p>
+<p><strong>Abilit&agrave; inserite nel sistema:</strong></p>
+
+  <label>
+    <select name="abilitySet" size="10" id="abilitySet">
+     <%
+            if(abilitySetRsp!=null){
+            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
+           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
+           			
+            			for(Ability ability: abilitySet){
+            				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+            				
+           				 }
+            	}
+            }
+            %>
+    </select>
+  </label>
+
 <p>&nbsp;</p>
-<p><img src="<%=request.getContextPath()%>/images/omino_amministratore.jpg" alt="omino_admin" width="168" height="168" align="left" /></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
+<p><strong>Abilit&agrave; che si vuole aggiungere:</strong></p>
+
+<form id="form2" name="form2" method="post" action="<%=request.getContextPath()%>/Control">
+<input name="AddAbility" type="hidden" id="AddAbility" value="sending" />
+  <p>
+    <input name="newAbility" type="text" id="newAbility" size="25" maxlength="100" />
+    </p>
+  <p>
+  <input type="submit" name="addAbility" id="addAbility" value="Aggiungi abilit&agrave;" />
+  </p>
+</form>
+<% if(request.getAttribute("AddAbility")!=null){
+	if(request.getAttribute("AddAbility").equals("ok")){
+		out.write("<h2><span style=\"color: red;\">Nuova abilità aggiunta con successo!</span></h2>");
+	} else {
+		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Nuova abilità non aggiunta.</span></h2>");
+
+	}
+	request.setAttribute("AddAbility",null);
+}
+
+%>
       </div>
 			<div class="contentright">
 			  <h2>&nbsp;</h2>

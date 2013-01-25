@@ -67,6 +67,11 @@ public class Control extends HttpServlet {
 		if(request.getAttribute("FeedSent")!=null){
 			if(request.getAttribute("FeedSent").equals("sending")) sendFeedback(request, response);
 		}
+		
+		
+		if(request.getParameter("AddAbility")!=null){
+			if(request.getParameter("AddAbility").equals("sending")) addAbility(request, response);
+		}
 
 		//QUI SETTARE A NULL TUTTI GLI ATTRIBUTI PRIMA DELLA REDIRECT
 		//RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
@@ -347,9 +352,9 @@ public class Control extends HttpServlet {
 		String reqId = request.getParameter("reqId");
 		String vote = request.getParameter("vote") + ".0f";
 		String description = request.getParameter("comments");
-		System.out.println("\n**** CONTROL: QUI ARRIVA 1 ***"+toUser+reqId+vote);
+	
 		if(toUser!=null && reqId!=null && vote!=null){
-			System.out.println("\n**** CONTROL: QUI ARRIVA 2 ***\n");
+		
 			swimResponse = userBean.sendFeedback(request.getUserPrincipal().getName(), toUser, reqId, vote, description);
 
 			if(swimResponse!=null){
@@ -382,7 +387,29 @@ public class Control extends HttpServlet {
 		
 	}
 
-
+	public void addAbility(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		
+		SwimResponse swimResponse = null;
+		String newAbility = request.getParameter("newAbility");
+		System.out.println("\n**** CONTROL: QUI ADD_ABILITY***\n");
+		
+		swimResponse = userBean.addAbility(newAbility);
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("AddAbility", "ok");
+			} else {
+				request.setAttribute("AddAbility", "noValidAbilityName");
+			}
+			
+		} else {
+			request.setAttribute("AddAbility", "fail");
+		}
+		
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/abilityAdmin.jsp");
+		dispatcher.forward(request, response);
+		
+		
+	}
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

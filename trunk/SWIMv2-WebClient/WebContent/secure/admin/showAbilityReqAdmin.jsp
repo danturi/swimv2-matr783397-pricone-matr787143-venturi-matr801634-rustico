@@ -94,10 +94,8 @@ div.scroll {
 
 	<div class="bannerArea">
 		<div class="container">
-			<div class="bannernav">
-				Sei loggato come
-				<%=request.getUserPrincipal().getName() %>.
-			</div>
+		<div class="bannernav">Pannello di amministrazione di SWIMv2</div>
+
 			<div class="toplogo">
 				<a href="#"></a><a href="#"></a><a href="#"><a href="#"><a
 						href="#"><a href="#"></a><img
@@ -108,19 +106,18 @@ div.scroll {
 		</div>
 	</div>
 	<div class="topnavigationArea">
-		<div class="container">
-			<div class="topnavigationgroup">
-				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a id="logoutLink"
-						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="#">RICERCA UTENTI</a></li>
-					<li><a href="#">ABILITA'</a></li>
-					<li><a href="#">HOME</a></li>
-				</ul>
+			<div class="container">
+<div class="topnavigationgroup">
+      <ul id="MenuBar1" class="MenuBarHorizontal">
+        <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+        <li><a href="#">RICERCA UTENTI</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/abilityAdmin.jsp">ABILITA'</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/homeAdmin.jsp">HOME</a></li>
+      </ul>
+      </div>
+			<div style="clear:both;"></div>
 			</div>
-			<div style="clear: both;"></div>
 		</div>
-	</div>
 	<div class="contentArea">
 		<div class="container">
 			<div class="contentleft">
