@@ -93,22 +93,22 @@
 		</div>
 	</div>
 	<div class="topnavigationArea">
-		<div class="container">
-			<div class="topnavigationgroup">
-				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a id="logoutLink"
+			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
+			  <div class="topnavigationgroup">
+			    <ul id="MenuBar1" class="MenuBarHorizontal">
+							<li style="border-right-style: solid;"><a id="logoutLink"
 						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="#">AMICI</a></li>
-					<li><a
-						href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/friendsList.jsp">AMICI</a></li>
+					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
 					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
 					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
 						title="home" target="_parent">HOME</a></li>
 				</ul>
+		    </div>
+			<!-- TemplateEndEditable -->
+			  <div style="clear:both;"></div>
 			</div>
-			<div style="clear: both;"></div>
 		</div>
-	</div>
 	<div class="contentArea">
 		<div class="container">
 			<div class="contentleft">
@@ -241,11 +241,12 @@
 							}
 							
 							out.write("<p>&nbsp;</p>");
-							out.write("<h2>Rating</h2>");
-							out.write("<p>&nbsp;</p>");
-							out.write("<p><a href=\"feedback.jsp\"><strong>Visualizza feedback</strong><strong></strong></a></p>");
-							out.write("<p>&nbsp;</p>");
-							out.write("<p>&nbsp;</p>");
+							
+							if(usr.getRating()!=null){
+								out.write("<h2>Rating</h2>");
+								out.write("<h1><span style=\"color: green;\">"+String.valueOf(usr.getRating().floatValue()).substring(0, 3)+" <span><a href=\"feedback.jsp\"> <p>Visualizza feedback</p></a></h1>");
+							}
+							
 							out.write("</div>");
 							out.write("<div class=\"middleright\">");
 							out.write("<h2>Competente professionali</h2>");
