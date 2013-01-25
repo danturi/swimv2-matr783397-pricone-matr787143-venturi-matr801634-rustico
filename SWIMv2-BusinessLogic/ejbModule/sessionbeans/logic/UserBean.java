@@ -165,10 +165,10 @@ public class UserBean implements UserBeanRemote {
 			user.getUserList().size();
 			user.getUserList1().size();
 
-		
-			
+
+
 			List<User> userList = (List<User>) findAll().getData();
-			
+
 			for(User user1 : userList){
 				user1.getUserList().size();
 				user1.getUserList1().size();
@@ -186,47 +186,47 @@ public class UserBean implements UserBeanRemote {
 				List<HelpRequest> removalList2 = new ArrayList<HelpRequest>();
 
 				for(FriendshipRequest freq1 : friendReqList1){
-					
+
 					if(freq1.getFromUser().equals(user) || freq1.getToUser().equals(user)){
 						removalList1.add(freq1);
 					}
 				}
 				friendReqList1.removeAll(removalList1);
 				removalList1.clear();
-				
+
 				for(FriendshipRequest freq2 : friendReqList2){
 					if(freq2.getFromUser().equals(user) || freq2.getToUser().equals(user))
 						removalList1.add(freq2);
 				}
 				friendReqList2.removeAll(removalList1);
 				removalList1.clear();
-				
+
 				for(HelpRequest hreq1 : helpReqList1){
 					if(hreq1.getFromUser().equals(user) || hreq1.getToUser().equals(user))
 						removalList2.add(hreq1);
-						
+
 				}
 				helpReqList1.removeAll(removalList2);
 				removalList2.clear();
-				
+
 				for(HelpRequest hreq2 : helpReqList2){
 					if(hreq2.getFromUser().equals(user) || hreq2.getToUser().equals(user))
 						removalList2.add(hreq2);
 				}
 				helpReqList2.removeAll(removalList2);
 				removalList2.clear();
-				
+
 				user1.getUserList().remove(user);
 				user1.getUserList1().remove(user);
 				em.persist(user1);
 			}
-	
-			
 
-			
+
+
+
 			em.remove(user);
-			  			
-			
+
+
 			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
 		} else {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
@@ -368,6 +368,100 @@ public class UserBean implements UserBeanRemote {
 			swimResponse = new SwimResponse(SwimResponse.FAILED,"");
 			return swimResponse;
 		}
+
+	}
+
+	@Override
+	public SwimResponse searchUserMatchingGuest(String lastname, String firstname, String city, String ability, String ability2){
+		SwimResponse swimResponse;
+		boolean filteredByAb1 = false;
+		boolean filteredByAb2 = false;
+		boolean filteredByLastname = false;
+		boolean filteredByFirstname = false;
+
+
+		if(lastname!=null && firstname!=null && city!=null && ability!=null && ability2!=null){
+			List<User> globalList = new ArrayList<User>();
+			List<User> resultList = new ArrayList<User>();
+			List<User> resultList2 = new ArrayList<User>();
+			List<User> resultList3 = new ArrayList<User>();
+			List<User> resultList4 = new ArrayList<User>();
+
+
+			globalList = (List<User>) findAll().getData();
+
+
+			for(User tryUser: globalList){ // FILTRO PER CITTA'
+				if(!city.equals("")){
+					if(tryUser.getCity()!=null){
+						if(tryUser.getCity().equalsIgnoreCase(city)) {
+							resultList.add(tryUser);
+						}
+					}
+
+				} else {
+					resultList = globalList;
+				}
+			}
+			//System.out.println("\n**** USERBEAN: MATCH LIST1: "+resultList);
+			for(User tryUser2: resultList){// FILTRO PER ABILITA'
+				tryUser2.getAbilityList().size();
+
+				if(!ability.equals("0")){
+					filteredByAb1=true;
+					for(Ability ab: tryUser2.getAbilityList()){
+
+						if(ab.getAbilityId().equals(Long.valueOf(ability)) && !resultList2.contains(tryUser2)){
+							resultList2.add(tryUser2);
+						}
+					}
+				}
+
+				if(!ability2.equals("0")){
+					filteredByAb2=true;
+					for(Ability ab: tryUser2.getAbilityList()){
+
+						if(ab.getAbilityId().equals(Long.valueOf(ability2)) && !resultList2.contains(tryUser2)){
+							resultList2.add(tryUser2);
+						}
+					}
+				}
+
+			}
+			if(filteredByAb1 || filteredByAb2) resultList=resultList2;
+			System.out.println("\n**** USERBEAN: "+filteredByAb1+"  "+filteredByAb2);
+
+			if(!lastname.equals("")){// FILTRO PER COGNOME
+				filteredByLastname= true;
+				for(User tryUser3: resultList){
+					if(tryUser3.getLastname().equalsIgnoreCase(lastname)){
+						filteredByLastname= true;
+						resultList3.add(tryUser3);
+					}
+				}
+				if(filteredByLastname) resultList=resultList3;
+			}
+			System.out.println("\n**** USERBEAN: MATCH LIST3: "+resultList3);
+			if(!firstname.equals("")){// FILTRO PER NOME
+				filteredByFirstname= true;
+				for(User tryUser4: resultList){
+					if(tryUser4.getFirstname().equalsIgnoreCase(firstname)){
+						filteredByFirstname= true;
+						resultList4.add(tryUser4);
+					}
+				}
+				if(filteredByFirstname) resultList=resultList4;
+			}
+			System.out.println("\n**** USERBEAN: MATCH LIST4: "+resultList4);
+
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"",resultList);
+			System.out.println("\n**** USERBEAN: MATCH LIST: "+resultList);
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"fail");
+		}
+		return swimResponse;
+
+
 
 	}
 
