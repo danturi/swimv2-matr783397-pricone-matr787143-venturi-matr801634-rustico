@@ -44,6 +44,8 @@ public interface UserBeanRemote {
     
     public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String onlyfriends);
     
+    public SwimResponse searchUserMatchingGuest(String lastname, String firstname, String city, String ability, String ability2);
+
     public SwimResponse changeUserInfo (String userPrincipal, String lastname,String firstname ,String city,String sex ,String age,String job ,String tel);
     
     public SwimResponse getAbilitySet();
