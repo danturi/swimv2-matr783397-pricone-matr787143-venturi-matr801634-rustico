@@ -128,8 +128,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 	<div class="bannerArea">
 		<div class="container">
 			<div class="bannernav">
-				<a href="#">Privacy Policy</a> &bull; <a href="#">Contact Us</a>
-				&bull; <a href="#">Site Map</a>
+				Benvenuto in Swim!
 			</div>
 			<div class="toplogo">
 				<a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"

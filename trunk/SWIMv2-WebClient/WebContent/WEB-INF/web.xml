@@ -25,6 +25,10 @@
       <form-error-page>/index.jsp?auth-error=1</form-error-page>
     </form-login-config>
   </login-config>
+   <error-page>
+    <error-code>403</error-code>
+    <location>/alert.jsp</location>
+  </error-page>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Secured Content</web-resource-name>
