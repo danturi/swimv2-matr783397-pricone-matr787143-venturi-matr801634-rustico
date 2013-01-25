@@ -135,7 +135,7 @@
 							
 										
 									}
-								} else if(request.getAttribute("FoundResult").equals("fail")){
+								} else {
 										
 									out.write("<h2>Si è verificato un problema. Nessun utente trovato.</h2>");
 				

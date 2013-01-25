@@ -127,11 +127,10 @@ SwimResponse abilitySetRsp = userBean.getAbilitySet();
             if(abilitySetRsp!=null){
             	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
            			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
-           			int n = 1;
-            			for(Ability ability: abilitySet){
-            				out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
-            				n++;
-           				 }
+           			for(Ability ability: abilitySet){
+        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+        				
+       				 }
             	}
             }
             %>
@@ -145,10 +144,9 @@ SwimResponse abilitySetRsp = userBean.getAbilitySet();
             if(abilitySetRsp!=null){
             	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
            			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
-           			int n = 1;
         			for(Ability ability: abilitySet){
-        				out.write("<option value=\""+n+"\">"+ability.getDescription()+"</option>");
-        				n++;
+        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+        				
        				 }
             	}
             }
