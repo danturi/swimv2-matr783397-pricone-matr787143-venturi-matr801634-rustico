@@ -158,11 +158,80 @@ public class UserBean implements UserBeanRemote {
 	}
 
 	@Override
-	public void removeUser(String email) {
+	public SwimResponse removeUser(String email) {
+		SwimResponse swimResponse = null;
 		User user =  find(email);
 		if (user != null) {
+			user.getUserList().size();
+			user.getUserList1().size();
+
+		
+			
+			List<User> userList = (List<User>) findAll().getData();
+			
+			for(User user1 : userList){
+				user1.getUserList().size();
+				user1.getUserList1().size();
+
+				user1.getHelpReqList().size();
+				user1.getSentHelpReqList().size();
+				user1.getFriendshipRequestList().size();
+				user1.getSentFriendshipRequestList().size();
+				List<HelpRequest> helpReqList1 = user1.getHelpReqList();
+				List<HelpRequest> helpReqList2 =user1.getSentHelpReqList();
+				List<FriendshipRequest> friendReqList1 = user1.getFriendshipRequestList();
+				List<FriendshipRequest> friendReqList2 = user1.getSentFriendshipRequestList();
+
+				List<FriendshipRequest> removalList1 = new ArrayList<FriendshipRequest>();
+				List<HelpRequest> removalList2 = new ArrayList<HelpRequest>();
+
+				for(FriendshipRequest freq1 : friendReqList1){
+					
+					if(freq1.getFromUser().equals(user) || freq1.getToUser().equals(user)){
+						removalList1.add(freq1);
+					}
+				}
+				friendReqList1.removeAll(removalList1);
+				removalList1.clear();
+				
+				for(FriendshipRequest freq2 : friendReqList2){
+					if(freq2.getFromUser().equals(user) || freq2.getToUser().equals(user))
+						removalList1.add(freq2);
+				}
+				friendReqList2.removeAll(removalList1);
+				removalList1.clear();
+				
+				for(HelpRequest hreq1 : helpReqList1){
+					if(hreq1.getFromUser().equals(user) || hreq1.getToUser().equals(user))
+						removalList2.add(hreq1);
+						
+				}
+				helpReqList1.removeAll(removalList2);
+				removalList2.clear();
+				
+				for(HelpRequest hreq2 : helpReqList2){
+					if(hreq2.getFromUser().equals(user) || hreq2.getToUser().equals(user))
+						removalList2.add(hreq2);
+				}
+				helpReqList2.removeAll(removalList2);
+				removalList2.clear();
+				
+				user1.getUserList().remove(user);
+				user1.getUserList1().remove(user);
+				em.persist(user1);
+			}
+	
+			
+
+			
 			em.remove(user);
+			  			
+			
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 		}
+		return swimResponse;
 	}
 
 	@Override
