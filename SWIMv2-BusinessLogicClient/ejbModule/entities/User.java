@@ -109,19 +109,19 @@ public class User implements Serializable {
 			@JoinColumn(name = "User_2", referencedColumnName = "Email")})
 	@ManyToMany
 	private List<User> userList;
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "userList")
+	@ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "userList")
 	private List<User> userList1;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorUser")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL, mappedBy = "authorUser")
 	private List<Feedback> feedbackList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<AbilityRequest> abilityRequestList;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "toUser")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL,mappedBy = "toUser")
 	private List<FriendshipRequest> friendshipRequestList;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "fromUser")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL,mappedBy = "fromUser")
 	private List<FriendshipRequest> friendshipRequestList1;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "toUser")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL,mappedBy = "toUser")
 	private List<HelpRequest> helpRequestList;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "fromUser")
+	@OneToMany(orphanRemoval=true, cascade = CascadeType.ALL,mappedBy = "fromUser")
 	private List<HelpRequest> helpRequestList1;
 	@ElementCollection(targetClass = Group.class)
 	@CollectionTable(name = "users_groups", 

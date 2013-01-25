@@ -38,7 +38,7 @@ public interface UserBeanRemote {
     
     public void updateUserRating(String email);
     
-    public void removeUser(String email);
+    public SwimResponse removeUser(String email);
     
     public SwimResponse addAbility(String newAbility);
     
