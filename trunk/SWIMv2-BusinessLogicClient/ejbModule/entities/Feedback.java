@@ -37,7 +37,6 @@ public class Feedback implements Serializable {
     private Long feedbackId;
     @Column(length = 10000)
 	private String comment;
-    @Max(value=5)  @Min(value=0)
 	private Float rating;
     @JoinColumn(name = "AuthorUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
@@ -47,6 +46,7 @@ public class Feedback implements Serializable {
     
 
     public Feedback() {
+    	this.rating = Float.valueOf(0.0f);
     }
 
     public Feedback(Long feedbackId) {

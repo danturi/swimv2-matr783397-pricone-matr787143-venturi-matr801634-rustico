@@ -36,6 +36,8 @@ public interface UserBeanRemote {
     
     public User find(String email);
     
+    public void updateUserRating(String email);
+    
     public void removeUser(String email);
     
     public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String onlyfriends);
@@ -47,6 +49,8 @@ public interface UserBeanRemote {
     public SwimResponse getNewAbilityReqList();
     
     public SwimResponse getAbilityList(String email);
+    
+    public SwimResponse getFullFriendsList(String email);
     
     public SwimResponse getFriendsList(String email);
     
@@ -74,6 +78,7 @@ public interface UserBeanRemote {
     
     public SwimResponse sendFeedback(String emailUserFrom, String emailUserTo, String reqId, String vote, String description);
     
+   
     
     
 }

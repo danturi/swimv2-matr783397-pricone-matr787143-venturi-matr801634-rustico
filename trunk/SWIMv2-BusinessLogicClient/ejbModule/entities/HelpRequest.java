@@ -109,7 +109,7 @@ public class HelpRequest implements Serializable {
         return feedbackId;
     }
 
-    public void setFeedbackId(Feedback feedbackID) {
+    public void setFeedbackId(Feedback feedbackId) {
         this.feedbackId = feedbackId;
     }
 
