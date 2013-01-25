@@ -40,6 +40,8 @@ public interface UserBeanRemote {
     
     public void removeUser(String email);
     
+    public SwimResponse addAbility(String newAbility);
+    
     public SwimResponse searchUserMatching(String userPrincipal, String lastname, String firstname, String city, String ability, String ability2, String onlyfriends);
     
     public SwimResponse changeUserInfo (String userPrincipal, String lastname,String firstname ,String city,String sex ,String age,String job ,String tel);

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,9 +37,7 @@ public class Ability implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Long abilityId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10000)
+    @Column(length = 128)
     private String description;
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "abilityList")
     private List<User> userList;
