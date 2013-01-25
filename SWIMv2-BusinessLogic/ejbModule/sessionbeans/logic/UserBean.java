@@ -105,11 +105,44 @@ public class UserBean implements UserBeanRemote {
 
 	}
 
+	public void updateUserRating(String email){
+		User usr = em.find(User.class, email);
+		float newRating = 0.0f;
+		float sum = 0.0f;
+		if(usr!=null){
+			usr.getHelpReqList().size();
+			List<HelpRequest> receivedHelpReqList = usr.getHelpReqList();
+			List<Feedback> feedList = new ArrayList<Feedback>();
+			for(HelpRequest helpReq: receivedHelpReqList){
+
+				if(helpReq.getFeedbackId()!=null) feedList.add(helpReq.getFeedbackId());
+			}
+
+			if(!feedList.isEmpty()){
+				for(Feedback feed: feedList){
+
+					if(feed.getRating()!=null){
+						sum+=feed.getRating().floatValue();
+					}
+				}
+				newRating = sum/Float.valueOf(feedList.size()+".0f");
+				usr.setRating(Float.valueOf(newRating));
+			}
+		}
+	}
+
 	@Override
 	public SwimResponse findAll() {
 
 		TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
-		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Lista utenti ricevuta", query.getResultList());
+		List<User> listWithAdmin = query.getResultList();
+		List<User> finalList = new ArrayList<User>();
+		for(User usr: listWithAdmin){
+			if(!usr.getGroups().contains(Group.ADMINISTRATOR)){
+				finalList.add(usr);
+			}	
+		}
+		SwimResponse swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Lista utenti ricevuta", finalList);
 		return swimResponse;
 	}
 
@@ -170,19 +203,11 @@ public class UserBean implements UserBeanRemote {
 
 			if(onlyFriends){
 
-				List<User> globalListOf1 = (List<User>) getFriendsList(userPrincipal).getData();
-				List<User> globalListOf2 = (List<User>) getReversedFriendsList(userPrincipal).getData();
-				for(User usr1: globalListOf1){
-					globalList.add(usr1);
-				}
-				for(User usr2: globalListOf2){
-					if(!globalList.contains(usr2)) globalList.add(usr2);
-				}
+				globalList = (List<User>) getFullFriendsList(userPrincipal).getData();
 
 				System.out.println("\n**** USERBEAN: globalList: "+globalList);
 			} else {
-				TypedQuery<User> query = em.createQuery("SELECT usr FROM User usr ORDER BY usr.registeredOn ASC", User.class);
-				globalList = query.getResultList();
+				globalList = (List<User>) findAll().getData();
 			}
 
 			for(User tryUser: globalList){ // FILTRO PER CITTA'
@@ -329,7 +354,32 @@ public class UserBean implements UserBeanRemote {
 		}
 		return swimResponse;
 	}
-
+	
+	@Override
+	public SwimResponse getFullFriendsList(String email){
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			user.getUserList().size();
+			user.getUserList1().size();
+			List<User> fullList = new ArrayList<User>();
+			List<User> globalListOf1 = user.getUserList();
+			List<User> globalListOf2 = user.getUserList1();
+			for(User usr1: globalListOf1){
+				fullList.add(usr1);
+			}
+			for(User usr2: globalListOf2){
+				if(!fullList.contains(usr2)) fullList.add(usr2);
+			}
+		
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Recupero lista degli amici effettuato", fullList);
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"Utente non valido.");
+		}
+		return swimResponse;
+		
+		
+	}
 	@Override
 	public SwimResponse getFriendsList(String email) {
 		SwimResponse swimResponse;
@@ -506,6 +556,7 @@ public class UserBean implements UserBeanRemote {
 				helpReq.setAcceptanceStatus(false);
 				helpReq.setDatetime(new Date());
 				helpReq.setDescription(description);
+				helpReq.setFeedbackId(null);
 				userFrom.getSentHelpReqList().add(helpReq);
 				userTo.getHelpReqList().add(helpReq);
 				em.persist(userTo);
@@ -759,11 +810,11 @@ public class UserBean implements UserBeanRemote {
 		User userFrom = find(emailUserFrom);
 		User userTo = find(emailUserTo);
 		Long reqId;
-		Float rating;
+		float rating = 0.0f;
 		try{
-			Float minRating = Float.valueOf("0.0f");
-			Float maxRating = Float.valueOf("5.5f");
-			rating = Float.valueOf("4.0f");
+			float minRating = Float.valueOf("0.0f").floatValue();
+			float maxRating = Float.valueOf("5.5f").floatValue();
+			rating = Float.valueOf(vote).floatValue();
 			if(rating<minRating || rating>maxRating){
 				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidVote");
 				System.out.println("USERBEAN (sendFeedback): Voto non valido.\n");
@@ -793,17 +844,17 @@ public class UserBean implements UserBeanRemote {
 
 						if(helpReq.getIsEvaluated() && helpReq.getAcceptanceStatus()==true){
 							if(helpReq.getFeedbackId()==null){
-							Feedback feedback = new Feedback();
-							feedback.setAuthorUser(userFrom);
-							feedback.setHelpReqId(helpReq);
-							feedback.setRating(rating);
-							feedback.setComment(description);
-							helpReq.setFeedbackId(feedback);
-							em.persist(feedback);
-							em.persist(helpReq);
-					
-							swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
-							System.out.println("\nUSERBEAN: (sendFeedback) Feedback inviato con successo.");
+								Feedback feedback = new Feedback();
+								feedback.setAuthorUser(userFrom);
+								feedback.setRating(Float.valueOf(rating));
+								feedback.setComment(description);
+								helpReq.setFeedbackId(feedback);
+								//em.persist(helpReq);
+
+								em.persist(feedback);
+								updateUserRating(emailUserTo);
+								swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+								System.out.println("\nUSERBEAN: (sendFeedback) Feedback inviato con successo.");
 							}  else {
 								swimResponse = new SwimResponse(SwimResponse.FAILED,"feedAlreadySent");
 								System.out.println("USERBEAN (sendFeedback): Feedback già presente");
