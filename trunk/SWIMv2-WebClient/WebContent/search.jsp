@@ -1,23 +1,18 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote"%>
-<%@ page import="javax.naming.InitialContext"%>
-<%@ page import="javax.naming.Context"%>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
 <%@ page import="sessionbeans.logic.SwimResponse"%>
 <%@ page import="java.util.List"%>
 <%@ page import="entities.User"%>
 <%@ page import="entities.Ability"%>
-<%@ page import="entities.FriendshipRequest"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<c:if test="${pageContext.request.userPrincipal!=null}">
-	<c:redirect url="/secure/homeUser.jsp" />
-	<!-- this will redirect if user is already logged in -->
-</c:if>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
+	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:ice="http://ns.adobe.com/incontextediting">
-<head>
-<title>SWIMv2</title>
-<script src="<%=request.getContextPath()%>/js/json2.js"
+	<head>
+	<title>SWIMv2</title>
+	<script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
@@ -129,25 +124,19 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
 <link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
-	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
+	
+
 </head>
 <body>
-	<%
-		UserBeanRemote userBean;
-		Context context = new InitialContext();
-		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
-		String email = request.getParameter("user");
-		if(email==null && request.getAttribute("LastProfileUserView")!=null) {
-			email = request.getAttribute("LastProfileUserView").toString();
-			request.setAttribute("LastProfileUserView", null);
-		}
-		User usr = null;
-		
-	
-	%>
+<%
+UserBeanRemote userBean;
+Context context = new InitialContext();
+userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
+SwimResponse abilitySetRsp = userBean.getAbilitySet();	
 
-
-	<div class="bannerArea">
+%>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
+		<div class="bannerArea">
 			<div class="container">
 <div class="bannernav">Benvenuto in Swim!</div>
 			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
@@ -168,117 +157,87 @@
 			  <div style="clear:both;"></div>
 			</div>
 		</div>
-	<div class="contentArea">
-		<div class="container">
-			<div class="contentleft">
+		<div class="contentArea">
+			<div class="container">
+<div class="contentleft">
+	  <h1>Ricerca utenti</h1>
+<p>&nbsp;</p>
+	  <p>Cerca tra  chi fa gi&agrave; parte della nostra community e si ti piace socializzare che aspetti..Iscriviti anche tu!</p>
+<p>&nbsp;</p>
+<h6>Non &egrave; obbligatorio compilare tutti i campi</h6>
+<p><img src="<%=request.getContextPath()%>/images/omino_search.gif" alt="omino_search" width="305" height="307" align="right" /></p>
+<form name="queryform" action="<%=request.getContextPath()%>/result.jsp" method="post">
+<table width="254" border="0">
+        <tr>
+          <th width="54" class="formStyle" scope="row">Cognome</th>
+          <td width="190"><input name="lastname" type="text" class="formLabel" id="lastname" value="" size="30" /></td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">Nome</th>
+          <td><input name="firstname" type="text" class="formLabel" id="firstname" size="30" /></td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">Luogo</th>
+          <td><input name="place" type="text" class="formLabel" id="place" size="30" /></td>
+        </tr>
+        <tr>
+          <th class="formStyle" scope="row">&nbsp;</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">&nbsp;</th>
+          <td><span class="formStyle">Abilit&agrave; richieste</span></td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">Prima</th>
+          <td>
+          <select name="ability" class="formLabel" id="ability">
+            <option value="0">--Non richiesta--</option>
+            <%
+            if(abilitySetRsp!=null){
+            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
+           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
+           			for(Ability ability: abilitySet){
+        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+        				
+       				 }
+            	}
+            }
+            %>
+          </select></td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">Seconda</th>
+          <td><select name="ability2" class="formLabel" id="ability2">
+            <option value="0">--Non richiesta--</option>
+             <%
+            if(abilitySetRsp!=null){
+            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
+           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
+        			for(Ability ability: abilitySet){
+        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
+        				
+       				 }
+            	}
+            }
+            %>
+          </select></td>
+        </tr>
+        <tr>
+          <th width="54" class="formStyle" scope="row">&nbsp;</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th width="54" scope="row">&nbsp;</th>
+          <td><input name="helpSearchButton" type="submit" id="helpSearchButton" value="CERCA" /></td>
+        </tr>
+      </table>
+      </form>
+<p>&nbsp;</p>
+<p>oppure <a href="<%=request.getContextPath()%>/userList.jsp">Lista di tutti gli utenti iscritti</a></p>
 
-				<%
-					if (email != null) {
-						usr = userBean.find(email);
-
-						if (usr != null) {
-							out.write("<div class=\"top\">");
-
-							out.write("<h1><strong>Profilo utente selezionato</strong></h1>");
-
-							out.write("<p>&nbsp;</p>");
-							out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"
-									+ usr.getFirstname()
-									+ " "
-									+ usr.getLastname()
-									+ "</h1>");
-
-							out.write("</div>");
-							out.write("<div class=\"middle\">");
-							out.write("<div class=\"middleleft\">");
-							out.write("<h2>Informazioni</h2>");
-							out.write("<table width=\"327\" border=\"0\" cellpadding=\"2\" cellspacing=\"8\">");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Email:</h3></td>");
-							out.write("<td class=\"formLabel\">" + usr.getEmail()
-									+ "</td>");
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Genere:</h3></td>");
-							if (usr.getSex() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getSex()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificato.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Et&agrave;:</h3></td>");
-							if (usr.getAge() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getAge()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Residenza:</h3></td>");
-							if (usr.getCity() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getCity()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Professione:</h3></td>");
-							if (usr.getOccupation() != null) {
-								out.write("<td class=\"formLabel\">"
-										+ usr.getOccupation() + "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("</table>");
-							out.write("<p>&nbsp;</p>");
-
-							if (usr.getRating() != null) {
-								out.write("<h2>Rating</h2>");
-								out.write("<h1><span style=\"color: green;\">"
-										+ String.valueOf(usr.getRating().floatValue())
-												.substring(0, 3)
-										+ " <span><a href=\"feedback.jsp\"> <p>Visualizza feedback</p></a></h1>");
-							}
-
-							out.write("</div>");
-							out.write("<div class=\"middleright\">");
-
-							out.write("<h2>Competenze professionali</h2>");
-							SwimResponse swimRsp2 = userBean.getAbilityList(email);
-							if (swimRsp2.getStatus() == SwimResponse.SUCCESS) {
-								List<Ability> abilityList = (List<Ability>) swimRsp2.getData();
-								if (!abilityList.isEmpty()) {
-									for (Ability ab : abilityList) {
-										out.write("<p>" + ab.getDescription() + "</p>");
-									}
-
-								} else {
-									out.write("<p>Nessuna.</p>");
-								}
-							} else {
-								out.write("<p>Nessuna.</p>");
-							}
-
-							out.write("</div>");
-							out.write("</div>");
-
-						} else {
-
-							out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-
-						}
-					} else {
-						out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-					}
-				%>
-			</div>
-
-				<div class="contentright">
+</div>
+			<div class="contentright">
 			<div class="login">
 
 						<!-- did we already try to login and it failed? -->
@@ -327,11 +286,32 @@
 						</form>
 					</div>
 
+				<h2>Ecco i nostri iscritti!</h2>
+				<div id="slideCont"
+					style="position: relative; z-index: 1; width: 220px; height: 50px; left: 0px; overflow: hidden;">
+					<div id="slideA"
+						style="position: absolute; z-index: 1; top: 10px; left: 0 px; width: 200px; overflow: hidden;">
+						<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
+							src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+						<div id="slideB"
+							style="position: relative; z-index: 1; top: 0px; left: 0 px; width: 200px; overflow: hidden;">
+							<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
+								src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-	
+	</div>
 	<div class="footerArea">
 		<div class="container">
 			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by

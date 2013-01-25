@@ -120,11 +120,11 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
 <link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
-	
+	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
 </head>
 <body>
 
-	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
+	
 	<div class="bannerArea">
 		<div class="container">
 			<div class="bannernav">
@@ -141,7 +141,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 		<div class="container">
 			<div class="topnavigationgroup">
 				<ul id="MenuBar1" class="MenuBarHorizontal">
-					<li style="border-right-style: solid;"><a href="search.html"
+					<li style="border-right-style: solid;"><a href="<%=request.getContextPath()%>/search.jsp"
 						title="home" target="_parent">CERCA UTENTI</a></li>
 				</ul>
 			</div>

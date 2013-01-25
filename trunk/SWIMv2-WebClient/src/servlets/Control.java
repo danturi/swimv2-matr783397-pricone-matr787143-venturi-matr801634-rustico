@@ -33,7 +33,7 @@ public class Control extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		System.out.println("**** CONTROL: Principal = "+request.getUserPrincipal().getName());
+		
 
 		if(request.getParameter("actionType")!=null){
 			if(request.getParameter("actionType").equals("sendFriendReq")) sendFriendshipReq(request, response);
@@ -47,7 +47,7 @@ public class Control extends HttpServlet {
 					request.setAttribute("ReplyResult", null);
 				}
 			}
-			
+
 			if(request.getParameter("actionType").equals("removeUser")) { //ADMIN FUNCTION
 				if(request.isUserInRole("ADMINISTRATOR")){
 					removeUser(request, response); 
@@ -66,6 +66,9 @@ public class Control extends HttpServlet {
 
 		if(request.getAttribute("FoundResultAdmin")!=null){ //ADMIN FUNCTION
 			if(request.getAttribute("FoundResultAdmin").equals("searching")) searchUserMatchingAdmin(request, response);
+		}
+		if(request.getAttribute("FoundResultGuest")!=null){ //GUEST FUNCTION
+			if(request.getAttribute("FoundResultGuest").equals("searching")) searchUserMatchingGuest(request, response);
 		}
 		if(request.getAttribute("AbilityReqSent")!=null){
 			if(request.getAttribute("AbilityReqSent").equals("sending")) sendAbilityRequest(request, response);
@@ -211,6 +214,38 @@ public class Control extends HttpServlet {
 		}
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/resultAdmin.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	public void searchUserMatchingGuest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+
+		SwimResponse swimResponse = null;
+		System.out.println("\n**** CONTROL: QUI SEARCH_USER_MATCHING_GUEST***\n");
+		String lastname = request.getParameter("lastname");
+		String firstname = request.getParameter("firstname");
+		String city = request.getParameter("place");
+		String ability = request.getParameter("ability");
+		String ability2 = request.getParameter("ability2");
+		
+
+		swimResponse = userBean.searchUserMatchingGuest(lastname, firstname, city, ability, ability2);
+
+
+		if(swimResponse!=null){
+			if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+				request.setAttribute("FoundResultGuest", "ok");
+				System.out.println("\n**** CONTROL: QUI SEARCH_USER_MATCHING FoundResultGuest ok***\n");
+				request.setAttribute("MatchingList", swimResponse.getData());
+				System.out.println("\n**** CONTROL: MATCH LIST: "+(List<User>)swimResponse.getData());
+			} else {
+				request.setAttribute("FoundResultGuest", "fail");
+			}
+		} else {
+			request.setAttribute("FoundResultGuest", "fail");
+		}
+
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/result.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -456,10 +491,10 @@ public class Control extends HttpServlet {
 
 
 	}
-	
-	
+
+
 	public void removeUser(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
-		
+
 
 		SwimResponse swimResponse = null;
 		String user = request.getParameter("user");
@@ -479,10 +514,10 @@ public class Control extends HttpServlet {
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/admin/userSearchAdmin.jsp");
 		dispatcher.forward(request, response);
-		
-		
-		
-		
+
+
+
+
 	}
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

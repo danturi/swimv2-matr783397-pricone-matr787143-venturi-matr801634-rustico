@@ -1,23 +1,18 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote"%>
-<%@ page import="javax.naming.InitialContext"%>
-<%@ page import="javax.naming.Context"%>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
 <%@ page import="sessionbeans.logic.SwimResponse"%>
 <%@ page import="java.util.List"%>
 <%@ page import="entities.User"%>
 <%@ page import="entities.Ability"%>
-<%@ page import="entities.FriendshipRequest"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<c:if test="${pageContext.request.userPrincipal!=null}">
-	<c:redirect url="/secure/homeUser.jsp" />
-	<!-- this will redirect if user is already logged in -->
-</c:if>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
+	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:ice="http://ns.adobe.com/incontextediting">
-<head>
-<title>SWIMv2</title>
-<script src="<%=request.getContextPath()%>/js/json2.js"
+	<head>
+	<title>SWIMv2</title>
+	<script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
@@ -123,31 +118,37 @@
 						});
 	});
 </script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
 <meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
 	
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
 <link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
 	type="text/css" />
-	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
-</head>
-<body>
-	<%
-		UserBeanRemote userBean;
-		Context context = new InitialContext();
-		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
-		String email = request.getParameter("user");
-		if(email==null && request.getAttribute("LastProfileUserView")!=null) {
-			email = request.getAttribute("LastProfileUserView").toString();
-			request.setAttribute("LastProfileUserView", null);
-		}
-		User usr = null;
-		
 	
-	%>
 
-
-	<div class="bannerArea">
+</head>
+	<body>
+	<% UserBeanRemote userBean;
+	Context context = new
+	InitialContext(); userBean = (UserBeanRemote)
+	context.lookup(UserBeanRemote.class.getName());
+	SwimResponse swimResponse = userBean.findAll();
+	List<User> userList = null;
+	if(swimResponse.getStatus()==SwimResponse.SUCCESS){
+		userList = (List<User>) swimResponse.getData();
+	}
+	
+	if(request.getAttribute("FoundResultGuest")==null){
+		request.setAttribute("FoundResultGuest", "searching");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/Control");
+		dispatcher.forward(request, response);
+	}
+	
+	
+	 %>
+	
+		<div class="bannerArea">
 			<div class="container">
 <div class="bannernav">Benvenuto in Swim!</div>
 			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
@@ -168,117 +169,62 @@
 			  <div style="clear:both;"></div>
 			</div>
 		</div>
-	<div class="contentArea">
-		<div class="container">
-			<div class="contentleft">
+		<div class="contentArea">
+			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
+			  <div class="contentleft">
+              	<div class="middle">
+		    	  <h1>Lista Utenti</h1>
+					<p>&nbsp;</p>
 
-				<%
-					if (email != null) {
-						usr = userBean.find(email);
-
-						if (usr != null) {
-							out.write("<div class=\"top\">");
-
-							out.write("<h1><strong>Profilo utente selezionato</strong></h1>");
-
-							out.write("<p>&nbsp;</p>");
-							out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"
-									+ usr.getFirstname()
-									+ " "
-									+ usr.getLastname()
-									+ "</h1>");
-
-							out.write("</div>");
-							out.write("<div class=\"middle\">");
-							out.write("<div class=\"middleleft\">");
-							out.write("<h2>Informazioni</h2>");
-							out.write("<table width=\"327\" border=\"0\" cellpadding=\"2\" cellspacing=\"8\">");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Email:</h3></td>");
-							out.write("<td class=\"formLabel\">" + usr.getEmail()
-									+ "</td>");
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Genere:</h3></td>");
-							if (usr.getSex() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getSex()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificato.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Et&agrave;:</h3></td>");
-							if (usr.getAge() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getAge()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Residenza:</h3></td>");
-							if (usr.getCity() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getCity()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Professione:</h3></td>");
-							if (usr.getOccupation() != null) {
-								out.write("<td class=\"formLabel\">"
-										+ usr.getOccupation() + "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("</table>");
-							out.write("<p>&nbsp;</p>");
-
-							if (usr.getRating() != null) {
-								out.write("<h2>Rating</h2>");
-								out.write("<h1><span style=\"color: green;\">"
-										+ String.valueOf(usr.getRating().floatValue())
-												.substring(0, 3)
-										+ " <span><a href=\"feedback.jsp\"> <p>Visualizza feedback</p></a></h1>");
-							}
-
-							out.write("</div>");
-							out.write("<div class=\"middleright\">");
-
-							out.write("<h2>Competenze professionali</h2>");
-							SwimResponse swimRsp2 = userBean.getAbilityList(email);
-							if (swimRsp2.getStatus() == SwimResponse.SUCCESS) {
-								List<Ability> abilityList = (List<Ability>) swimRsp2.getData();
-								if (!abilityList.isEmpty()) {
-									for (Ability ab : abilityList) {
-										out.write("<p>" + ab.getDescription() + "</p>");
+					<%
+						if (request.getAttribute("FoundResultGuest") != null) {
+							if (request.getAttribute("FoundResultGuest").equals("ok")) {
+								List<User> resultList = (List<User>) request.getAttribute("MatchingList");
+								if (!resultList.isEmpty()) {
+									out.write("<p>Ecco chi ha le carratteristiche che cercavi:</p>");
+									out.write("<div id=\"user-list\">");
+									out.write("<input class=\"search\" size=\"30\" placeholder=\"Cerca utente\" />");
+									out.write("<ul class=\"sort-by\">");
+									out.write("<li class=\"sort btn\" data-sort=\"name\">Ordina per nome (A/Z - Z/A)</li>");
+									out.write("</ul>");
+									out.write("<ul class=\"filter\">");
+									out.write("</ul>");
+									out.write("<div class=\"wrapper\">");
+									out.write("<ul class=\"list\">");
+									for (User usr : resultList) {
+										//out.write("<p>Nome:"+usr.getFirstname()+" Cognome:"+usr.getLastname()+" Email:"+usr.getEmail()+"</p>");
+										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/profile.jsp?user="
+												+ usr.getEmail()
+												+ "\">"
+												+ usr.getFirstname()
+												+ " "
+												+ usr.getLastname()
+												+ "</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
 									}
-
+									out.write("</ul>");
+									out.write("</div>");
+									out.write("</div>");
 								} else {
-									out.write("<p>Nessuna.</p>");
+									out.write("<h2>Nessun utente corrisponde ai criteri di ricerca selezionati.</h2>");
+
 								}
 							} else {
-								out.write("<p>Nessuna.</p>");
+
+								out.write("<h2>Si è verificato un problema. Nessun utente trovato.</h2>");
+
 							}
-
-							out.write("</div>");
-							out.write("</div>");
-
 						} else {
-
-							out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-
+							out.write("<h2>Si è verificato un problema. Nessun utente trovato.</h2>");
 						}
-					} else {
-						out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-					}
-				%>
-			</div>
+						request.setAttribute("MatchingList", null);
+						request.setAttribute("FoundResultGuest", null);
+					%>
 
-				<div class="contentright">
+				</div>
+  
+           	
+		    </div>
+			<div class="contentright">
 			<div class="login">
 
 						<!-- did we already try to login and it failed? -->
@@ -327,11 +273,13 @@
 						</form>
 					</div>
 
+				
+
 			</div>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-	
+	</div>
 	<div class="footerArea">
 		<div class="container">
 			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by
