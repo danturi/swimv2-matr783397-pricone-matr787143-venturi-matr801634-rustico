@@ -16,6 +16,8 @@
 		<class>entities.HelpRequest</class>
 
 		<class>entities.User</class>
+		
+		<class>entities.FileStorageEntity</class>
 		<properties>
 			<property name="eclipselink.jdbc.batch-writing" value="Buffered"/>
 			<property name="eclipselink.ddl-generation" value="create-tables"/>

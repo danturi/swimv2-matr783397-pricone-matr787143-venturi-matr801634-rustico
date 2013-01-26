@@ -11,6 +11,10 @@ import entities.FriendshipRequest;
 import entities.HelpRequest;
 import entities.User;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -129,6 +133,48 @@ public class UserBean implements UserBeanRemote {
 				usr.setRating(Float.valueOf(newRating));
 			}
 		}
+	}
+	
+	@Override
+	public SwimResponse retrievePicture(String email){
+		
+		String path = "C:/FileIO/hi.txt";
+		File parentDir = new File("C:/profile");
+		parentDir.mkdir();
+		File f = new File(parentDir,"test.txt");
+		
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				/*File f = new File(path);
+				//(works for both Windows and Linux)
+				f.mkdirs();
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+		
+		String strFilePath = "C://FileIO//hi.txt";
+		
+		/*try{
+			
+			FileOutputStream fos = new FileOutputStream(strFilePath);
+			String strContent = "Write File using Java FileOutputStream example !";
+			
+			 fos.write(strContent.getBytes());
+			 fos.close();
+		} catch(FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		}*/
+		
+		return new SwimResponse();
 	}
 
 	@Override
