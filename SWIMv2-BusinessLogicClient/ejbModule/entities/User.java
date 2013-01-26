@@ -26,6 +26,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
@@ -97,8 +98,9 @@ public class User implements Serializable {
 	private String tel;
 	@Max(value=5)  @Min(value=0)//if you know range of your decimal fields consider using these annotations to enforce field validation
 	private Float rating;
-	@Lob
-	private byte[] profilePicture;
+	@JoinColumn(name = "PictureId", referencedColumnName = "PictureId")
+    @OneToOne(optional = false)
+    private FileStorageEntity pictureId;
 	@JoinTable(name = "abilities_holded", joinColumns = {
 			@JoinColumn(name = "Email", referencedColumnName = "Email")}, inverseJoinColumns = {
 			@JoinColumn(name = "AbilityId", referencedColumnName = "AbilityId")})
@@ -284,12 +286,12 @@ public class User implements Serializable {
 		this.rating = rating;
 	}
 
-	public byte[] getProfilePicture() {
-		return profilePicture;
+	public FileStorageEntity getPictureId() {
+		return pictureId;
 	}
 
-	public void setProfilePicture(byte[] profilePicture) {
-		this.profilePicture = profilePicture;
+	public void setProfilePicture(FileStorageEntity pictureId) {
+		this.pictureId = pictureId;
 	}
 
 	public List<Ability> getAbilityList() {
