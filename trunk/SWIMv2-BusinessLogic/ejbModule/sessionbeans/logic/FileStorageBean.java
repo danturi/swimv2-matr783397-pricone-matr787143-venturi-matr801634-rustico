@@ -24,8 +24,11 @@ public class FileStorageBean implements FileStorageBeanRemote{
 
 
 	@Override
-	public void create(FileStorageEntity fileStorageEntity) {
+	public Long create(FileStorageEntity fileStorageEntity) {
 		em.persist(fileStorageEntity);
+		em.flush();
+		
+		return fileStorageEntity.getPictureId();
 
 	}
 
