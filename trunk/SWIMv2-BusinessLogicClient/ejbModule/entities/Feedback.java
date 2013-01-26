@@ -5,6 +5,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,8 +19,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -37,6 +42,11 @@ public class Feedback implements Serializable {
     private Long feedbackId;
     @Column(length = 10000)
 	private String comment;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datetime;
 	private Float rating;
     @JoinColumn(name = "AuthorUser", referencedColumnName = "Email")
     @ManyToOne(optional = false)
@@ -69,6 +79,13 @@ public class Feedback implements Serializable {
         this.comment = comment;
     }
     
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
+    }
     public Float getRating() {
         return rating;
     }
