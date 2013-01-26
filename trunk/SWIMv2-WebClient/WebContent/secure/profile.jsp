@@ -84,7 +84,7 @@
 
 	<div class="bannerArea">
 		<div class="container">
-			<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
+			<div class="bannernav">Ciao, <%=request.getUserPrincipal().getName() %>.</div>
 			<div class="toplogo">
 				<a href="#"></a><a href="#"></a><a href="#"><a href="#"><a href="#"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
 							width="223" height="51" alt="titolo" />

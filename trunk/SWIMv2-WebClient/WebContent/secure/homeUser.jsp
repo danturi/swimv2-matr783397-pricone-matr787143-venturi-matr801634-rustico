@@ -171,7 +171,7 @@
 					%>
 					
 					</h1>
-					<h1>Benvenuto Nome Utente</h1>
+					<h1>Benvenuto <%=request.getUserPrincipal().getName()%></h1>
 					<p>&nbsp;</p>
 					<p>Peri iniziare subito la ricerca di aiuto spingi il bottone
 						&quot;Help&quot; qui in basso e ti ritroverai nella pi&ugrave;
