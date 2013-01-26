@@ -1,9 +1,12 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote" %> <%@ page
-import="javax.naming.InitialContext" %> <%@ page
-import="javax.naming.Context" %> <%@page
-import="java.security.Principal"%> <%@page contentType="text/html"
-pageEncoding="UTF-8"%><%@ taglib uri='http://java.sun.com/jsp/jstl/core'
-prefix='c'%>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="sessionbeans.logic.SwimResponse" %>
+<%@ page import="entities.User" %>
+<%@ page import="java.util.List" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
+<%@page import="java.security.Principal"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
+	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <c:if test="${pageContext.request.userPrincipal.name=='ad'}">
 	<c:redirect url="/secure/admin/homeAdmin.jsp" />
 	<!-- this will redirect if user is already logged in -->
@@ -139,8 +142,36 @@ prefix='c'%>
 			<div class="contentleft">
 				<div class="middle">
 					<h1>
-						<img src="<%=request.getContextPath()%>/images/GIMP-file/utente_incognito.jpg"
-							alt="omino_incognito" width="179" height="137" align="right" />
+					<%
+					if(request.getUserPrincipal().getName()!=null){
+						User usr = userBean.find(request.getUserPrincipal().getName());
+						if(usr!=null){
+							
+							if(usr.getPictureId()!=null){
+								
+								SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+								
+								if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+									String picPath = (String) getPicRsp.getData();
+									
+									out.write("<img src=\""+request.getContextPath()+"/"+picPath+"\" alt=\"user_picture\" width=\"179\" height=\"179\" align=\"right\" />");
+
+								} else {
+									out.write("<img src=\""+request.getContextPath()+"/images/GIMP-file/utente_incognito.jpg\" alt=\"omino_incognito\" width=\"179\" height=\"137\" align=\"right\" />");
+								}
+								
+							} else {
+							
+								out.write("<img src=\""+request.getContextPath()+"/images/GIMP-file/utente_incognito.jpg\" alt=\"omino_incognito\" width=\"179\" height=\"137\" align=\"right\" />");
+						
+							}
+						}
+					}
+					
+					
+					
+					%>
+					
 					</h1>
 					<h1>Benvenuto Nome Utente</h1>
 					<p>&nbsp;</p>
@@ -149,37 +180,36 @@ prefix='c'%>
 						grande e disponibile community del web!</p>
 					<img src="<%=request.getContextPath()%>/images/GIMP-file/help-sm.jpg" alt="helpHome" width="294"
 						height="317" border="0" align="left" usemap="#help" />
-					<map name="help" id="help">
+			<!--  		<map name="help" id="help">
 						<area shape="poly" coords="147,224" href="#" />
 						<area shape="poly" coords="221,163" href="#" />
 						<area shape="poly" coords="211,183" href="#" />
 						<area shape="poly" coords="245,152" href="#" />
-					</map>
-					<%
-						Principal p = request.getUserPrincipal();
-						out.write("<br/><br/>");
-						if (p == null) {
-							//if you get here the something is really wrong, because
-							//you can only see that page if you have been authenticated 
-							//and therefore there is a principal available
-							out.write("<div>Principal = NULL</div>");
-						} else {
-							out.write("<div>Principal.getName()                 = "
-									+ p.getName() + "</div>");
-							out.write("<div>request.getRemoteUser()             = "
-									+ request.getRemoteUser() + "</div>");
-							out.write("<div>request.getAuthType()               = "
-									+ request.getAuthType() + "</div>");
-							out.write("<div>request.isUserInRole(ADMINISTRATOR) = "
-									+ request.isUserInRole("ADMINISTRATOR") + "</div>");
-							out.write("<div>request.isUserInRole(USER)          = "
-									+ request.isUserInRole("USER") + "</div>");
-							out.write("<div>request.isUserInRole(DEFAULT)       = "
-									+ request.isUserInRole("DEFAULT") + "</div>");
-							out.write("<div>request.isUserInRole(CUSTOMER)      = "
-									+ request.isUserInRole("CUSTOMER") + "</div>");
-						}
-					%>
+					</map>-->
+					
+					<p>&nbsp;</p>
+					<p>Carica un immagine di profilo</p>
+			<form method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/FileUploadServlet">
+			<input type="hidden" id="userId" name="userId" value="<%=request.getUserPrincipal().getName()%>" />
+
+            <input type="file" id="selectedFile" name="selectedFile" value="Select a File..." /><br />
+
+            <input type="submit" value="Submit" />
+
+        </form>
+        
+        <%
+                	if (request.getAttribute("FileUpload") != null) {
+                		if (request.getAttribute("FileUpload").equals("ok")) {
+
+                			out.write("<h3><span style=\"color: red;\">Foto caricata con successo.</span><h3>");
+
+                		} else {
+                			out.write("<h3><span style=\"color: red;\">Si è verificatio un errore nel sistema. Foto non caricata.</span><h3>");
+                		}
+                	}
+                	request.setAttribute("AbilityReqSent", null);
+                %>
 				</div>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
