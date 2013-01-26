@@ -171,7 +171,21 @@
 					%>
 					
 					</h1>
-					<h1>Benvenuto <%=request.getUserPrincipal().getName()%></h1>
+					<%
+					if(request.getUserPrincipal().getName()!=null){
+						
+						User usr = userBean.find(request.getUserPrincipal().getName());
+						
+						if(usr!=null){
+							
+							out.write("<h1>Benvenuto "+usr.getFirstname()+" "+usr.getFirstname()+ "</h1>");
+							
+						}
+					}
+					
+					
+					
+					%>
 					<p>&nbsp;</p>
 					<p>Peri iniziare subito la ricerca di aiuto spingi il bottone
 						&quot;Help&quot; qui in basso e ti ritroverai nella pi&ugrave;
