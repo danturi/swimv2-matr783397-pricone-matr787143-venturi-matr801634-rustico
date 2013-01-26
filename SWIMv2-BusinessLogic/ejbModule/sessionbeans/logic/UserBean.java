@@ -1117,10 +1117,11 @@ public class UserBean implements UserBeanRemote {
 								feedback.setAuthorUser(userFrom);
 								feedback.setRating(Float.valueOf(rating));
 								feedback.setComment(description);
+								feedback.setDatetime(new Date());
 								helpReq.setFeedbackId(feedback);
-								//em.persist(helpReq);
-
+								
 								em.persist(feedback);
+								em.flush();
 								updateUserRating(emailUserTo);
 								swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
 								System.out.println("\nUSERBEAN: (sendFeedback) Feedback inviato con successo.");
