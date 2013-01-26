@@ -14,6 +14,14 @@
     <servlet-name>ServletAdaptor</servlet-name>
     <url-pattern>/services/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <servlet-class>servlets.FileUploadServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <url-pattern>/FileUploadServlet</url-pattern>
+</servlet-mapping>
   <listener>
     <listener-class>swimauth.web.listener.EventListener</listener-class>
   </listener>

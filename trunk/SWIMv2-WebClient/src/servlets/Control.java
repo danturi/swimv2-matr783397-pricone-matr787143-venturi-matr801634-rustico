@@ -516,9 +516,9 @@ public class Control extends HttpServlet {
 		dispatcher.forward(request, response);
 
 
-
-
 	}
+	
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

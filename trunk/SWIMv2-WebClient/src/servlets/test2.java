@@ -53,7 +53,8 @@ public class test2 extends HttpServlet {
 		 * 
 		 * PROVA RICHIESTE DI AMICIZIA
 		 */
-		userBean.replyToAbilityReq("aa", Long.valueOf("7"), true);
+		userBean.retrievePicture("prova");
+		//userBean.replyToAbilityReq("aa", Long.valueOf("7"), true);
 		//userBean.sendFriendshipReq("aa","cc");
 		//userBean.sendFriendshipReq("aa","dd");
 		//userBean.sendFriendshipReq("aa","ee");
@@ -139,12 +140,12 @@ public class test2 extends HttpServlet {
 		 */
 		
 		
-		userBean.sendAbilityReq("aa",Long.valueOf("1"),"qui va descrizione richiesta abilita");
+		//userBean.sendAbilityReq("aa",Long.valueOf("1"),"qui va descrizione richiesta abilita");
 		//userBean.sendAbilityReq("aa","Elettricista","qui va descrizione richiesta abilita");
 		//userBean.sendAbilityReq("aa","prova","qui va descrizione richiesta abilita");
 		
 		SwimResponse swimResponse = userBean.findAll();
-		System.out.println("*****ATTRIBUTO PASSATO: "+request.getAttribute("v"));
+		
 		
 
 		try {
