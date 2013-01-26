@@ -72,12 +72,23 @@ if(request.getParameter("sendinfoform")!=null){
 %>
 	
 		<div class="bannerArea">
-			<div class="container">
-<div class="bannernav">Ciao, <%=request.getUserPrincipal().getName() %>.</div>
-			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
-              <div style="clear:both;"></div>
-          </div>
+		<div class="container">
+		<%
+		if(request.getUserPrincipal().getName()!=null){
+			User usrPr = userBean.find(request.getUserPrincipal().getName());
+			if(usrPr!=null){
+				out.write("<div class=\"bannernav\">Ciao, "+usrPr.getFirstname()+".</div>");
+			}
+		}
+		%>
+			
+			<div class="toplogo">
+				<img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
+							width="223" height="51" alt="titolo" />
+			</div>
+			<div style="clear: both;"></div>
 		</div>
+	</div>
 		<div class="topnavigationArea">
 			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
 			  <div class="topnavigationgroup">
@@ -184,28 +195,26 @@ if(request.getAttribute("SendInfoForm")!=null){
 					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
 				</p>
 				<p>&nbsp;</p>
-				<p><a href="friendReq.jsp">Richieste di amicizia</a></p>
+				<p><a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a></p>
 				<p>&nbsp;</p>
-				<p>
-					Richieste abilit&agrave;<img
-						src="<%=request.getContextPath()%>/images/omino_msg.jpg"
+				<p><a href="<%=request.getContextPath()%>/secure/abilityReq.jsp">
+					Richieste abilit&agrave;</a><img src="<%=request.getContextPath()%>/images/omino_msg.jpg"
 						alt="omino_msg" width="158" height="165" align="right" />
 				</p>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 			</div>
-			<div style="clear:both;"></div>
-			</div>
+			<div style="clear: both;"></div>
 		</div>
-		<div class="footerArea">
-			<div class="container">
-<div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
-</div>
+	</div>
+	<div class="footerArea">
+		<div class="container">
+			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by
+				Marco Pricone,Venturi Davide,Rustico Sebastiano. All rights
+				reserved.</div>
 		</div>
-        <script type="text/javascript">
-<!--
-var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"<%=request.getContextPath()%>/SpryAssets/SpryMenuBarRightHover.gif"});
-//-->
-        </script>
-	</body>
+	</div>
+
+
+</body>
 </html>

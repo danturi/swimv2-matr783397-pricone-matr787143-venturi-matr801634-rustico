@@ -1,13 +1,13 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %> 
 <%@ page import="sessionbeans.logic.SwimResponse" %>
 <%@ page import="entities.User" %>
+<%@ page import="entities.AbilityRequest" %>
 <%@ page import="java.util.List" %>
-<%@ page import="javax.naming.InitialContext" %>
-<%@ page import="javax.naming.Context" %>
-<%@page import="java.security.Principal"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
-	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ page import="javax.naming.InitialContext" %> 
+<%@ page import="javax.naming.Context" %> 
+<%@page import="java.security.Principal"%> <%@page contentType="text/html"pageEncoding="UTF-8"%><%@ taglib uri='http://java.sun.com/jsp/jstl/core'prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <html>
 	<head>
 	<!-- TemplateBeginEditable name="doctitle" -->
@@ -58,22 +58,14 @@
             });
         });
         </script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/list.js"></script>
-	
 </head>
-	<body>
-	<%UserBeanRemote userBean;%> 
-	<% Context context = new
+<body>
+	<%UserBeanRemote userBean;
+	 Context context = new
 	InitialContext(); userBean = (UserBeanRemote)
 	context.lookup(UserBeanRemote.class.getName());
-	SwimResponse friendListRsp = userBean.getFullFriendsList(request.getUserPrincipal().getName());
-	List<User> userList = null;
-	if(friendListRsp.getStatus()==SwimResponse.SUCCESS){
-		userList = (List<User>) friendListRsp.getData();
-	}
 	
-	System.out.println("****** QUI EJB CALL DA JSP ******");
-	//userBean.sendFriendshipReq("aa", "bb"); %>
+	%>
 	
 		<div class="bannerArea">
 		<div class="container">
@@ -112,66 +104,63 @@
 		</div>
 		<div class="contentArea">
 			<div class="container">
-			  <div class="contentleft">
-           
-								<% if(userList!=null){
-									if(!userList.isEmpty()){
-										
-										out.write("<div class=\"middle\">");
-										out.write("<h1>Ecco i tuoi amici</h1>");
-										out.write("<p>&nbsp;</p>");
-										out.write("<div id=\"user-list\">");
-										out.write("<input class=\"search\" size=\"30\" placeholder=\"Cerca utente\" />");
-										out.write("<ul class=\"sort-by\">");
-										out.write("<li class=\"sort btn\" data-sort=\"name\">Ordina per nome (A/Z - Z/A)</li>");
-										out.write("</ul>");
-										out.write("<ul class=\"filter\">");
-										out.write("</ul>");
-										out.write("<div class=\"wrapper\">");
-										out.write("<ul class=\"list\">");
-									
-										for(User usr: userList){
-											
-											if(usr.getPictureId()!=null){
-												
-												SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
-												
-												if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
-													String picPath = (String) getPicRsp.getData();
-													
-													out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\""+request.getContextPath()+"/"+picPath+"\"  alt=\"user_picture\" height=\"100\" width=\"120\"/></a></li>");
+<div class="contentleft">
+      
+      <div class="middle">
+      		
+      		<%
+      		      			if (request.getUserPrincipal().getName() != null) {
+      		      				User usr = userBean.find(request.getUserPrincipal().getName());
+      		      				if (usr != null) {
+      		      					boolean newRequest = false;
+									List<AbilityRequest> abilityReqList = (List<AbilityRequest>) userBean.getAbilityReqList(usr.getEmail()).getData();
+      		      					if(abilityReqList!=null){
+      		      						if(!abilityReqList.isEmpty()){
+      		      						out.write("<h2>Stato delle tue richieste di abilitazione:</h2>");
 
+      		      						for (AbilityRequest areq : abilityReqList) {
+      		      							
+      		      								out.write("<table width=\"100%\" border=\"\" cellpadding=\"8\" cellspacing=\"5\">");
+      		      								out.write("<tr>");
+      		      								out.write("<td width=\"50%\" align=\"center\"><h1>"+areq.getAbilityId().getDescription()+"</h1></td>");
+      		      								if(areq.getIsEvaluated()){
+      		      									if(areq.getAcceptanceStatus()==true){
+          		      									out.write("<td width=\"50%\" align=\"center\"><h1><span style=\"color: green;\">Accettata</h1></td>");
+      		      									} else {
+              		      								out.write("<td width=\"50%\" align=\"center\"><h1><span style=\"color: red;\">Rifiutata</h1></td>");
 
-												} else {
-													out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
-												}
-												
-											} else {
-											
-												out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
-										
-											}
-										
-										}
-										out.write(" </ul>");
-										out.write(" </div>");
-										out.write("</div>");
-										out.write("</div>");
-						
-									} else {
-										out.write("<div class=\"middle\">");
-										out.write("<h1>Non hai ancora amici.</h1>");
-										out.write("</div>");
-									}
-								} else {
-									out.write("<div class=\"middle\">");
-									out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Nessun utente amico trovato nel sistema.</span></h2>");
-									out.write("</div>");
-								}
-								%>
- 
-		    </div>
-	
+      		      									}
+      		      								} else {
+          		      								out.write("<td width=\"50%\" align=\"center\"><h1><span style=\"color: black;\">Non ancora valutata</h1></td>");
+
+      		      								}
+      		      								out.write("</tr>");
+      		      								out.write("</table>");
+      		      								out.write("<h3>&nbsp;</h3>");
+      		      							
+      		      						}
+      		      						} else {
+      		                          	out.write("<h2>Non hai ancora richiesto nessuna abilitazione.<h2>");
+
+      		      						}
+      		      						
+      		      					} else {
+          		      					out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+      		      					}
+      		      				} else {
+      		      					out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+
+      		      				}
+      		      			} else {
+      		      				out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+      		      			}
+      		      		%>
+   
+                  <h3>&nbsp;</h3>
+                  
+      </div>
+     
+</div>
 			<div class="contentright">
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
@@ -189,39 +178,15 @@
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 			</div>
-			
 			<div style="clear:both;"></div>
-			</div>
+		  </div>
 		</div>
-		<div class="footerArea">
+<div class="footerArea">
 			<div class="container">
-			  <div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
-			
+<div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
+</div>
 		</div>
 		
 		
-        <script type="text/javascript">
-		
-			var options = {
-				valueNames: [ 'name' ]
-			};
-		
-			var featureList = new List('user-list', options);
-			
-			/*filtro uomini
-			$('#filter-men').click(function() {
-				featureList.filter(function(item) {
-					if(item.values().gender == "uomo") {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				return false;
-			});
-			*/
-			
-		
-		</script>
 	</body>
 </html>
