@@ -135,27 +135,27 @@ public class UserBean implements UserBeanRemote {
 			}
 		}
 	}
-	
-   	@Override
-	 public SwimResponse bindPictureToUser(String email, Long pictureId){
-		 
-   		SwimResponse swimResponse = null;
-   		
-		 User usr = find(email);
-		 FileStorageEntity picture = em.find(FileStorageEntity.class, pictureId);
-		 
-		 if(usr!=null && picture!=null){
-			 usr.setProfilePicture(picture);
-			 swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
-			 System.out.println("USERBEAN: qui inserita foto utente\n");
-		 } else {
-			 swimResponse = new SwimResponse(SwimResponse.FAILED,"fail");
-			 System.out.println("USERBEAN: foto non inserita\n");
-		 }
-		 
-		 
-		 return swimResponse;
-	 }
+
+	@Override
+	public SwimResponse bindPictureToUser(String email, Long pictureId){
+
+		SwimResponse swimResponse = null;
+
+		User usr = find(email);
+		FileStorageEntity picture = em.find(FileStorageEntity.class, pictureId);
+
+		if(usr!=null && picture!=null){
+			usr.setProfilePicture(picture);
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+			System.out.println("USERBEAN: qui inserita foto utente\n");
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"fail");
+			System.out.println("USERBEAN: foto non inserita\n");
+		}
+
+
+		return swimResponse;
+	}
 
 	@Override
 	public SwimResponse retrievePicture(String email){
@@ -165,7 +165,7 @@ public class UserBean implements UserBeanRemote {
 			User usr = find(email);
 			if(usr!=null){
 				if(usr.getPictureId()!=null){
-					
+
 					File parentDir = new File("C:/SwimPictures/pictures");
 					parentDir.mkdir();
 					File f = new File(parentDir,"picture_id_"+usr.getPictureId().getPictureId()+".jpg");
@@ -176,7 +176,7 @@ public class UserBean implements UserBeanRemote {
 						e.printStackTrace();
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"fileError");
 						return swimResponse;
-						
+
 					}
 
 					String strFilePath = "C:/SwimPictures/pictures/"+"picture_id_"+usr.getPictureId().getPictureId()+".jpg";
@@ -197,10 +197,10 @@ public class UserBean implements UserBeanRemote {
 						swimResponse = new SwimResponse(SwimResponse.FAILED,"fileError");
 						return swimResponse;
 					}
-					
+
 					String urlPath = "pictures/"+"picture_id_"+usr.getPictureId().getPictureId()+".jpg";
 					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok", urlPath);
-					
+
 				} else {
 					swimResponse = new SwimResponse(SwimResponse.FAILED,"noPictureFound");
 				}
@@ -625,6 +625,20 @@ public class UserBean implements UserBeanRemote {
 	}
 
 	@Override
+	public SwimResponse getAbilityReqList(String email){
+		SwimResponse swimResponse;
+		User user = find(email);
+		if(user!=null){
+			user.getAbilityRequestList().size();
+			swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok", user.getAbilityRequestList());
+		} else {
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"fail");
+		}
+		return swimResponse;
+		
+	}
+
+	@Override
 	public SwimResponse getFullFriendsList(String email){
 		SwimResponse swimResponse;
 		User user = find(email);
@@ -899,7 +913,7 @@ public class UserBean implements UserBeanRemote {
 				abilityReq.setUser(userFrom);
 				userFrom.getAbilityRequestList().add(abilityReq);
 				em.persist(userFrom);
-
+				em.flush();
 
 				swimResponse = new SwimResponse(SwimResponse.SUCCESS,"Richiesta aggiunta abilità inviata con SUCCESSO!.");
 				System.out.println("\nUSERBEAN: Richiesta aggiunta abilità inviata con SUCCESSO!.");
@@ -1119,7 +1133,7 @@ public class UserBean implements UserBeanRemote {
 								feedback.setComment(description);
 								feedback.setDatetime(new Date());
 								helpReq.setFeedbackId(feedback);
-								
+
 								em.persist(feedback);
 								em.flush();
 								updateUserRating(emailUserTo);
