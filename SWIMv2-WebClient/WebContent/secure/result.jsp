@@ -127,8 +127,25 @@
 										out.write("<div class=\"wrapper\">");
 										out.write("<ul class=\"list\">");
 										for(User usr: resultList){
-											//out.write("<p>Nome:"+usr.getFirstname()+" Cognome:"+usr.getLastname()+" Email:"+usr.getEmail()+"</p>");
-											out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+											if(usr.getPictureId()!=null){
+												
+												SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+												
+												if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+													String picPath = (String) getPicRsp.getData();
+													
+													out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\""+request.getContextPath()+"/"+picPath+"\"  alt=\"user_picture\" height=\"100\" width=\"120\"/></a></li>");
+
+
+												} else {
+													out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+												}
+												
+											} else {
+											
+												out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/profile.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										
+											}
 										}
 										out.write("</ul>");
 										out.write("</div>");

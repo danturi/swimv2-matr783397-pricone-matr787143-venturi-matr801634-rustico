@@ -182,13 +182,27 @@
 							out.write("<h1><strong>Profilo utente selezionato</strong></h1>");
 
 							out.write("<p>&nbsp;</p>");
-							out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"
-									+ usr.getFirstname()
-									+ " "
-									+ usr.getLastname()
-									+ "</h1>");
+							if(usr.getPictureId()!=null){
+								
+								SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+								
+								if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+									String picPath = (String) getPicRsp.getData();
+									
+									out.write("<h1><img src=\""+request.getContextPath()+"/"+picPath+"\" alt=\"user_picture\" alt=\"user_picture\" width=\"210\" height=\"210\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
 
+
+								} else {
+									out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
+								}
+								
+							} else {
+							
+								out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
+						
+							}
 							out.write("</div>");
+							
 							out.write("<div class=\"middle\">");
 							out.write("<div class=\"middleleft\">");
 							out.write("<h2>Informazioni</h2>");

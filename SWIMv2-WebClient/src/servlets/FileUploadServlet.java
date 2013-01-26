@@ -61,23 +61,30 @@ public class FileUploadServlet extends HttpServlet {
 
 						if ( fieldName.equals( "selectedFile" ) ){
 							byte[] bytes = IOUtils.toByteArray( item.openStream() );
-							FileStorageEntity fsEntity = new FileStorageEntity( name, bytes );
-							Long newPicId = fileStorageBean.create(fsEntity);
-							
-							
-							SwimResponse addPicRsp = userBean.bindPictureToUser(usrPrincipal.getEmail(), newPicId);
-							if(addPicRsp!=null){
-								if(addPicRsp.getStatus()==SwimResponse.SUCCESS){
-									request.setAttribute("FileUpload", "ok");
+							if(bytes.length>100 && bytes.length<10490000){
+								
+								FileStorageEntity fsEntity = new FileStorageEntity( name, bytes );
+								Long newPicId = fileStorageBean.create(fsEntity);
+								
+								
+								SwimResponse addPicRsp = userBean.bindPictureToUser(usrPrincipal.getEmail(), newPicId);
+								if(addPicRsp!=null){
+									if(addPicRsp.getStatus()==SwimResponse.SUCCESS){
+										request.setAttribute("FileUpload", "ok");
+									} else {
+										request.setAttribute("FileUpload", "fail");
+									}
+									
 								} else {
 									request.setAttribute("FileUpload", "fail");
 								}
 								
 							} else {
-								request.setAttribute("FileUpload", "fail");
+								request.setAttribute("FileUpload", "noFile");
 							}
-							break;
+							
 						}
+						break;
 					}
 
 					//response.sendRedirect( "ok.jsp" );
@@ -98,7 +105,7 @@ public class FileUploadServlet extends HttpServlet {
 		}
 
 
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/homeUser.jsp");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/secure/profile.jsp?user="+request.getUserPrincipal().getName());
 		dispatcher.forward(request, response);
 	}
 

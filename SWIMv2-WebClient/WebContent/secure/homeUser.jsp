@@ -167,9 +167,7 @@
 							}
 						}
 					}
-					
-					
-					
+			
 					%>
 					
 					</h1>
@@ -188,15 +186,7 @@
 					</map>-->
 					
 					<p>&nbsp;</p>
-					<p>Carica un immagine di profilo</p>
-			<form method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/FileUploadServlet">
-			<input type="hidden" id="userId" name="userId" value="<%=request.getUserPrincipal().getName()%>" />
 
-            <input type="file" id="selectedFile" name="selectedFile" value="Select a File..." /><br />
-
-            <input type="submit" value="Submit" />
-
-        </form>
         
         <%
                 	if (request.getAttribute("FileUpload") != null) {

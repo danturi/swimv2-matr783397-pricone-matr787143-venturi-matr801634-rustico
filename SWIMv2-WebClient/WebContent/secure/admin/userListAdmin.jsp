@@ -117,9 +117,27 @@
 								<ul class="list">
 								<% if(userList!=null){
 									
-									for(User u: userList){
+									for(User usr: userList){
 										
-										out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/admin/profileAdmin.jsp?user="+u.getEmail()+"\">"+u.getFirstname()+" "+u.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+										if(usr.getPictureId()!=null){
+											
+											SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+											
+											if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+												String picPath = (String) getPicRsp.getData();
+												
+												out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/admin/profileAdmin.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\""+request.getContextPath()+"/"+picPath+"\"  alt=\"user_picture\" height=\"100\" width=\"120\"/></a></li>");
+
+
+											} else {
+												out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/admin/profileAdmin.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+											}
+											
+										} else {
+										
+											out.write("<li><span class=\"name\"><a href=\"/SWIMv2-WebClient/secure/admin/profileAdmin.jsp?user="+usr.getEmail()+"\">"+usr.getFirstname()+" "+usr.getLastname()+"</span><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"...\" height=\"100\" width=\"120\"/></a></li>");
+									
+										}
 									}
 								} else {
 									out.write("<h2>Errore: nessun utente trovato.</h2>");

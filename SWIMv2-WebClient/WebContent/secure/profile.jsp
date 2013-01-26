@@ -169,12 +169,27 @@
 								out.write("<h1><strong>Il mio profilo</strong></h1>");
 							}
 							out.write("<p>&nbsp;</p>");
-							out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"
-									+ usr.getFirstname()
-									+ " "
-									+ usr.getLastname()
-									+ "</h1>");
-							// QUI CONTROLLARE SE USER PRINCIPAL A NULL
+							
+									if(usr.getPictureId()!=null){
+										
+										SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+										
+										if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+											String picPath = (String) getPicRsp.getData();
+											
+											out.write("<h1><img src=\""+request.getContextPath()+"/"+picPath+"\" alt=\"user_picture\" alt=\"user_picture\" width=\"210\" height=\"210\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
+
+
+										} else {
+											out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
+										}
+										
+									} else {
+									
+										out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
+								
+									}
+						
 							if (!usr.getEmail().equals(request.getUserPrincipal().getName())) {
 								List<Ability> usrAbilityList = (List<Ability>) userBean.getAbilityList(usr.getEmail()).getData();
 								if(usrAbilityList!=null){
@@ -182,7 +197,25 @@
 										out.write("<p><a href=\"/SWIMv2-WebClient/secure/askforhelp.jsp?toUser="+usr.getEmail()+"\"><img src=\"/SWIMv2-WebClient/images/askforhelp.jpg\" alt=\"askforhelp\" align=\"absmiddle\" /></a></p>");
 									}
 								}
-							}
+							} else {
+								
+								out.write("<form method=\"post\" enctype=\"multipart/form-data\" action=\""+request.getContextPath()+"/FileUploadServlet\">");
+								out.write("<input type=\"file\" id=\"selectedFile\" name=\"selectedFile\" accept=\"image/*\" value=\"Scegli foto\" /><br />");
+								out.write("<input type=\"submit\" value=\"Carica\" />");
+								out.write("</form>");
+								
+								}
+							if (request.getAttribute("FileUpload") != null) {
+		                		if (request.getAttribute("FileUpload").equals("ok")) {
+
+		                			out.write("<h3><span style=\"color: red;\">Foto caricata con successo.</span><h3>");
+		                		} else if(request.getAttribute("FileUpload").equals("noFile")){
+		                			out.write("<h3><span style=\"color: red;\">Nessun file selezionato.</span><h3>");
+		                		} else {
+		                			out.write("<h3><span style=\"color: red;\">Si è verificatio un errore nel sistema. Foto non caricata.</span><h3>");
+		                		}
+		                	}
+		                	request.setAttribute("AbilityReqSent", null);
 							out.write("</div>");
 							out.write("<div class=\"middle\">");
 							out.write("<div class=\"middleleft\">");
