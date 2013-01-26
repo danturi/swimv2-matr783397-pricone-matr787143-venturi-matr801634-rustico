@@ -4,13 +4,8 @@
  */
 package sessionbeans.logic;
 
-import entities.Ability;
-import entities.AbilityRequest;
-import entities.FriendshipRequest;
-import entities.HelpRequest;
+
 import entities.User;
-import java.util.List;
-import javax.ejb.Local;
 import javax.ejb.Remote;
 
 
@@ -37,6 +32,8 @@ public interface UserBeanRemote {
     public User find(String email);
     
     public void updateUserRating(String email);
+    
+    public SwimResponse bindPictureToUser(String email, Long pictureId);
     
     public SwimResponse retrievePicture(String email);
     
