@@ -1,3 +1,10 @@
+<%@ page import="sessionbeans.logic.UserBeanRemote"%>
+<%@ page import="javax.naming.InitialContext"%>
+<%@ page import="javax.naming.Context"%>
+<%@page import="java.security.Principal"%>
+<%@ page import="sessionbeans.logic.SwimResponse"%>
+<%@ page import="java.util.List"%>
+<%@ page import="entities.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <c:if test="${pageContext.request.userPrincipal!=null}">
@@ -123,6 +130,12 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
 </head>
 <body>
+<%
+		UserBeanRemote userBean;
+		Context context = new InitialContext();
+		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
+		
+	%>
 
 	
 	<div class="bannerArea">
@@ -269,22 +282,66 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 					</div>
 
 				<h2>Ecco i nostri iscritti!</h2>
+				
 				<div id="slideCont"
 					style="position: relative; z-index: 1; width: 220px; height: 50px; left: 0px; overflow: hidden;">
 					<div id="slideA"
 						style="position: absolute; z-index: 1; top: 10px; left: 0 px; width: 200px; overflow: hidden;">
-						<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
-							src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
-							src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
-							src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
-							src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+						<%
+							List<User> userList = (List<User>) userBean.findAll().getData();
+							int n = 0;			
+							for(User usr: userList){
+								
+								if(usr.getPictureId()!=null && n<10){
+									
+									SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+									
+									if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+										String picPath = (String) getPicRsp.getData();
+										
+										out.write("<img src=\""+request.getContextPath()+"/pictures/picture_id_"+usr.getPictureId().getPictureId()+".jpg\" width=\"200\" height=\"150\" />");
+										n++;
+									}
+					
+								}
+							}%>
+							
+							<div id="slideB"
+									style="position: relative; z-index: 1; top: 0px; left: 0 px; width: 200px; overflow: hidden;">
+						
+						
+						
+						<%
+							
+							int m = 0;			
+							for(User usr: userList){
+								
+								if(usr.getPictureId()!=null && m<10){
+									
+									SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
+									
+									if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
+										String picPath = (String) getPicRsp.getData();
+										
+										out.write("<img src=\""+request.getContextPath()+"/pictures/picture_id_"+usr.getPictureId().getPictureId()+".jpg\" width=\"200\" height=\"150\" />");
+										m++;
+									}
+					
+								}
+							}%>
+						
+				<!--  	<img src="/images/facce1.jpg" width="200" height="150" /> <img
+							src="/images/facce2.jpeg" width="200" height="150" /> <img
+							src="th()%>/images/facce5.jpg" width="200" height="150" /> <img
+							src="/images/facce6.jpg" width="200" height="150" /> <img
+							src="/images/facce4.jpg" width="200" height="150" />
 						<div id="slideB"
 							style="position: relative; z-index: 1; top: 0px; left: 0 px; width: 200px; overflow: hidden;">
-							<img src="<%=request.getContextPath()%>/images/facce1.jpg" width="200" height="150" /> <img
-								src="<%=request.getContextPath()%>/images/facce2.jpeg" width="200" height="150" /> <img
-								src="<%=request.getContextPath()%>/images/facce5.jpg" width="200" height="150" /> <img
-								src="<%=request.getContextPath()%>/images/facce6.jpg" width="200" height="150" /> <img
-								src="<%=request.getContextPath()%>/images/facce4.jpg" width="200" height="150" />
+							<img src="/images/facce1.jpg" width="200" height="150" /> <img
+								src="/images/facce2.jpeg" width="200" height="150" /> <img
+								src="/images/facce5.jpg" width="200" height="150" /> <img
+								src="/images/facce6.jpg" width="200" height="150" /> <img
+								src="/images/facce4.jpg" width="200" height="150" /> -->	
 						</div>
 					</div>
 				</div>
