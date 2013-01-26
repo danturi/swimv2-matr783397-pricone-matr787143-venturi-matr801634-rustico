@@ -7,6 +7,7 @@ package sessionbeans.logic;
 import entities.Ability;
 import entities.AbilityRequest;
 import entities.Feedback;
+import entities.FileStorageEntity;
 import entities.FriendshipRequest;
 import entities.HelpRequest;
 import entities.User;
@@ -135,46 +136,85 @@ public class UserBean implements UserBeanRemote {
 		}
 	}
 	
+   	@Override
+	 public SwimResponse bindPictureToUser(String email, Long pictureId){
+		 
+   		SwimResponse swimResponse = null;
+   		
+		 User usr = find(email);
+		 FileStorageEntity picture = em.find(FileStorageEntity.class, pictureId);
+		 
+		 if(usr!=null && picture!=null){
+			 usr.setProfilePicture(picture);
+			 swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok");
+			 System.out.println("USERBEAN: qui inserita foto utente\n");
+		 } else {
+			 swimResponse = new SwimResponse(SwimResponse.FAILED,"fail");
+			 System.out.println("USERBEAN: foto non inserita\n");
+		 }
+		 
+		 
+		 return swimResponse;
+	 }
+
 	@Override
 	public SwimResponse retrievePicture(String email){
-		
-		String path = "C:/FileIO/hi.txt";
-		File parentDir = new File("C:/profile");
-		parentDir.mkdir();
-		File f = new File(parentDir,"test.txt");
-		
-		try {
-			f.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		SwimResponse swimResponse = null;
+		if(email!=null){
+			User usr = find(email);
+			if(usr!=null){
+				if(usr.getPictureId()!=null){
+					
+					File parentDir = new File("C:/SwimPictures/pictures");
+					parentDir.mkdir();
+					File f = new File(parentDir,"picture_id_"+usr.getPictureId().getPictureId()+".jpg");
+
+					try {
+						f.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"fileError");
+						return swimResponse;
+						
+					}
+
+					String strFilePath = "C:/SwimPictures/pictures/"+"picture_id_"+usr.getPictureId().getPictureId()+".jpg";
+
+					try{
+
+						FileOutputStream fos = new FileOutputStream(strFilePath);
+						//String strContent = "Write File using Java FileOutputStream example !";
+						//fos.write(strContent.getBytes());
+						fos.write(usr.getPictureId().getContent());
+						fos.close();
+					} catch(FileNotFoundException ex) {
+						ex.printStackTrace();
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"fileError");
+						return swimResponse;
+					} catch(IOException ioe){
+						ioe.printStackTrace();
+						swimResponse = new SwimResponse(SwimResponse.FAILED,"fileError");
+						return swimResponse;
+					}
+					
+					String urlPath = "pictures/"+"picture_id_"+usr.getPictureId().getPictureId()+".jpg";
+					swimResponse = new SwimResponse(SwimResponse.SUCCESS,"ok", urlPath);
+					
+				} else {
+					swimResponse = new SwimResponse(SwimResponse.FAILED,"noPictureFound");
+				}
+
+			} else{
+				swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
+			}
+		} else {
+
+			swimResponse = new SwimResponse(SwimResponse.FAILED,"noValidUser");
 		}
-				/*File f = new File(path);
-				//(works for both Windows and Linux)
-				f.mkdirs();
-				try {
-					f.createNewFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-		
-		String strFilePath = "C://FileIO//hi.txt";
-		
-		/*try{
-			
-			FileOutputStream fos = new FileOutputStream(strFilePath);
-			String strContent = "Write File using Java FileOutputStream example !";
-			
-			 fos.write(strContent.getBytes());
-			 fos.close();
-		} catch(FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch(IOException ioe){
-			ioe.printStackTrace();
-		}*/
-		
-		return new SwimResponse();
+
+
+		return swimResponse;
 	}
 
 	@Override
