@@ -233,9 +233,11 @@ public class UserBean implements UserBeanRemote {
 	}
 
 	@Override
-	public void createUser(User user) {
+	public User createUser(User user) {
 		checkInitialConditions();
 		em.persist(user);
+		em.flush();
+		return user;
 	}
 
 	@Override
