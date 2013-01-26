@@ -17,6 +17,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <title>SWIMv2</title>
 <script src="<%=request.getContextPath()%>/js/json2.js"
 	type="text/javascript"></script>
+	
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
 
@@ -121,6 +122,8 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 						});
 	});
 </script>
+
+
 <meta name="description"
 	content="Designed and developed by Codify Design Studio - codifydesign.com" />
 	
@@ -179,7 +182,7 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 					<div class="register">
 					<form id="registerForm" name="registerForm"
 						action="/SWIMv2-WebClient/services/auth/register"
-						method="post">
+						onsubmit="return validateForm()" method="post">
 						<table width="230" border="0" cellspacing="2" class="imageright">
 							<tr>
 									<td><table width="230" border="0" cellspacing="9"
@@ -235,15 +238,16 @@ uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 			<div class="contentright">
 			<div class="login">
 
-						<!-- did we already try to login and it failed? -->
-						<c:if test="false">
-							<div class="authError">
-								<h3>
-									<strong>Invalid User Name or Password. Please try
-										again.</strong>
-								</h3>
-							</div>
-						</c:if>
+						<%
+						if(request.getParameter("auth-error")!=null){
+							if(request.getParameter("auth-error").equals("1")){
+  		      					out.write("<h3><span style=\"color: red;\">Nome utente o password non validi. Login Fallito.</span><h3>");
+
+							}
+							
+						}
+						
+						%>
 						
 						<form id="login" name="login" method="post"
 							action="j_security_check">
