@@ -9,7 +9,7 @@ import javax.ejb.Remote;
 @Remote
 public interface FileStorageBeanRemote
 {
-    public void create( FileStorageEntity fileStorageEntity );
+    public Long create( FileStorageEntity fileStorageEntity );
 
     public void edit( FileStorageEntity fileStorageEntity );
 
