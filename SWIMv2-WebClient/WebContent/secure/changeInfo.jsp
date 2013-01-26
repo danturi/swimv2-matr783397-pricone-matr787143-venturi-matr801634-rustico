@@ -73,7 +73,7 @@ if(request.getParameter("sendinfoform")!=null){
 	
 		<div class="bannerArea">
 			<div class="container">
-<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
+<div class="bannernav">Ciao, <%=request.getUserPrincipal().getName() %>.</div>
 			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
@@ -160,7 +160,7 @@ if(request.getAttribute("SendInfoForm")!=null){
           <td><input name="job" type="text" class="formLabel" id="job" size="30" /></td>
         </tr>
         <tr>
-          <th width="54" class="formStyle" scope="row">Telefono <%=request.getParameter("QT")%></p></th>
+          <th width="54" class="formStyle" scope="row">Telefono </p></th>
           <td><input name="tel" type="text" class="formLabel" id="tel" size="30" /></td>
         </tr>
         
