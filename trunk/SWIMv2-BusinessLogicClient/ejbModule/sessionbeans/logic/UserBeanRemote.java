@@ -21,7 +21,7 @@ public interface UserBeanRemote {
     
     public SwimResponse findAll();
     
-    public void createUser(User user);
+    public User createUser(User user);
     
     public void updateUser(User user);
     
