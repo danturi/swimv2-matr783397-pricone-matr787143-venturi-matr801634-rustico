@@ -194,7 +194,7 @@
 							
 							if(usr.getRating()!=null){
 								out.write("<h2>Rating</h2>");
-								out.write("<h1><span style=\"color: green;\">"+String.valueOf(usr.getRating().floatValue()).substring(0, 3)+" <span><a href=\"feedback.jsp\"> <p>Visualizza feedback</p></a></h1>");
+								out.write("<h1><span style=\"color: green;\">"+String.valueOf(usr.getRating().floatValue()).substring(0, 3)+" <span><a href=\""+request.getContextPath()+"/secure/admin/showFeedbackAdmin.jsp?user="+usr.getEmail()+"\"> <p>Visualizza feedback</p></a></h1>");
 							}
 							
 							out.write("</div>");

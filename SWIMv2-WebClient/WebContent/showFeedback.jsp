@@ -1,27 +1,26 @@
-<%@ page import="sessionbeans.logic.UserBeanRemote"%>
-<%@ page import="javax.naming.InitialContext"%>
-<%@ page import="javax.naming.Context"%>
+<%@ page import="sessionbeans.logic.UserBeanRemote" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.Context" %>
 <%@page import="java.security.Principal"%>
 <%@ page import="sessionbeans.logic.SwimResponse"%>
 <%@ page import="java.util.List"%>
 <%@ page import="entities.User"%>
 <%@ page import="entities.Ability"%>
-<%@ page import="entities.FriendshipRequest"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<c:if test="${pageContext.request.userPrincipal!=null}">
-	<c:redirect url="/secure/homeUser.jsp" />
-	<!-- this will redirect if user is already logged in -->
-</c:if>
+<%@ page import="entities.HelpRequest"%>
+<%@ page import="entities.Feedback"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
+	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:ice="http://ns.adobe.com/incontextediting">
-<head>
-<title>SWIMv2</title>
-<script src="<%=request.getContextPath()%>/js/json2.js"
-	type="text/javascript"></script>
+	<head>
+	<title>SWIMv2</title>
+	<meta name="description" content="Designed and developed by Codify Design Studio - codifydesign.com" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
+<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+ <link href="<%=request.getContextPath()%>/images/star.css" rel="stylesheet" type="text/css" />
+<script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
-
 <script type="text/javascript">
             $(function(){
                 "use strict";
@@ -123,31 +122,16 @@
 						});
 	});
 </script>
-<meta name="description"
-	content="Designed and developed by Codify Design Studio - codifydesign.com" />
-	
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
-<link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet"
-	type="text/css" />
-	<script type="text/javascript" src="<%=request.getContextPath()%>/banner.js"></script>
 </head>
-<body>
+	<body>
 	<%
-		UserBeanRemote userBean;
-		Context context = new InitialContext();
-		userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
-		String email = request.getParameter("user");
-		if(email==null && request.getAttribute("LastProfileUserView")!=null) {
-			email = request.getAttribute("LastProfileUserView").toString();
-			request.setAttribute("LastProfileUserView", null);
-		}
-		User usr = null;
-		
+UserBeanRemote userBean;
+Context context = new InitialContext();
+userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
+
+%>
 	
-	%>
-
-
-	<div class="bannerArea">
+		<div class="bannerArea">
 			<div class="container">
 <div class="bannernav">Benvenuto in Swim!</div>
 			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
@@ -164,133 +148,91 @@
 			  <div style="clear:both;"></div>
 			</div>
 		</div>
-			<!-- TemplateEndEditable -->
+			
 			  <div style="clear:both;"></div>
-			</div>
-		</div>
-	<div class="contentArea">
-		<div class="container">
-			<div class="contentleft">
-
-				<%
-					if (email != null) {
-						usr = userBean.find(email);
-
-						if (usr != null) {
-							out.write("<div class=\"top\">");
-
-							out.write("<h1><strong>Profilo utente selezionato</strong></h1>");
-
-							out.write("<p>&nbsp;</p>");
-							if(usr.getPictureId()!=null){
-								
-								SwimResponse getPicRsp = userBean.retrievePicture(usr.getEmail());
-								
-								if(getPicRsp.getStatus()==SwimResponse.SUCCESS){
-									String picPath = (String) getPicRsp.getData();
-									
-									out.write("<h1><img src=\""+request.getContextPath()+"/"+picPath+"\" alt=\"user_picture\" alt=\"user_picture\" width=\"210\" height=\"210\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
-
-
-								} else {
-									out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
-								}
-								
-							} else {
-							
-								out.write("<h1><img src=\"/SWIMv2-WebClient/images/GIMP-file/utente_incognito.png\" alt=\"omino_incognito\" width=\"205\" height=\"148\" hspace=\"20\" vspace=\"0\" align=\"absmiddle\" />"+ usr.getFirstname()+ " "+ usr.getLastname()+ "</h1>");
-						
-							}
-							out.write("</div>");
-							
-							out.write("<div class=\"middle\">");
-							out.write("<div class=\"middleleft\">");
-							out.write("<h2>Informazioni</h2>");
-							out.write("<table width=\"327\" border=\"0\" cellpadding=\"2\" cellspacing=\"8\">");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Email:</h3></td>");
-							out.write("<td class=\"formLabel\">" + usr.getEmail()
-									+ "</td>");
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td width=\"60\"><h3> Genere:</h3></td>");
-							if (usr.getSex() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getSex()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificato.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Et&agrave;:</h3></td>");
-							if (usr.getAge() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getAge()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Residenza:</h3></td>");
-							if (usr.getCity() != null) {
-								out.write("<td class=\"formLabel\">" + usr.getCity()
-										+ "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("<tr>");
-							out.write("<td><h3>Professione:</h3></td>");
-							if (usr.getOccupation() != null) {
-								out.write("<td class=\"formLabel\">"
-										+ usr.getOccupation() + "</td>");
-							} else {
-								out.write("<td class=\"formLabel\">Non specificata.</td>");
-							}
-							out.write("</tr>");
-							out.write("</table>");
-							out.write("<p>&nbsp;</p>");
-
-							if (usr.getRating() != null) {
-								out.write("<h2>Rating</h2>");
-								out.write("<h1><span style=\"color: green;\">"+String.valueOf(usr.getRating().floatValue()).substring(0, 3)+" <span><a href=\""+request.getContextPath()+"/showFeedback.jsp?user="+usr.getEmail()+"\"> <p>Visualizza feedback</p></a></h1>");
-
-							}
-
-							out.write("</div>");
-							out.write("<div class=\"middleright\">");
-
-							out.write("<h2>Competenze professionali</h2>");
-							SwimResponse swimRsp2 = userBean.getAbilityList(email);
-							if (swimRsp2.getStatus() == SwimResponse.SUCCESS) {
-								List<Ability> abilityList = (List<Ability>) swimRsp2.getData();
-								if (!abilityList.isEmpty()) {
-									for (Ability ab : abilityList) {
-										out.write("<p>" + ab.getDescription() + "</p>");
-									}
-
-								} else {
-									out.write("<p>Nessuna.</p>");
-								}
-							} else {
-								out.write("<p>Nessuna.</p>");
-							}
-
-							out.write("</div>");
-							out.write("</div>");
-
-						} else {
-
-							out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-
-						}
-					} else {
-						out.write("<h1>Profilo utente richiesto non esistente.</h1>");
-					}
-				%>
-			</div>
-
-				<div class="contentright">
+		<div class="contentArea">
+			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
+			  <div class="contentleft">
+              	<div class="middle">
+              	
+              	<%
+              	if(request.getParameter("user")!=null){
+              		User usr = userBean.find(request.getParameter("user"));
+              		
+              		if(usr!=null){
+              			
+              			List<HelpRequest> helpReqList = (List<HelpRequest>) userBean.getHelpReqList(usr.getEmail()).getData();
+              			boolean existFeed = false;
+              			
+              			for(HelpRequest helpReq: helpReqList){
+              				
+              				if(helpReq.getFeedbackId()!=null){
+              					
+              					if(!existFeed){
+              						out.write("<h1>Feedback ricevuti dall'utente "+usr.getFirstname()+" "+usr.getLastname()+"</h1>");
+              						out.write("<ul class=\"feedback\">");
+              					}
+              					existFeed=true;
+              					
+              					
+              					out.write("<li id=\"fb\">");
+              					out.write("<div id=\"STAR_RATING\">");
+              					out.write("<ul>");
+              					Float rating = helpReq.getFeedbackId().getRating();
+              					int numStarsOn = Integer.valueOf(String.valueOf(rating.floatValue()).substring(0,1)).intValue();
+              					int numStarsOff = 5 - numStarsOn;
+              					for(int i=0; i<numStarsOn; i++){
+              						
+              						out.write("<li class=\"on\"></li>");
+              						
+              					}
+								for(int i=0; i<numStarsOff; i++){
+              						
+              						out.write("<li></li>");
+              						
+              					}
+              					
+              					
+              					out.write("<p> Competenza: "+helpReq.getAbilityId().getDescription()+"</p>");
+              					out.write("</ul>");
+              					out.write("<h3><strong>Commento lasciato da "+helpReq.getFromUser().getFirstname()+" "+helpReq.getFromUser().getLastname()+" in data: "+helpReq.getFeedbackId().getDatetime().toGMTString()+"</strong></h3>");
+              					out.write("<h3>"+helpReq.getFeedbackId().getComment()+"</h3>");
+              					out.write("</div>");
+              					out.write("</li>");
+              				
+              					
+              				}
+              			
+              	
+              			} 
+              			
+              			if(existFeed){
+         					 out.write("</ul>");
+         				}
+              			
+              			if(!existFeed){
+              				
+                        	out.write("<h2>L'utente non ha ancora nessun feedback.<h2>");
+              				
+              			}
+              			
+              			
+              			
+              		} else {
+              			
+                		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+              		}
+              		
+              	} else {
+            		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+              	}
+              	
+              	%>
+               
+              	</div>
+		    </div>
+			
+			<div class="contentright">
 			<div class="login">
 
 						<!-- did we already try to login and it failed? -->
@@ -339,11 +281,13 @@
 						</form>
 					</div>
 
+				
+
 			</div>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-	
+	</div>
 	<div class="footerArea">
 		<div class="container">
 			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by

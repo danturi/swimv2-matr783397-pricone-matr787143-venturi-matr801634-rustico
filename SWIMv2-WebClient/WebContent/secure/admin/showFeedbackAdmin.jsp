@@ -68,26 +68,22 @@ userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 	
 		<div class="bannerArea">
 			<div class="container">
-<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
+			<div class="bannernav">Pannello di amministrazione di SWIMv2</div>
 			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
               <div style="clear:both;"></div>
           </div>
 		</div>
-		<div class="topnavigationArea">
-			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
-			  <div class="topnavigationgroup">
-			    <ul id="MenuBar1" class="MenuBarHorizontal">
-							<li style="border-right-style: solid;"><a id="logoutLink"
-						href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/friendsList.jsp">AMICI</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/profile.jsp?user=<%=request.getUserPrincipal().getName()%>">PROFILO</a></li>
-					<li><a href="<%=request.getContextPath()%>/secure/helpSearch.jsp">CERCA UTENTI</a></li>
-					<li class="MenuBarHorizontal"><a href="<%=request.getContextPath()%>/secure/homeUser.jsp"
-						title="home" target="_parent">HOME</a></li>
-				</ul>
-		    </div>
-			<!-- TemplateEndEditable -->
-			  <div style="clear:both;"></div>
+	<div class="topnavigationArea">
+			<div class="container">
+<div class="topnavigationgroup">
+      <ul id="MenuBar1" class="MenuBarHorizontal">
+        <li style="border-right-style: solid;"><a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout">LOGOUT</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/userSearchAdmin.jsp">RICERCA UTENTI</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/abilityAdmin.jsp">ABILITA'</a></li>
+        <li><a href="<%=request.getContextPath()%>/secure/admin/homeAdmin.jsp">HOME</a></li>
+      </ul>
+      </div>
+			<div style="clear:both;"></div>
 			</div>
 		</div>
 		<div class="contentArea">
@@ -175,29 +171,29 @@ userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 			<div class="contentright">
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
-				<p>&nbsp;</p>
 				<p>
-					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
+					<a
+						href="<%=request.getContextPath()%>/secure/admin/showAbilityReqAdmin.jsp">Richieste
+						aggiunta abilit&agrave;</a>
 				</p>
-				<p>&nbsp;</p>
-				<p><a href="friendReq.jsp">Richieste di amicizia</a></p>
-				<p>&nbsp;</p>
-				<p>
-					Richieste abilit&agrave;<img
-						src="<%=request.getContextPath()%>/images/omino_msg.jpg"
-						alt="omino_msg" width="158" height="165" align="right" />
-				</p>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
+				<h2>&nbsp;</h2>
+				<h2>
+					<img src="<%=request.getContextPath()%>/images/omino_msg.jpg"
+						alt="omino_msg" width="121" height="159" align="right" />
+				</h2>
+				
 			</div>
-			<div style="clear:both;"></div>
-			</div>
+			<div style="clear: both;"></div>
 		</div>
-		<div class="footerArea">
-			<div class="container">
-<div class="copyright">&copy; 2013 SWIMv2 - Social Network by Marco Pricone,Venturi Davide,Rustico Sebastiano.  All rights reserved.</div>
-</div>
+	</div>
+	<div class="footerArea">
+		<div class="container">
+			<div class="copyright">&copy; 2013 SWIMv2 - Social Network by
+				Marco Pricone,Venturi Davide,Rustico Sebastiano. All rights
+				reserved.</div>
 		</div>
-        
-	</body>
+	</div>
+
+
+</body>
 </html>

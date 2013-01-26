@@ -165,10 +165,9 @@
 			  <div style="clear:both;"></div>
 			</div>
 		</div>
-			<!-- TemplateEndEditable -->
+			
 			  <div style="clear:both;"></div>
-			</div>
-		</div>
+		
 		<div class="contentArea">
 			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
 			  <div class="contentleft">
