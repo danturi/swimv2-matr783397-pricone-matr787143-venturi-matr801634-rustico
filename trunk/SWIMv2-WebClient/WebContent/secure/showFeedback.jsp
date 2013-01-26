@@ -6,6 +6,8 @@
 <%@ page import="java.util.List"%>
 <%@ page import="entities.User"%>
 <%@ page import="entities.Ability"%>
+<%@ page import="entities.HelpRequest"%>
+<%@ page import="entities.Feedback"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%><%@ taglib
 	uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,6 +17,7 @@
 	<meta name="description" content="Designed and developed by Codify Design Studio - codifydesign.com" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/images/stylesheet.css" />
 <link href="<%=request.getContextPath()%>/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+ <link href="<%=request.getContextPath()%>/images/star.css" rel="stylesheet" type="text/css" />
 <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
 <%@ include file="/WEB-INF/includes/head/jquery.jsp"%>
@@ -55,12 +58,12 @@
         });
 </script>
 </head>
-<body>
-<%
+	<body>
+	<%
 UserBeanRemote userBean;
 Context context = new InitialContext();
 userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
-SwimResponse abilitySetRsp = userBean.getAbilitySet();	
+
 %>
 	
 		<div class="bannerArea">
@@ -88,95 +91,87 @@ SwimResponse abilitySetRsp = userBean.getAbilitySet();
 			</div>
 		</div>
 		<div class="contentArea">
-			<div class="container">
-<div class="contentleft">
-	  <h1>Ricerca utenti</h1>
-<p>&nbsp;</p>
-	  <p>Stai cercando una persona? Inserisci i suoi dati e la cercher&ograve; per te nella community.	  </p>
-<p>&nbsp;</p>
-<h6>Non &egrave; obbligatorio compilare tutti i campi</h6>
-<p><img src="<%=request.getContextPath()%>/images/omino_search.gif" alt="omino_search" width="305" height="307" align="right" /></p>
-<form name="queryform" action="<%=request.getContextPath()%>/secure/result.jsp" method="post">
-<table width="254" border="0">
-        <tr>
-          <th width="54" class="formStyle" scope="row">Cognome</th>
-          <td width="190"><input name="lastname" type="text" class="formLabel" id="lastname" value="" size="30" /></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">Nome</th>
-          <td><input name="firstname" type="text" class="formLabel" id="firstname" size="30" /></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">Luogo</th>
-          <td><input name="place" type="text" class="formLabel" id="place" size="30" /></td>
-        </tr>
-        <tr>
-          <th class="formStyle" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">&nbsp;</th>
-          <td><span class="formStyle">Abilit&agrave; richieste</span></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">Prima</th>
-          <td>
-          <select name="ability" class="formLabel" id="ability">
-            <option value="0">--Non richiesta--</option>
-            <%
-            if(abilitySetRsp!=null){
-            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
-           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
-           			for(Ability ability: abilitySet){
-        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
-        				
-       				 }
-            	}
-            }
-            %>
-          </select></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">Seconda</th>
-          <td><select name="ability2" class="formLabel" id="ability2">
-            <option value="0">--Non richiesta--</option>
-             <%
-            if(abilitySetRsp!=null){
-            	if(abilitySetRsp.getStatus()==SwimResponse.SUCCESS){
-           			List<Ability> abilitySet = (List<Ability>) abilitySetRsp.getData();
-        			for(Ability ability: abilitySet){
-        				out.write("<option value=\""+ability.getAbilityId()+"\">"+ability.getDescription()+"</option>");
-        				
-       				 }
-            	}
-            }
-            %>
-          </select></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">&nbsp;</th>
-          <td><label class="formStyle">
-            <input name="friends" type="checkbox" class="formStyle" id="friends" />
-          cerca solo tra i mei amici</label></td>
-        </tr>
-        <tr>
-          <th width="54" class="formStyle" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <th width="54" scope="row">&nbsp;</th>
-          <td><input name="helpSearchButton" type="submit" id="helpSearchButton" value="CERCA" /></td>
-        </tr>
-      </table>
-      </form>
-<p>&nbsp;</p>
-<p>oppure <a href="userList.jsp">Lista di tutti gli utenti iscritti</a></p>
-
-</div>
+			<div class="container"><!-- TemplateBeginEditable name="contentLeft" -->
+			  <div class="contentleft">
+              	<div class="middle">
+              	
+              	<%
+              	if(request.getParameter("user")!=null){
+              		User usr = userBean.find(request.getParameter("user"));
+              		
+              		if(usr!=null){
+              			
+              			List<HelpRequest> helpReqList = (List<HelpRequest>) userBean.getHelpReqList(usr.getEmail()).getData();
+              			boolean existFeed = false;
+              			
+              			for(HelpRequest helpReq: helpReqList){
+              				
+              				if(helpReq.getFeedbackId()!=null){
+              					
+              					if(!existFeed){
+              						out.write("<h1>Feedback ricevuti</h1>");
+              						out.write("<ul class=\"feedback\">");
+              					}
+              					existFeed=true;
+              					
+              					
+              					out.write("<li id=\"fb\">");
+              					out.write("<div id=\"STAR_RATING\">");
+              					out.write("<ul>");
+              					Float rating = helpReq.getFeedbackId().getRating();
+              					int numStarsOn = Integer.valueOf(String.valueOf(rating.floatValue()).substring(0,1)).intValue();
+              					int numStarsOff = 5 - numStarsOn;
+              					for(int i=0; i<numStarsOn; i++){
+              						
+              						out.write("<li class=\"on\"></li>");
+              						
+              					}
+								for(int i=0; i<numStarsOff; i++){
+              						
+              						out.write("<li></li>");
+              						
+              					}
+              					
+              					
+              					out.write("<p> Competenza: "+helpReq.getAbilityId().getDescription()+"</p>");
+              					out.write("</ul>");
+              					out.write("<h3><strong>Commento lasciato da "+helpReq.getFromUser().getFirstname()+" "+helpReq.getFromUser().getLastname()+"</strong></h3>");
+              					out.write("<h3>"+helpReq.getFeedbackId().getComment()+"</h3>");
+              					out.write("</div>");
+              					out.write("</li>");
+              				
+              					
+              				}
+              			
+              	
+              			} 
+              			
+              			if(existFeed){
+         					 out.write("</ul>");
+         				}
+              			
+              			if(!existFeed){
+              				
+                        	out.write("<h2>L'utente non ha ancora nessun feedback.<h2>");
+              				
+              			}
+              			
+              			
+              			
+              		} else {
+              			
+                		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+              		}
+              		
+              	} else {
+            		out.write("<h2><span style=\"color: red;\">Si è verificato un problema. Utente non valido.</span><h2>");
+              	}
+              	
+              	%>
+               
+              	</div>
+		    </div>
+			
 			<div class="contentright">
 				<h2>&nbsp;</h2>
 				<h2>Le tue notifiche:</h2>
