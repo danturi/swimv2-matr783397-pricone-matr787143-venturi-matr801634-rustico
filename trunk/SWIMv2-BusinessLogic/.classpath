@@ -18,5 +18,8 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/glassfish3/glassfish/lib/embedded/glassfish-embedded-static-shell.jar"/>
+	<classpathentry kind="lib" path="C:/glassfish3/glassfish/modules/javax.ejb.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
