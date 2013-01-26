@@ -67,12 +67,23 @@ userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 %>
 	
 		<div class="bannerArea">
-			<div class="container">
-<div class="bannernav">Sei loggato come <%=request.getUserPrincipal().getName() %>.</div>
-			<div class="toplogo"><a href="#"></a><img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png" width="223" height="51" alt="titolo" /></div>
-              <div style="clear:both;"></div>
-          </div>
+		<div class="container">
+		<%
+		if(request.getUserPrincipal().getName()!=null){
+			User usrPr = userBean.find(request.getUserPrincipal().getName());
+			if(usrPr!=null){
+				out.write("<div class=\"bannernav\">Ciao, "+usrPr.getFirstname()+".</div>");
+			}
+		}
+		%>
+			
+			<div class="toplogo">
+				<img src="<%=request.getContextPath()%>/images/GIMP-file/swim-titolo_b.png"
+							width="223" height="51" alt="titolo" />
+			</div>
+			<div style="clear: both;"></div>
 		</div>
+	</div>
 		<div class="topnavigationArea">
 			<div class="container"><!-- TemplateBeginEditable name="menï¿½" -->
 			  <div class="topnavigationgroup">
@@ -180,11 +191,10 @@ userBean = (UserBeanRemote) context.lookup(UserBeanRemote.class.getName());
 					<a href="<%=request.getContextPath()%>/secure/showHelpReq.jsp">Richieste di aiuto</a>
 				</p>
 				<p>&nbsp;</p>
-				<p><a href="friendReq.jsp">Richieste di amicizia</a></p>
+				<p><a href="<%=request.getContextPath()%>/secure/friendReq.jsp">Richieste di amicizia</a></p>
 				<p>&nbsp;</p>
-				<p>
-					Richieste abilit&agrave;<img
-						src="<%=request.getContextPath()%>/images/omino_msg.jpg"
+				<p><a href="<%=request.getContextPath()%>/secure/abilityReq.jsp">
+					Richieste abilit&agrave;</a><img src="<%=request.getContextPath()%>/images/omino_msg.jpg"
 						alt="omino_msg" width="158" height="165" align="right" />
 				</p>
 				<p>&nbsp;</p>
