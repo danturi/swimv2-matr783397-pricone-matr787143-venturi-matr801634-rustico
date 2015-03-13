@@ -1,0 +1,1 @@
+SWIMv2 project a.a. 2012/2013 for Software Engineering 2 @ Polimi - by Marco Pricone, Davide Venturi and Sebastiano Rustico
